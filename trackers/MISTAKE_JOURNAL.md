@@ -4,9 +4,11 @@
 ## Recurring Mistake Tracker
 | Mistake | Times Repeated | Last Seen |
 |---|---|---|
-| Layer-fusion (wrong layer / pipeline collapsed) | 4 | Session 1 (Nginx "choosing a port") |
+| Layer-fusion (wrong layer / pipeline collapsed) | 5 | Session 2 (HTTP gate: "http req type"/"http response" named as the *actor* for routing & status decisions) |
+| Retreat-to-structure (restates the message skeleton instead of committing to the specific decision asked) | 1 | Session 2 (HTTP gate Part 2: described headers instead of naming method + status codes) |
+| Idempotency / safe-method mis-assignment | 1 | Session 2 (HTTP gate Part 5: attached "idempotency key" to GET; GET is safe because it's a read) |
 
-## Weakest Topics: 1. Cross-layer sequencing (which actor, which job, what order).
+## Weakest Topics: 1. Cross-layer sequencing (which actor, which job, what order). 2. Protocol-vs-actor distinction (a format doesn't *do* things; a program does).
 
 ## Entry 001 — Layer-fusion blind spot
 - **Topic:** Networking (DNS/TCP/TLS/web-server routing)
@@ -19,3 +21,22 @@
 - **Mitigation:** label guesses as guesses; list actors-in-order before answering.
 - **Confidence:** 4/10 → 8/10. Trend: shrinking.
 - **Retest:** Yes — re-ask "which layer owns each job" next session.
+
+## Entry 002 — Protocol named as the actor (5th layer-fusion instance)
+- **Topic:** HTTP request/response (Mastery Gate, Session 2)
+- **Instance:** Asked "what *actor* decides `/users/99/profile` → fetch-profile code, and who emits 401?" — answered "http req type" and "http response."
+- **Category:** incorrect mental model — fuses the **message format** with the **program that acts on it.**
+- **Root cause:** same family as Entry 001. HTTP is an envelope/format; it never *decides* or *does*. The **server** routes the path and the **server** checks the token and chooses the status. Under pressure, grabbed the protocol's name instead of the actor. Recovered only when pointed.
+- **Correct model:** "HTTP is a format. The server is who acts." Envelope vs. program.
+- **Memory anchor:** "The letter doesn't decide anything — the person reading it does."
+- **Mitigation:** rapid-fire "name the actor" drill — job in, one-word actor out, no nudge.
+- **Retest:** DONE (Session 2 re-gate). Unfused cold, no nudge: DNS→TCP→TLS→server→server, zero "http" as actor. Drill worked — fusion reflex broken on header-field and method triggers after ~6 reps. **Confidence: 8/10 → 9/10. Keep spot-checking on each new layered topic.**
+
+## Entry 003 — Idempotency / safe-method mis-assignment
+- **Topic:** HTTP methods (surfaced in HTTP gate Part 5, Session 2)
+- **Instance:** "GET is safe to retry because we'll have an idempotency key... maybe." Wrong direction.
+- **Category:** knowledge gap (untaught sub-atom) + concept mis-binding.
+- **Root cause:** GET is safe to retry because it's a **read — it changes no server state** (idempotent + safe *by nature*). An **idempotency key** is the *opposite*: a tool bolted onto a **POST** to make a state-changing call safe to repeat. Attached the POST fix to GET.
+- **Correct model:** GET/PUT/DELETE idempotent; POST not. GET also "safe" (no side effects). Idempotency keys = the POST/retry fix, not a GET feature.
+- **Mitigation:** teach **safe vs idempotent vs neither** as its own atom before re-gating HTTP.
+- **Retest:** Yes — fold into the HTTP re-teach.

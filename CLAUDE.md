@@ -52,10 +52,11 @@ Maintain `trackers/MISTAKE_JOURNAL.md` and `trackers/BEHAVIOR_LEARNING.md`. Desi
 ---
 
 ## 6. Current state (update as you go)
-- Module **1 — Networking**. Signed off cold: **DNS, TCP, TLS**.
-- Next atom: **HTTP request/response** (request line, methods, headers, status codes) → then **browser rendering** (completes the google.com walk).
-- Notes: `notes/networking/{dns,tcp,tls}.md`. First session log: `sessions/001-dns-tcp-tls.md`.
-- Pattern learned: **trust anchors** (hardcoded root DNS IPs ≅ pre-installed CAs).
+- Module **1 — Networking**. Signed off cold: **DNS, TCP, TLS, HTTP req/resp** (incl. methods, status-code families, safe/idempotent semantics, idempotency keys).
+- Next atom: **browser rendering** (completes the google.com walk) → then resume syllabus: **HTTP/2·HTTP/3**, cookies/sessions, reverse proxy, load balancing.
+- Notes: `notes/networking/{dns,tcp,tls,http}.md`. Session logs: `sessions/001-dns-tcp-tls.md` (Session 2 to be logged via `/session`).
+- Patterns learned: **trust anchors** (root DNS IPs ≅ pre-installed CAs); **protocol ≠ actor** (HTTP is paper, server/browser is the hand); **safe ⊂ idempotent ⊂ all**.
+- Blind-spot status: layer-fusion held COLD in the HTTP gate (no nudge) — confidence 9/10, keep spot-checking on each new layered topic.
 
 ---
 

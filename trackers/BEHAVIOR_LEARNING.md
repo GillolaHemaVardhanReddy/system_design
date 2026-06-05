@@ -10,6 +10,13 @@
 ## Where he stalls
 - **Abstract terms without a concrete referent** (asked "what is a resolver in the real world?"). Always ground new vocab in a real entity/company.
 - **Under recall pressure he over-extrapolates** ("the next two players must do X") and states guesses as conclusions → layer-fusion. Coaching response: ask him to **label guesses** ("I think X, unsure") and to list actors-in-order before answering cross-layer questions.
+- **Retreat-to-structure under pressure (S2):** when asked for a *specific decision* (which method? which status code?), he re-describes the message skeleton instead of committing. Coaching response: refuse the restatement, demand the specific ("numbers and a word, not a paragraph"). He then produces it correctly — evasion-under-pressure habit, not a knowledge gap.
+- **Fusion has a precise trigger (S2):** when the answer "lives in a header / request-line field," he names the *protocol* ("http") instead of the *actor* who writes it. Isolating the trigger made it fixable.
+- **Frustration spikes mid-success (S2):** dipped emotionally ("you're asking vague questions / mango farm," "I'll be screwed in interviews") at the exact moments he was answering *correctly*. Coaching response: stop and name the concrete win to re-anchor him ("that answer was right — that IS the method") before continuing.
+
+## What fixes the fusion (proven S2)
+- **Rapid-fire "name the actor" drill** — give a job, demand a one/two-word actor, ban protocol names. Broke the reflex in ~6 reps; by rep 15 he reached for a human actor ("coder") instead of "http." Re-run as a warm-up/spot-check on every new layered topic.
+- Anchor that landed: **"HTTP is paper; the hand that writes it is the actor."**
 
 ## What works for verification
 - Cold recall the next session catches fusion reliably. Keep doing it.

@@ -3,14 +3,14 @@
 
 ## Headline
 - Modules touched: 2 of 15 (Foundations lightly, Networking in progress)
-- Atoms banked (cold): **3** — DNS, TCP, TLS
-- Current frontier: Networking → HTTP request/response (next), then browser rendering
+- Atoms banked (cold): **4** — DNS, TCP, TLS, HTTP req/resp
+- Current frontier: Networking → browser rendering (next, completes the google.com walk), then HTTP/2·HTTP/3, cookies/sessions
 
 ## Module-by-module
 | Module | Atoms banked | Atoms covered | % banked (rough) | Status |
 |---|---|---|---|---|
 | 0 Foundations | 0 | 1 (open-a-website, partial) | ~5% | Touched |
-| 1 Networking | 3 (DNS, TCP, TLS) | 3 | ~30% | In Progress |
+| 1 Networking | 4 (DNS, TCP, TLS, HTTP req/resp) | 4 | ~38% | In Progress |
 | 2 Databases | 0 | 0 | 0% | Not Started |
 | 3 Caching | 0 | 0 | 0% | Not Started |
 | 4 Scalability | 0 | 0 | 0% | Not Started |

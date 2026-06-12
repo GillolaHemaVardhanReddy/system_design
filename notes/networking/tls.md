@@ -1,7 +1,7 @@
 # TLS — Making the Connection Private and Trustworthy
 
 > Where this fits: after the TCP handshake completes, but **before** the HTTP request goes out. This is the extra negotiation that makes `https` slower to start than `http`.
-> Status: DH **banked cold S5** (4/5 gate dimensions ✓). **Gate held open** on one beat — the active-MITM mechanism (§3) — to clear next session, then the TLS atom is fully signed off. Revise with the cold-recall questions at the bottom.
+> Status: **TLS BANKED COLD (S6, full 5/5 gate).** DH banked S5; the held-open beat — active-MITM mechanism (§3) — cleared cold S6: MITM does NOT compute `g^(ab)` (no discrete-log break), runs **two separate handshakes**, holds **2** keys, and the real `g^(ab)` **never forms**. Revise with the cold-recall questions at the bottom.
 
 ---
 

@@ -13,6 +13,7 @@
 - **Retreat-to-structure under pressure (S2):** when asked for a *specific decision* (which method? which status code?), he re-describes the message skeleton instead of committing. Coaching response: refuse the restatement, demand the specific ("numbers and a word, not a paragraph"). He then produces it correctly — evasion-under-pressure habit, not a knowledge gap.
 - **Fusion has a precise trigger (S2):** when the answer "lives in a header / request-line field," he names the *protocol* ("http") instead of the *actor* who writes it. Isolating the trigger made it fixable.
 - **Frustration spikes mid-success (S2):** dipped emotionally ("you're asking vague questions / mango farm," "I'll be screwed in interviews") at the exact moments he was answering *correctly*. Coaching response: stop and name the concrete win to re-anchor him ("that answer was right — that IS the method") before continuing.
+- **Over-drilling fatigue after a correction (S4):** once he has *corrected* an error, continued piecemeal poking on the same point reads as "over-testing" ("you keep on over testing me") even when the next poke is finding a real new error. Coaching response that worked: stop the drip, **name what the drilling just bought**, and consolidate into one clean **uninterrupted re-gate** ("you've earned a clean shot — 5 questions, no interruptions"). He accepted this immediately and then passed. Reward-frame the gate as a payoff, not more poking.
 
 ## What fixes the fusion (proven S2)
 - **Rapid-fire "name the actor" drill** — give a job, demand a one/two-word actor, ban protocol names. Broke the reflex in ~6 reps; by rep 15 he reached for a human actor ("coder") instead of "http." Re-run as a warm-up/spot-check on every new layered topic.
@@ -27,3 +28,4 @@
 
 ## Motivation notes
 - Responds to honest, specific acknowledgment of real wins; do not pad with empty praise. Naming the shrinking trend of his blind spot motivates him.
+- **Detects shallow coverage and respects honesty about it (S4):** flagged unprompted that "you never explained TLS this depth" — accurate. He can tell waved-through from truly-taught, and trusts the process more when Jimmy *owns* the coverage gap ("TLS was marked banked with no logged gate — that's why I demoted it") rather than defending. Lesson: never wave a topic through; he will notice the debt later, and naming it honestly buys credibility.

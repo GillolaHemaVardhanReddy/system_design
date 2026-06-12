@@ -4,7 +4,7 @@
 ## Recurring Mistake Tracker
 | Mistake | Times Repeated | Last Seen |
 |---|---|---|
-| Layer-fusion (wrong layer / pipeline collapsed) | 5 | Session 2 (HTTP gate: "http req type"/"http response" named as the *actor* for routing & status decisions) |
+| Layer-fusion (wrong layer / pipeline collapsed) | 6 | Session 4 (TCP re-gate Q5: assigned the **duplicate-ACK** mechanism to a **total-silence** condition where it physically can't fire — right concept, wrong condition. Caught under gate pressure, repaired cold on targeted re-gate, no discriminator fed) |
 | Retreat-to-structure (restates the message skeleton instead of committing to the specific decision asked) | 1 | Session 2 (HTTP gate Part 2: described headers instead of naming method + status codes) |
 | Idempotency / safe-method mis-assignment | 1 | Session 2 (HTTP gate Part 5: attached "idempotency key" to GET; GET is safe because it's a read) |
 
@@ -40,3 +40,13 @@
 - **Correct model:** GET/PUT/DELETE idempotent; POST not. GET also "safe" (no side effects). Idempotency keys = the POST/retry fix, not a GET feature.
 - **Mitigation:** teach **safe vs idempotent vs neither** as its own atom before re-gating HTTP.
 - **Retest:** Yes — fold into the HTTP re-teach.
+
+## Entry 004 — Recovery-path conflation (dup-ACK assigned to a silent connection)
+- **Topic:** TCP loss recovery (full cold re-gate, Session 4)
+- **Instance:** Gate Q5 (tunnel: 8s of total silence). Said the connection survives & resumes "because it sends duplicate acknowledgments asking for the missing data." Impossible — a dup-ACK is *provoked by the arrival of a later packet*; during total silence nothing arrives, so no dup-ACK can fire. Correct answer is **retransmission timeout (RTO) + exponential backoff**.
+- **Category:** layer-fusion family — wrong *mechanism* for the *condition* (cousin of Entry 001's wrong-actor-for-the-job).
+- **Root cause:** under gate pressure he reached for the **most recently drilled** mechanism (dup-ACK/fast-retransmit, hammered earlier the same night) and applied it to a condition it can't operate in. Salience override, not knowledge gap — he *had* both mechanisms.
+- **Correct model:** **Packets still arriving → fast retransmit (3 duplicate ACKs). Total silence → retransmission timeout (timer expiry + backoff).** The discriminator is "is anything still arriving to provoke an ACK?"
+- **Memory anchor:** "No traffic, no dup-ACKs — silence is the timer's job, not the ACK's."
+- **Mitigation:** before naming a recovery/repair mechanism, ask "what condition is the wire in *right now* — flowing or silent?" then pick.
+- **Retest:** PASSED same session on targeted 2-question re-gate — separated RTO vs fast-retransmit cold, explicitly stated dup-ACK *can't* fire in silence, no nudge. **Confidence 8/10. Spot-check the condition→mechanism mapping when TLS/HTTP retries come up.**

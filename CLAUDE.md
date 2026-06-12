@@ -52,11 +52,12 @@ Maintain `trackers/MISTAKE_JOURNAL.md` and `trackers/BEHAVIOR_LEARNING.md`. Desi
 ---
 
 ## 6. Current state (update as you go)
-- Module **1 — Networking**. Signed off cold: **DNS, TCP, TLS, HTTP req/resp** (incl. methods, status-code families, safe/idempotent semantics, idempotency keys).
-- Next atom: **browser rendering** (completes the google.com walk) → then resume syllabus: **HTTP/2·HTTP/3**, cookies/sessions, reverse proxy, load balancing.
-- Notes: `notes/networking/{dns,tcp,tls,http}.md`. Session logs: `sessions/001-dns-tcp-tls.md` (Session 2 to be logged via `/session`).
-- Patterns learned: **trust anchors** (root DNS IPs ≅ pre-installed CAs); **protocol ≠ actor** (HTTP is paper, server/browser is the hand); **safe ⊂ idempotent ⊂ all**.
-- Blind-spot status: layer-fusion held COLD in the HTTP gate (no nudge) — confidence 9/10, keep spot-checking on each new layered topic.
+- Module **1 — Networking**. Signed off cold: **DNS, TCP (re-gated cold S4), HTTP req/resp** (incl. methods, status-code families, safe/idempotent semantics, idempotency keys). **UDP derived** from first principles (TCP's HOL cost → why UDP exists). **TLS NOT yet re-gated** — Diffie–Hellman shaky; demoted to pending until evidence.
+- Next: **TLS cold re-gate (focus: Diffie–Hellman)** → then **browser rendering** (completes the google.com walk) → resume syllabus: **HTTP/2·HTTP/3**, cookies/sessions, reverse proxy, load balancing.
+- TCP polish to firm on revision: say "**3** dup-ACKs"; security layer is **TLS not HTTP**; ACKs are the steady "got it" heartbeat, not just a loss signal.
+- Notes: `notes/networking/{dns,tcp,tls,http}.md` (TCP note needs UDP + recovery-paths update via `/note`). Session logs: `sessions/00{1,2,3}-*.md`; Session 4 (this one) to be logged via `/session`.
+- Patterns learned: **trust anchors** (root DNS IPs ≅ pre-installed CAs); **protocol ≠ actor**; **safe ⊂ idempotent ⊂ all**; **TCP late-not-wrong / UDP wrong-not-late**; **head-of-line blocking = latency cost**; **silence→RTO, flowing→fast-retransmit**.
+- Blind-spot status: layer-fusion **flared once at TCP-gate Q5** (dup-ACK mechanism assigned to a silent connection — wrong mechanism for the condition) but **self-repaired cold same session** on a fresh re-gate, no discriminator fed. Confidence 8/10. Keep the "which condition is the wire in?" / "which actor owns this job?" spot-check on every new layered topic.
 
 ---
 

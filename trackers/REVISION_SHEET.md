@@ -7,7 +7,7 @@
 | DNS | 2026-06-10 | 2026-06-17 | High (re-gated cold S3) |
 | TCP | 2026-06-12 | 2026-06-19 (+7d) | High (re-gated cold S4; watch the 3 polish nits) |
 | UDP | 2026-06-12 | 2026-06-15 (+3d) | Medium (derived, not yet gated) |
-| TLS | repo-day | OVERDUE — re-gate next | Medium (DH shaky; never evidence-backed) |
+| TLS / DH | 2026-06-12 | 2026-06-13 (+1d, finish open beat) | Medium-High (DH **banked cold S5, 4/5 gate**; only the active-MITM mechanism left to clear) |
 | HTTP req/resp | 2026-06-05 | 2026-06-08 — OVERDUE | Medium-High (passed cold; safe-vs-idempotent precision to firm up) |
 
 ## Forgotten Concepts Queue
@@ -15,7 +15,7 @@
 |---|---|---|
 | (none yet) | | |
 
-## Weak Retention: TLS / Diffie–Hellman intuition — re-test before full mastery.
+## Weak Retention: TLS — **active-MITM mechanism** (two separate handshakes; attacker does NOT compute g^(ab)). DH core intuition now firm; this one beat re-test before full TLS sign-off.
 
 ## Mental Models Library — Networking
 - Names for humans, addresses for machines (DNS bridges).

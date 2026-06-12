@@ -3,8 +3,8 @@
 
 ## Headline
 - Modules touched: 2 of 15 (Foundations lightly, Networking in progress)
-- Atoms banked (cold): **3** — DNS, TCP (re-gated cold S4), HTTP req/resp. *(TLS demoted "banked"→pending: no logged cold gate, DH shaky. UDP derived, not gated.)*
-- Current frontier: Networking → **TLS cold re-gate (DH)** next, then browser rendering (completes the google.com walk), then HTTP/2·HTTP/3, cookies/sessions
+- Atoms banked (cold): **3** — DNS, TCP (re-gated cold S4), HTTP req/resp. *(TLS still pending: DH **4/5 gate dimensions banked cold S5**, gate held open on the active-MITM mechanism — one ~10-min beat to clear. UDP derived, not gated.)*
+- Current frontier: Networking → **clear TLS MITM beat → bank TLS**, then browser rendering (completes the google.com walk), then HTTP/2·HTTP/3, cookies/sessions
 
 ## Module-by-module
 | Module | Atoms banked | Atoms covered | % banked (rough) | Status |

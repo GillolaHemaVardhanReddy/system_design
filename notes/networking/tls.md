@@ -1,7 +1,7 @@
 # TLS — Making the Connection Private and Trustworthy
 
 > Where this fits: after the TCP handshake completes, but **before** the HTTP request goes out. This is the extra negotiation that makes `https` slower to start than `http`.
-> Status: Learned, signed off. Revise with the cold-recall questions at the bottom.
+> Status: DH **banked cold S5** (4/5 gate dimensions ✓). **Gate held open** on one beat — the active-MITM mechanism (§3) — to clear next session, then the TLS atom is fully signed off. Revise with the cold-recall questions at the bottom.
 
 ---
 
@@ -43,6 +43,30 @@ TLS solves all three.
 
 Real name: **Diffie–Hellman key exchange** (real "paint" = modular arithmetic with huge numbers).
 
+### 2b. The real math (the "paint" made precise) — *added S5*
+
+The paint maps term-for-term onto actual numbers. At a gate, say the math, not the paint:
+
+| Paint | Real DH |
+|---|---|
+| Public ingredient P | a public **base `g`** (the *generator*, small) **+** a public **prime `p`** (huge). Both known to everyone, incl. the attacker. |
+| Your private secret `a` | a secret random **number** `a` |
+| What you send (A) | **`A = g^a mod p`** |
+| Server's private `b` | secret random **number** `b` |
+| What the server sends (B) | **`B = g^b mod p`** |
+| The shared secret | **`g^(ab) mod p`** |
+
+- **You compute** `B^a = (g^b)^a = g^(ab)`. **Server computes** `A^b = (g^a)^b = g^(ab)`. Same number — exponents multiply regardless of order. *That's* why the mix is order-independent.
+- **Symmetric, not a relay.** Both sides independently send `g^(own secret)`; **2 messages cross the wire**, and they don't depend on each other's arrival. The shared secret `g^(ab)` is computed **locally on each end and is NEVER transmitted**. (`g`/`p` are pre-agreed "named groups" or piggyback on a public-value message — not a 3rd round-trip, and *never* a "send the secret back" message.)
+- **You never reverse anything.** You already *hold* your own secret `a`; you just raise the *received public value* to it. The word is **"received public value," not "their secret"** — you never learn the other side's `a`/`b`.
+
+**Why the attacker fails, precisely:**
+- *Easy forward* = **modular exponentiation** (`g^a mod p`) — fast.
+- *Hard reverse* = the **discrete logarithm problem** — given `g`, `p`, `A`, find `a` such that `g^a ≡ A`. Infeasible for large `p`.
+- A **passive eavesdropper** holds `g, p, A, B` but **no private secret**, so to forge one she'd have to solve the discrete log → stuck. (Note: an *active MITM* doesn't solve it either — see §3, he sidesteps it with two handshakes.)
+
+**Slogan:** *modular exponentiation easy, discrete logarithm hard.* The log is the **attacker's prison**, never in the legitimate computation.
+
 ---
 
 ## 3. Identity — the gap Diffie–Hellman leaves open
@@ -54,7 +78,11 @@ Diffie–Hellman gives you a shared secret with **whoever is on the other end** 
 - Now the attacker shares one key with you, another with the bank. You send your (encrypted) password → attacker decrypts with your shared key, reads it, re-encrypts to the bank, forwards it. **Both connections look perfectly secure.**
 - (DNS spoofing — feeding you a fake IP — is how the attacker gets into the middle.)
 
-**Lesson:** encryption hides the *message*; it does nothing to prove *identity*. You can have a perfectly private conversation with an impostor.
+**Two attackers — don't fuse them (S5 gap):**
+- **Passive eavesdropper:** holds only public values → **cannot** compute `g^(ab)` (discrete log). Defeated by DH itself.
+- **Active MITM:** does **NOT** compute `g^(ab)` either (he can't break the log). He runs **TWO separate DH handshakes** — one with you (posing as the bank), one with the bank (posing as you) — ending up with **two different shared keys**. The real `g^(ab)` between you and the bank **never forms**. He decrypts with one key, reads, re-encrypts with the other, relays. He *sidesteps* the math by being a stranger to both sides; he never beats it.
+
+**Lesson:** encryption hides the *message*; it does nothing to prove *identity*. You can have a perfectly private conversation with an impostor. The threat DH defeats is **eavesdropping/confidentiality** — **not** impersonation.
 
 ---
 
@@ -116,8 +144,11 @@ The same bootstrap trick appears in **two** places today, both solving "how do I
 1. Why isn't a reliable TCP connection also a private one? Who can read your bytes?
 2. State the three problems TLS solves.
 3. Explain Diffie–Hellman without math: why can two strangers agree on a secret an eavesdropper can't compute, even though the eavesdropper saw everything?
+3b. Now *with* math: what are `g` and `p`, what does each side send, what does each compute, and what is the shared secret? Name the easy-forward op (**modular exponentiation**) and the hard-reverse problem (**discrete logarithm**).
+3c. How many messages cross the wire in the DH exchange, and where does the shared secret live (wire, or each end)? Is DH a symmetric mirror or a sequential relay?
 4. What is the shared secret *never* doing, in DH? (one word: sent)
 5. What attack does DH alone leave open, and why?
+5b. **(open gap)** Distinguish a *passive eavesdropper* from an *active MITM*. Does the MITM compute `g^(ab)` from the public values? If not, exactly what does he do, and how many keys does he end up holding?
 6. How does a certificate prove identity, and why can't an attacker fake or copy its way past it?
 7. Why must identity be checked *before* the key exchange is trusted?
 8. Name the two "trust anchors" from today and the one pattern they share.

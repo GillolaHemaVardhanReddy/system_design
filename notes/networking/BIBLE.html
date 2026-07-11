@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Networking Bible — Module 1 · Jimmy × Hema</title>
+<style>
+:root{
+  --ground:#F1F4F7; --ground-2:#E4EAF0; --card:#FBFCFD;
+  --ink:#131E29; --ink-2:#48596A; --ink-3:#7A8998;
+  --rule:#CAD5DF; --hard:#131E29;
+  --dns:#9E6B12;  --dns-bg:#FBEFD8;  --dns-ed:#DFBA70;
+  --tcp:#0F7264;  --tcp-bg:#DAEFEA;  --tcp-ed:#72BFB1;
+  --tls:#59409F;  --tls-bg:#E8E3F7;  --tls-ed:#A392D8;
+  --http:#A93748; --http-bg:#FAE0E4; --http-ed:#E096A1;
+  --udp:#1C5F96;  --udp-bg:#DDEAF6;  --udp-ed:#7FAEDA;
+  --err:#A93748; --err-bg:#FAE0E4; --ok:#0F7264;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0D141B; --ground-2:#161F29; --card:#121B24;
+    --ink:#E3ECF3; --ink-2:#9BAEBF; --ink-3:#6A7E91;
+    --rule:#27343F; --hard:#8CA3B6;
+    --dns:#EAB65A;  --dns-bg:#2B2211;  --dns-ed:#785D22;
+    --tcp:#5DC9B6;  --tcp-bg:#0E2925;  --tcp-ed:#256D61;
+    --tls:#A896E7;  --tls-bg:#1F1A32;  --tls-ed:#51438F;
+    --http:#E88996; --http-bg:#2E161A; --http-ed:#7C3843;
+    --udp:#6FB2E8;  --udp-bg:#12283A;  --udp-ed:#2F6591;
+    --err:#E88996; --err-bg:#2E161A; --ok:#5DC9B6;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:1rem}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:3rem 1.25rem 8rem;display:flex;flex-direction:column;gap:2.2rem}
+
+/* ── type ── */
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+h1{font-family:var(--mono);font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:600;letter-spacing:-.02em;line-height:1.1;text-wrap:balance}
+h3{font-size:1rem;font-weight:700}
+h4{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-top:.3rem}
+p,li{max-width:76ch}
+b,strong{font-weight:700}
+code{font-family:var(--mono);font-size:.86em;background:var(--ground-2);border:1px solid var(--rule);padding:.06rem .3rem;border-radius:2px}
+.no{color:var(--err);font-weight:700}
+ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+ul li{padding-left:1.15rem;position:relative}
+ul li::before{content:"—";position:absolute;left:0;color:var(--fg,var(--ink-3));font-weight:700}
+ol{padding-left:1.3rem;display:flex;flex-direction:column;gap:.38rem}
+.lede{border-left:3px solid var(--hard);padding-left:1rem;color:var(--ink-2);font-size:1.02rem}
+.lede strong{color:var(--ink)}
+
+/* ── the three boundary rules ── */
+.bnd{display:flex;align-items:center;gap:.7rem;padding:.72rem 1rem;background:var(--ground-2);
+     border-top:2px solid var(--hard);border-bottom:2px solid var(--hard);
+     font-family:var(--mono);font-size:.82rem;max-width:none}
+.bnd::before{content:"◆";color:var(--ink-3);font-size:.66rem;flex:none}
+.bnds{display:flex;flex-direction:column;gap:.35rem}
+
+/* ── controls ── */
+.ctl{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:20;
+     background:var(--ground);padding:.7rem 0;border-bottom:1px solid var(--rule)}
+.btn{font-family:var(--mono);font-size:.71rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+     background:var(--card);color:var(--ink-2);border:1px solid var(--rule);border-radius:2px;padding:.4rem .7rem;cursor:pointer}
+.btn:hover{color:var(--ink);border-color:var(--hard)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.ctl .sp{flex:1}
+.jump{font-family:var(--mono);font-size:.71rem;color:var(--ink-3);text-decoration:none;padding:.4rem .5rem;border-bottom:2px solid var(--c,var(--rule))}
+.jump:hover{color:var(--ink)}
+
+/* ══ THE CARD — collapsed = spine, open = depth ══ */
+details.card{border:1px solid var(--ed);border-left:5px solid var(--fg);border-radius:2px;background:var(--card);overflow:hidden}
+details.card[open]{background:var(--card)}
+details.card > summary{list-style:none;cursor:pointer;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.65rem;background:var(--bg)}
+details.card > summary::-webkit-details-marker{display:none}
+details.card > summary:hover{filter:brightness(.985)}
+details.card[open] > summary{border-bottom:1px solid var(--ed)}
+.sum-top{display:flex;align-items:baseline;gap:.65rem;flex-wrap:wrap}
+.tag-l{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--fg);
+       border:1px solid var(--fg);padding:.1rem .35rem;border-radius:2px}
+.sum-t{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--ink)}
+.sum-s{font-size:.88rem;color:var(--ink-2)}
+.chev{margin-left:auto;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;color:var(--fg);font-weight:700;white-space:nowrap}
+details.card[open] .chev::after{content:"▲ CLOSE"}
+details.card:not([open]) .chev::after{content:"▼ FULL DEPTH"}
+/* spine: the 3 lines you see without opening anything */
+.spine{display:flex;flex-direction:column;gap:.3rem}
+.spine div{font-size:.9rem;padding-left:1.1rem;position:relative;max-width:78ch}
+.spine div::before{content:"▸";position:absolute;left:0;color:var(--fg);font-weight:700;font-size:.8rem}
+.spine b{color:var(--ink)}
+.body{padding:1.3rem 1.2rem 1.5rem;display:flex;flex-direction:column;gap:1rem}
+
+.card.d{--fg:var(--dns);--bg:var(--dns-bg);--ed:var(--dns-ed)}
+.card.t{--fg:var(--tcp);--bg:var(--tcp-bg);--ed:var(--tcp-ed)}
+.card.u{--fg:var(--udp);--bg:var(--udp-bg);--ed:var(--udp-ed)}
+.card.s{--fg:var(--tls);--bg:var(--tls-bg);--ed:var(--tls-ed)}
+.card.h{--fg:var(--http);--bg:var(--http-bg);--ed:var(--http-ed)}
+.card.n{--fg:var(--hard);--bg:var(--ground-2);--ed:var(--rule)}
+
+/* ── plain english — the Feynman layer ── */
+.plain{background:var(--ground-2);border:1px dashed var(--fg);border-radius:2px;padding:.9rem 1.05rem;display:flex;flex-direction:column;gap:.5rem}
+.plain .tag{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--fg)}
+.plain p{font-size:.97rem}
+
+/* ── boxes ── */
+.box{border:1px solid var(--ed,var(--rule));border-left:4px solid var(--fg,var(--hard));background:var(--ground-2);padding:.85rem 1rem;border-radius:2px;display:flex;flex-direction:column;gap:.45rem}
+.box .tag{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg,var(--ink-3))}
+.trap{border-color:var(--err);border-left-color:var(--err);background:var(--err-bg)}
+.trap .tag{color:var(--err)}
+
+/* ── nested "go deeper" ── */
+details.more{border-top:1px dashed var(--ed);padding-top:.6rem}
+details.more > summary{list-style:none;cursor:pointer;font-family:var(--mono);font-size:.72rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--fg);padding:.15rem 0}
+details.more > summary::-webkit-details-marker{display:none}
+details.more > summary::before{content:"▸ ";}
+details.more[open] > summary::before{content:"▾ ";}
+details.more > div{padding-top:.7rem;display:flex;flex-direction:column;gap:.85rem}
+
+/* ── tables / code / svg ── */
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:480px}
+th,td{text-align:left;padding:.55rem .65rem;border:1px solid var(--ed,var(--rule));vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fg,var(--ink-2));background:var(--bg,var(--ground-2));font-weight:700;white-space:nowrap}
+td b{color:var(--fg,var(--ink))}
+pre{font-family:var(--mono);font-size:.8rem;line-height:1.55;background:var(--ground-2);border:1px solid var(--rule);border-radius:2px;padding:.85rem 1rem;overflow-x:auto}
+pre .c{color:var(--ink-3)} pre .k{color:var(--fg,var(--ink));font-weight:700}
+figure{background:var(--ground-2);border:1px solid var(--ed,var(--rule));border-radius:2px;padding:.9rem;overflow-x:auto;max-width:none}
+figure svg{display:block;min-width:480px;max-width:100%;height:auto;margin:0 auto}
+figcaption{font-size:.84rem;color:var(--ink-2);margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--rule);max-width:78ch}
+figcaption b{color:var(--ink)}
+.sv-t{font-family:var(--mono);fill:var(--ink);font-size:12px}
+.sv-s{font-family:var(--mono);fill:var(--ink-2);font-size:10.5px}
+.sv-m{font-family:var(--mono);fill:var(--ink-3);font-size:10px;letter-spacing:.06em}
+.sv-b{font-weight:700}
+.ln{stroke:var(--rule);stroke-width:1;stroke-dasharray:3 4}
+.box-a{fill:var(--card);stroke:var(--hard);stroke-width:1.5}
+.arw{stroke-width:1.6;fill:none}
+.dsh{stroke-width:1.4;fill:none;stroke-dasharray:5 4}
+.bar{stroke:var(--hard);stroke-width:1.6}
+.bandr{opacity:.5}
+
+/* ── drill ── */
+.drill{display:flex;flex-direction:column;gap:.35rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:center;background:var(--ground-2);border:1px solid var(--rule);border-left:3px solid var(--f);border-radius:2px;padding:.6rem .8rem;max-width:none}
+.row.d{--f:var(--dns)} .row.t{--f:var(--tcp)} .row.u{--f:var(--udp)}
+.row.s{--f:var(--tls)} .row.h{--f:var(--http)}
+.q{font-size:.9rem}
+.a{font-family:var(--mono);font-size:.82rem;color:var(--f);font-weight:600;text-align:left;cursor:pointer;background:none;border:none;border-radius:2px;padding:.32rem .45rem;width:100%}
+.a[data-shown="false"]{color:transparent;border:1px dashed var(--rule);
+  background:repeating-linear-gradient(45deg,var(--card),var(--card) 4px,transparent 4px,transparent 8px)}
+.a[data-shown="false"]:hover{border-color:var(--f)}
+.a:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.drill-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.front{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.55rem}
+.fr{border:1px dashed var(--rule);border-radius:2px;padding:.65rem .8rem;background:var(--ground-2)}
+.fr .ft{font-family:var(--mono);font-size:.8rem;font-weight:700}
+.fr .fs{font-size:.78rem;color:var(--ink-3)}
+@media (max-width:620px){.row{grid-template-columns:1fr;gap:.4rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:.9rem">
+  <div class="eyebrow">Module 1 · Networking · complete reference</div>
+  <h1>The Networking Bible</h1>
+  <p class="lede">
+    <strong>Everything is here, but nothing is shouting.</strong> Each layer is collapsed to its
+    <strong>three killer lines</strong> — scan those and you have the module in 90 seconds. Open a card only when
+    you want the full depth, and every card opens with a <strong>plain-English</strong> explanation before any jargon.
+    What you have <em>not</em> yet been taught is quarantined at the bottom and is not pretended to be known.
+  </p>
+</header>
+
+<div class="ctl">
+  <button class="btn" id="expand" type="button">Expand all</button>
+  <button class="btn" id="collapse" type="button">Collapse all</button>
+  <span class="sp"></span>
+  <a class="jump" href="#walk" style="--c:var(--hard)">walk</a>
+  <a class="jump" href="#dns"  style="--c:var(--dns)">dns</a>
+  <a class="jump" href="#tcp"  style="--c:var(--tcp)">tcp</a>
+  <a class="jump" href="#udp"  style="--c:var(--udp)">udp</a>
+  <a class="jump" href="#tls"  style="--c:var(--tls)">tls</a>
+  <a class="jump" href="#http" style="--c:var(--http)">http</a>
+  <a class="jump" href="#drill" style="--c:var(--hard)">drill</a>
+</div>
+
+<!-- ══════════ THE THREE RULES ══════════ -->
+<div style="display:flex;flex-direction:column;gap:.7rem">
+  <h3>The whole module, in three sentences</h3>
+  <p style="color:var(--ink-2);font-size:.95rem">Every mistake you have made in Module 1 is one of these being crossed. Not a missing fact — <b>a crossed boundary</b>.</p>
+  <div class="bnds">
+    <div class="bnd">After <b>DNS</b> you hold an <b>IP address</b>. You do <b>not</b> hold a connection.</div>
+    <div class="bnd">After <b>TCP</b> you hold a <b>reliable ordered byte pipe</b>. It is still <b>plaintext</b>.</div>
+    <div class="bnd">After <b>TLS</b> you hold an <b>encrypted tunnel</b>. <b>No HTTP has existed yet.</b></div>
+  </div>
+</div>
+
+<!-- ══════════ 01 THE WALK ══════════ -->
+<details class="card n" id="walk" open>
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">MAP</span>
+      <span class="sum-t">The Walk — keypress to first byte</span>
+      <span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div>Seven actors, twenty-three steps, <b>one owner per leg</b>.</div>
+      <div>The question is never <em>“which protocol”</em>. It is always <b>“which actor”</b>.</div>
+      <div>A relay race, not a scrum: each layer runs one leg and <b>hands off</b>.</div>
+    </div>
+  </summary>
+  <div class="body">
+  <figure>
+  <svg viewBox="0 0 1060 1080" role="img" aria-label="Sequence diagram of a browser loading google.com through DNS, TCP, TLS and HTTP">
+    <defs>
+      <marker id="a-dns" markerWidth="9" markerHeight="7" refX="8.5" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 Z" fill="var(--dns)"/></marker>
+      <marker id="a-tcp" markerWidth="9" markerHeight="7" refX="8.5" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 Z" fill="var(--tcp)"/></marker>
+      <marker id="a-tls" markerWidth="9" markerHeight="7" refX="8.5" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 Z" fill="var(--tls)"/></marker>
+      <marker id="a-htp" markerWidth="9" markerHeight="7" refX="8.5" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 Z" fill="var(--http)"/></marker>
+    </defs>
+    <rect class="bandr" x="0" y="62" width="1060" height="450" fill="var(--dns-bg)"/>
+    <rect class="bandr" x="0" y="536" width="1060" height="132" fill="var(--tcp-bg)"/>
+    <rect class="bandr" x="0" y="692" width="1060" height="182" fill="var(--tls-bg)"/>
+    <rect class="bandr" x="0" y="898" width="1060" height="160" fill="var(--http-bg)"/>
+    <text class="sv-m sv-b" x="1052" y="80"  text-anchor="end" fill="var(--dns)">LAYER 1 · DNS</text>
+    <text class="sv-m sv-b" x="1052" y="554" text-anchor="end" fill="var(--tcp)">LAYER 2 · TCP</text>
+    <text class="sv-m sv-b" x="1052" y="710" text-anchor="end" fill="var(--tls)">LAYER 3 · TLS</text>
+    <text class="sv-m sv-b" x="1052" y="916" text-anchor="end" fill="var(--http)">LAYER 4 · HTTP</text>
+
+    <rect class="box-a" x="18"  y="16" width="104" height="34" rx="2"/><text class="sv-t sv-b" x="70"  y="37" text-anchor="middle">BROWSER</text>
+    <rect class="box-a" x="140" y="16" width="72"  height="34" rx="2"/><text class="sv-t sv-b" x="176" y="37" text-anchor="middle">OS</text>
+    <rect class="box-a" x="230" y="16" width="112" height="34" rx="2"/><text class="sv-t sv-b" x="286" y="37" text-anchor="middle">RESOLVER</text>
+    <rect class="box-a" x="382" y="16" width="80"  height="34" rx="2"/><text class="sv-t sv-b" x="422" y="37" text-anchor="middle">ROOT</text>
+    <rect class="box-a" x="502" y="16" width="96"  height="34" rx="2"/><text class="sv-t sv-b" x="550" y="37" text-anchor="middle">TLD .com</text>
+    <rect class="box-a" x="634" y="16" width="112" height="34" rx="2"/><text class="sv-t sv-b" x="690" y="37" text-anchor="middle">AUTH NS</text>
+    <rect class="box-a" x="880" y="16" width="112" height="34" rx="2"/><text class="sv-t sv-b" x="936" y="37" text-anchor="middle">SERVER</text>
+
+    <line class="ln" x1="70"  y1="50" x2="70"  y2="1060"/>
+    <line class="ln" x1="176" y1="50" x2="176" y2="500"/>
+    <line class="ln" x1="286" y1="50" x2="286" y2="500"/>
+    <line class="ln" x1="422" y1="50" x2="422" y2="400"/>
+    <line class="ln" x1="550" y1="50" x2="550" y2="400"/>
+    <line class="ln" x1="690" y1="50" x2="690" y2="470"/>
+    <line class="ln" x1="936" y1="50" x2="936" y2="1060"/>
+
+    <path class="arw" stroke="var(--dns)" marker-end="url(#a-dns)" d="M70,86 h34 v22 h-30"/>
+    <text class="sv-t" x="118" y="90">1 · parse URL. scheme <tspan class="sv-b">https</tspan> ⇒ port <tspan class="sv-b">443</tspan></text>
+    <text class="sv-s" x="118" y="105" fill="var(--err)">the port comes from CONVENTION, never from DNS</text>
+    <path class="arw" stroke="var(--dns)" marker-end="url(#a-dns)" d="M70,136 h34 v22 h-30"/>
+    <text class="sv-t" x="118" y="145">2 · browser cache? <tspan fill="var(--ink-3)">miss</tspan></text>
+    <line class="arw" stroke="var(--dns)" marker-end="url(#a-dns)" x1="70" y1="186" x2="172" y2="186"/>
+    <text class="sv-t" x="182" y="182">3 · OS cache? <tspan fill="var(--ink-3)">miss</tspan></text>
+    <line class="arw" stroke="var(--dns)" marker-end="url(#a-dns)" x1="176" y1="222" x2="282" y2="222"/>
+    <text class="sv-t" x="292" y="218">4 · resolve <tspan class="sv-b">google.com</tspan></text>
+    <text class="sv-s" x="292" y="233">the RESOLVER is the actor that does the walking. the tiers below only POINT.</text>
+    <line class="arw" stroke="var(--dns)" marker-end="url(#a-dns)" x1="286" y1="266" x2="418" y2="266"/>
+    <text class="sv-t" x="292" y="261">5 · who is google.com?</text>
+    <line class="dsh" stroke="var(--dns)" marker-end="url(#a-dns)" x1="422" y1="300" x2="290" y2="300"/>
+    <text class="sv-t" x="432" y="296">6 · “no idea. go ask <tspan class="sv-b">.com</tspan>”</text>
+    <text class="sv-s" x="432" y="311" fill="var(--err)">ROOT KNOWS NEITHER THE IP NOR THE AUTH SERVER</text>
+    <line class="arw" stroke="var(--dns)" marker-end="url(#a-dns)" x1="286" y1="344" x2="546" y2="344"/>
+    <text class="sv-t" x="292" y="339">7 · who is google.com?</text>
+    <line class="dsh" stroke="var(--dns)" marker-end="url(#a-dns)" x1="550" y1="378" x2="290" y2="378"/>
+    <text class="sv-t" x="560" y="374">8 · “go ask <tspan class="sv-b">ns1.google.com</tspan>”</text>
+    <text class="sv-s" x="560" y="389" fill="var(--err)">← THE TIER YOU DELETE. three tiers, never two.</text>
+    <line class="arw" stroke="var(--dns)" marker-end="url(#a-dns)" x1="286" y1="422" x2="686" y2="422"/>
+    <text class="sv-t" x="292" y="417">9 · who is google.com?</text>
+    <line class="dsh" stroke="var(--dns)" marker-end="url(#a-dns)" x1="690" y1="452" x2="290" y2="452"/>
+    <text class="sv-t" x="700" y="448">10 · <tspan class="sv-b">A = 142.250.1.1</tspan></text>
+    <text class="sv-s" x="700" y="463">only this tier holds the answer</text>
+    <line class="dsh" stroke="var(--dns)" marker-end="url(#a-dns)" x1="286" y1="490" x2="74" y2="490"/>
+    <text class="sv-t" x="296" y="486">11 · IP + <tspan class="sv-b">TTL</tspan> — cached at every layer on the way back</text>
+
+    <line class="bar" x1="0" y1="512" x2="1060" y2="512"/>
+    <rect x="0" y="512" width="1060" height="24" fill="var(--ground-2)"/>
+    <text class="sv-t sv-b" x="12" y="529">◆ YOU HOLD AN IP ADDRESS. YOU DO NOT HOLD A CONNECTION.</text>
+    <line class="bar" x1="0" y1="536" x2="1060" y2="536"/>
+
+    <line class="arw" stroke="var(--tcp)" marker-end="url(#a-tcp)" x1="70" y1="576" x2="932" y2="576"/>
+    <text class="sv-t" x="80" y="571">12 · <tspan class="sv-b">SYN</tspan> — “my starting sequence number is <tspan class="sv-b">x</tspan>”</text>
+    <line class="dsh" stroke="var(--tcp)" marker-end="url(#a-tcp)" x1="936" y1="610" x2="74" y2="610"/>
+    <text class="sv-t" x="360" y="605">13 · <tspan class="sv-b">SYN-ACK</tspan> — “mine is <tspan class="sv-b">y</tspan>; I acknowledge <tspan class="sv-b">x+1</tspan>”</text>
+    <line class="arw" stroke="var(--tcp)" marker-end="url(#a-tcp)" x1="70" y1="644" x2="932" y2="644"/>
+    <text class="sv-t" x="80" y="639">14 · <tspan class="sv-b">ACK</tspan> — “I acknowledge <tspan class="sv-b">y+1</tspan>” <tspan class="sv-s">· three messages, not two — two confirms only ONE direction</tspan></text>
+
+    <line class="bar" x1="0" y1="668" x2="1060" y2="668"/>
+    <rect x="0" y="668" width="1060" height="24" fill="var(--ground-2)"/>
+    <text class="sv-t sv-b" x="12" y="685">◆ RELIABLE ORDERED BYTE PIPE. IT IS STILL PLAINTEXT.</text>
+    <line class="bar" x1="0" y1="692" x2="1060" y2="692"/>
+
+    <line class="arw" stroke="var(--tls)" marker-end="url(#a-tls)" x1="70" y1="730" x2="932" y2="730"/>
+    <text class="sv-t" x="80" y="725">15 · <tspan class="sv-b">ClientHello</tspan> — the ciphers I speak + a random number</text>
+    <line class="dsh" stroke="var(--tls)" marker-end="url(#a-tls)" x1="936" y1="764" x2="74" y2="764"/>
+    <text class="sv-t" x="300" y="759">16 · <tspan class="sv-b">ServerHello + CERTIFICATE</tspan></text>
+    <path class="arw" stroke="var(--tls)" marker-end="url(#a-tls)" d="M70,790 h34 v22 h-30"/>
+    <text class="sv-t" x="118" y="794">17 · verify the cert chain up to a <tspan class="sv-b">pre-installed root CA</tspan></text>
+    <text class="sv-s" x="118" y="809" fill="var(--tls)">IDENTITY IS CHECKED FIRST — before any secret is trusted</text>
+    <line class="arw" stroke="var(--tls)" marker-end="url(#a-tls)" x1="70" y1="838" x2="932" y2="838"/>
+    <line class="dsh" stroke="var(--tls)" marker-end="url(#a-tls)" x1="936" y1="852" x2="74" y2="852"/>
+    <text class="sv-t" x="150" y="833">18 · <tspan class="sv-b">Diffie–Hellman</tspan> — each side sends only its PUBLIC half</text>
+    <text class="sv-s" x="150" y="868" fill="var(--tls)">19 · the shared secret is BUILT on both ends — it is NEVER SENT → symmetric session key</text>
+
+    <line class="bar" x1="0" y1="874" x2="1060" y2="874"/>
+    <rect x="0" y="874" width="1060" height="24" fill="var(--ground-2)"/>
+    <text class="sv-t sv-b" x="12" y="891">◆ ENCRYPTED TUNNEL. NO HTTP HAS EXISTED YET.</text>
+    <line class="bar" x1="0" y1="898" x2="1060" y2="898"/>
+
+    <line class="arw" stroke="var(--http)" marker-end="url(#a-htp)" x1="70" y1="936" x2="932" y2="936"/>
+    <text class="sv-t" x="80" y="931">20 · <tspan class="sv-b">GET / HTTP/1.1</tspan> · Host: google.com</text>
+    <path class="arw" stroke="var(--http)" marker-end="url(#a-htp)" d="M936,958 h34 v20 h-30"/>
+    <text class="sv-t" x="700" y="972" text-anchor="end">21 · route the path → act → write a response</text>
+    <line class="dsh" stroke="var(--http)" marker-end="url(#a-htp)" x1="936" y1="1002" x2="74" y2="1002"/>
+    <text class="sv-t" x="300" y="997">22 · <tspan class="sv-b">200 OK</tspan> + HTML bytes → <tspan class="sv-b">first byte arrives</tspan></text>
+    <path class="arw" stroke="var(--http)" marker-end="url(#a-htp)" d="M70,1024 h34 v20 h-30"/>
+    <text class="sv-t" x="118" y="1040">23 · render <tspan class="sv-s">(← your next atom; not yet learned)</tspan></text>
+  </svg>
+  <figcaption>
+    <b>What the diagram deliberately hides — routing.</b> Every arrow between browser and server is carried in packets.
+    <b>Routers</b> forward them by reading the <b>destination IP</b>. On arrival, the machine’s <b>OS kernel</b> reads the
+    <b>destination port</b> and hands the bytes to whichever process is listening there — that sorting is called
+    <b>demultiplexing</b>. The <b>domain name plays no part</b>: the kernel sees the number <code>443</code>, and has
+    never heard of google.com.
+  </figcaption>
+  </figure>
+  </div>
+</details>
+
+<!-- ══════════ DNS ══════════ -->
+<details class="card d" id="dns">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">LAYER 1</span><span class="sum-t">DNS</span>
+      <span class="sum-s">name → address</span><span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div><b>Three tiers, never two:</b> root → <b>TLD</b> → authoritative. Root knows who runs <code>.com</code>, and nothing else.</div>
+      <div>The <b>recursive resolver</b> does the walking. The tiers only <b>point</b> — each is deliberately ignorant of the one below.</div>
+      <div>A record past its TTL is <b>stale, not an error</b> — and the <b>quiet</b> stale failure is the dangerous one.</div>
+    </div>
+  </summary>
+  <div class="body">
+
+    <div class="plain">
+      <span class="tag">In plain English</span>
+      <p>You know a shop by its <b>name</b>. The delivery van only understands a <b>street address</b>. So somebody has to look the name up. DNS is that lookup.</p>
+      <p>But no single office could hold every address on earth — so the job is <b>split into a chain of receptionists</b>, and <b>none of them knows the final answer</b>. You ask the first one; she says <i>“I don’t know, but the people who handle all <code>.com</code> shops are down the hall.”</i> You ask them; they say <i>“I don’t know either, but Google keeps its own address book — ask that one.”</i> You ask Google’s own book, and <b>only that one</b> gives you the number.</p>
+      <p>Nobody in the chain is being unhelpful. That <b>ignorance is the design</b> — it is exactly why the system can hold the whole internet without anyone holding the whole internet.</p>
+    </div>
+
+    <div class="box trap"><span class="tag">Your #1 recurring miss</span>
+      <p>“Root servers hold the IPs of the authoritative servers.” <b>No.</b> Root hands back <b>“go ask <code>.com</code>”</b> — a referral to the <b>TLD</b>. <b>Root → TLD → authoritative.</b> You have now collapsed this chain twice.</p>
+    </div>
+
+    <details class="more"><summary>Why not just give every device the whole map?</summary><div>
+      <p>Two fatal flaws — and you <b>derived both</b>, you did not memorise them:</p>
+      <ul>
+        <li><b>Discovery.</b> A domain created elsewhere never reaches your local copy. You cannot look up a key that was never delivered to you.</li>
+        <li><b>Propagation.</b> Keeping billions of copies in sync in real time costs more than the work itself. <b>The syncing becomes the bottleneck.</b></li>
+      </ul>
+      <div class="box"><span class="tag">Portable pattern</span>
+        <p><b>Push-everything-to-everyone fails at internet scale.</b> The fix always has the same shape: <b>pull on demand, cache near the user, bound it with a TTL.</b> The first lookup is expensive (a <i>miss</i>); every later one is nearly free (a <i>hit</i>).</p>
+        <p><b>Physics you cannot cheat:</b> <i>distance = latency</i>. You can never beat the round trip to a far server — you can only avoid <b>paying it repeatedly</b>. That is the entire purchase a cache makes.</p>
+      </div>
+    </div></details>
+
+    <details class="more"><summary>Hierarchy, delegation, and the four players</summary><div>
+      <p>One central server is unacceptable: overload, latency, and one total-outage risk. So split the map, and navigate using <b>the structure of the name itself, read right-to-left</b> — <code>google.com</code> → look at <code>.com</code> first.</p>
+      <div class="box"><span class="tag">The core idea</span>
+        <p>A directory does not hand you the answer — it <b>points you one step closer</b>. That chain of <i>ask → get pointed closer → ask again</i> is <b>delegation</b>. If the root knew every domain’s IP it would hold the whole map, and you are back to one giant server.</p>
+      </div>
+      <div class="scroll"><table>
+        <thead><tr><th>Player</th><th>Who it really is</th><th>Its one job</th></tr></thead>
+        <tbody>
+          <tr><td><b>Resolver</b><br>(recursive)</td><td>Your ISP’s resolver, or public <code>8.8.8.8</code> / <code>1.1.1.1</code>. <b>Not</b> your laptop — your laptop just asks it.</td><td>Runs the <b>whole walk</b>. Caches the answers.</td></tr>
+          <tr><td><b>Root</b></td><td>13 identities (A–M), ~12 orgs. Their IPs are <b>hardcoded</b> into every resolver.</td><td>Knows <b>who runs each TLD</b>. Knows <b>nothing</b> about individual domains.</td></tr>
+          <tr><td><b>TLD</b></td><td><code>.com</code> → Verisign · <code>.in</code> → India’s registry.</td><td>Knows which <b>authoritative</b> server handles each domain under its suffix.</td></tr>
+          <tr><td><b>Authoritative</b></td><td><code>ns1.google.com</code>, or Cloudflare / Route 53 / GoDaddy.</td><td>Holds the <b>real records</b>. The source of truth.</td></tr>
+        </tbody>
+      </table></div>
+      <p><b>The bootstrap:</b> you cannot use DNS to <em>find</em> DNS. Solved by <b>hardcoding the root IPs</b> into the software — you are <b>born knowing</b> them. This is a <b>trust anchor</b>, and it reappears in TLS.</p>
+    </div></details>
+
+    <details class="more"><summary>TTL, staleness, and the migration playbook</summary><div>
+      <p>Every answer is stamped with a <b>TTL</b>: “trust this for N seconds.” This is what actually answers the propagation worry — the system <b>never promises everyone is instantly correct</b>, only correct <b>within a TTL</b>.</p>
+      <div class="box trap"><span class="tag">Precision — stale ≠ error</span>
+        <p>A stale cache does not throw an error. It <b>confidently points you at the old address</b>. What happens next depends on what is <em>at</em> that address:</p>
+        <ul>
+          <li>Old server torn down → refused / timeout → <b>looks down</b>. A <b>loud</b> failure.</li>
+          <li>Old server still running → you silently reach the <b>old box</b>. A <b>quiet</b> failure — usually the <b>far more dangerous</b> one.</li>
+        </ul>
+      </div>
+      <h4>Planned migration playbook</h4>
+      <ol>
+        <li><b>Days before:</b> lower the TTL (e.g. to 60s), and wait for the old long TTL to drain out of caches.</li>
+        <li>Flip the IP.</li>
+        <li><b>Keep the old server alive</b> through the drain, so stale lookups still land somewhere that works.</li>
+        <li>Once caches expire, retire the old server.</li>
+        <li>Raise the TTL back.</li>
+      </ol>
+      <div class="box"><span class="tag">The asymmetry is the real lesson</span>
+        <p><b>Too-short TTL = safe but wasteful</b> (extra lookups). <b>Too-long TTL = efficient but dangerous</b> (long stale windows, users hitting dead IPs). <b>When unsure, err short.</b></p>
+      </div>
+    </div></details>
+
+    <details class="more"><summary>Ports &amp; demultiplexing — “which program?”</summary><div>
+      <p>An IP gets you to the right <b>machine</b>. But one machine runs many programs behind one IP. <b>IP = building address · port = apartment number.</b> Together, <code>142.250.1.1:443</code> is the full coordinate — a <b>socket address</b>.</p>
+      <div class="box trap"><span class="tag">Do not fuse these — you have before</span>
+        <ul>
+          <li><b>The IP comes from DNS.</b></li>
+          <li><b>The port comes from CONVENTION.</b> <span class="no">Never from DNS.</span> The URL <b>scheme</b> picks it: <code>https://</code> → <b>443</b> · <code>http://</code> → <b>80</b> · SSH 22 · mail 25. These are <b>well-known ports</b> — a global agreement.</li>
+        </ul>
+        <p>The single word that chose the port the instant you pressed Enter: <b><code>https</code></b>.</p>
+      </div>
+      <ul>
+        <li>The <b>destination port is written inside every packet</b>, beside the destination IP. <b>The client declares it.</b></li>
+        <li><b>Routers</b> read the <b>IP</b> → deliver to the right <b>machine</b>.</li>
+        <li>The machine’s <b>OS kernel</b> reads the <b>port</b> → hands the bytes to the listening process. That is <b>demultiplexing</b>.</li>
+      </ul>
+      <div class="box trap"><span class="tag">Logged blind-spot flare</span>
+        <p>You once said <i>“Nginx chooses the port.”</i> It does not. <b>Nginx <em>listens</em> on a port the kernel hands it traffic for.</b> Choosing ≠ listening. <b>Which actor owns this job?</b> — ask it every single time.</p>
+      </div>
+    </div></details>
+  </div>
+</details>
+
+<!-- ══════════ TCP ══════════ -->
+<details class="card t" id="tcp">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">LAYER 2</span><span class="sum-t">TCP</span>
+      <span class="sum-s">reliability, built on an unreliable network</span><span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div>The handshake’s job is to <b>sync starting sequence numbers, both directions</b>. Liveness is only a side effect.</div>
+      <div><b>The condition picks the mechanism, never the reverse.</b> Wire <b>silent</b> → <b>RTO</b> (timer + backoff). Wire <b>flowing</b> → <b>fast retransmit</b> (3 dup-ACKs).</div>
+      <div><b>TCP would rather be late than wrong.</b> Timeout means <b>retransmit</b>, <span class="no">not terminate</span>.</div>
+    </div>
+  </summary>
+  <div class="body">
+
+    <div class="plain">
+      <span class="tag">In plain English</span>
+      <p>Imagine posting a long letter as <b>50 numbered postcards</b> through a <b>sloppy post office</b>. Some cards never arrive. Some arrive out of order. A few arrive twice. And nobody ever tells you which. That post office is <b>IP</b> — it <em>tries</em>, and <b>promises nothing</b>.</p>
+      <p>TCP is the discipline the <b>two people</b> — not the post office — agree on to make it reliable anyway. <b>Number every card</b> (so the reader can re-order them, spot a gap, and spot a repeat). <b>Reply “got card 7”</b> after each one. And <b>if you hear nothing back, just send that card again.</b></p>
+      <p>Here is the beautiful part. When you hear silence, you <b>cannot tell</b> whether <i>your card was lost</i> or <i>her reply was lost</i>. And <b>you don’t need to.</b> You resend regardless — because if she already has that card, the <b>number</b> tells her it’s a repeat and she throws it away. <b>The numbering is what makes blind resending harmless.</b> None of the three tricks works alone.</p>
+    </div>
+
+    <details class="more"><summary>The problem: IP is “best-effort”</summary><div>
+      <p><b>“Best-effort” is a technical term:</b> IP <em>tries</em> to deliver each packet and <b>promises nothing</b>. Packets can be:</p>
+      <ul>
+        <li><b>lost</b> — a congested router drops yours and tells nobody</li>
+        <li><b>out of order</b> — packet 3 takes a faster path and beats packet 2</li>
+        <li><b>duplicated</b> — something retries, the same packet lands twice</li>
+        <li><b>corrupted</b> — a bit flips in transit</li>
+        <li><b>unacknowledged</b> — you fire into the void and never hear whether it landed</li>
+      </ul>
+      <div class="box"><span class="tag">The architectural idea — this one transfers</span>
+        <p>TCP builds its guarantee <b>on top of</b> the unreliable layer. <b>The network core stays dumb and lossy; reliability is added by the two endpoints.</b> Smart edges, dumb core — you will meet this idea again in every distributed system you build.</p>
+      </div>
+    </div></details>
+
+    <details class="more"><summary>The reliability engine — three mechanisms that need each other</summary><div>
+      <div class="scroll"><table>
+        <thead><tr><th>Mechanism</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><b>Sequence numbers</b></td><td>A number on each packet. <b>One mechanism, three wins:</b> <b>reassemble</b> in order · detect a <b>gap</b> (missing) · detect a <b>repeat</b> (duplicate).</td></tr>
+          <tr><td><b>ACKs</b></td><td>The receiver says <b>“got it.”</b> The sender is no longer blind. <b>ACKs are the steady heartbeat of a healthy connection</b> — not merely a loss alarm.</td></tr>
+          <tr><td><b>Timeout + retransmit</b></td><td>A <b>timer</b> starts on send. No ACK before it expires → <b>resend</b>.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="box trap"><span class="tag">Precision trap</span>
+        <p>Timeout → <b>RETRANSMIT</b>, <span class="no">not TERMINATE</span>. A connection only gives up after <b>many</b> repeated failures — never on one lost packet.</p>
+      </div>
+      <p><b>Why they need each other:</b> the ACK travels back over the same lossy network, so <b>the ACK can be lost too</b>. “My packet was lost” and “my packet arrived but the ACK was lost” look <b>completely identical: silence.</b> The sender cannot tell them apart — and <b>doesn’t need to</b>. It just resends. If the packet <em>had</em> arrived, the receiver now gets a duplicate, and the <b>sequence number</b> lets it detect and discard it.</p>
+    </div></details>
+
+    <details class="more"><summary>The three-way handshake — and why THIS is its purpose</summary><div>
+      <pre><span class="c">phone-line intuition — each side must be SURE the other can hear it</span>
+  A: "can you hear me?"
+  B: "yes, I hear you. can YOU hear me?"
+  A: "yes, I hear you too."
+
+<span class="c">the real thing, with the numbers folded in</span>
+  browser → server   <span class="k">SYN</span>       "I want to talk. my start # is <span class="k">X</span>"
+  server  → browser  <span class="k">SYN-ACK</span>   "heard you (ack X). my start # is <span class="k">Y</span>"
+  browser → server   <span class="k">ACK</span>       "heard you (ack Y)"
+                     → <span class="k">ESTABLISHED</span></pre>
+      <div class="box"><span class="tag">Say the purpose exactly</span>
+        <p>The handshake exists to <b>synchronise the starting sequence numbers, in both directions.</b> “Confirm the server is alive and listening” is true, but it is the <b>weaker half</b> — give it alone and you have missed the point.</p>
+        <p><b>Proof that numbering is the point:</b> a connection carried through a tunnel or a route change <b>resumes</b> — it does not restart. What survives is the <b>numbering</b>.</p>
+        <p><b>Why three and not two?</b> Two confirms only <b>one direction</b>. After the server replies, <em>it still does not know</em> whether the client heard its reply and its number <b>Y</b>. The <b>third</b> message confirms the <b>second</b> direction.</p>
+      </div>
+      <h4>Handshake vs reliability engine — do not fuse</h4>
+      <div class="scroll"><table>
+        <thead><tr><th></th><th>Handshake</th><th>Reliability engine</th></tr></thead>
+        <tbody>
+          <tr><td><b>When</b></td><td><b>Once</b>, before any data</td><td><b>Continuously</b>, every packet, forever</td></tr>
+          <tr><td><b>Job</b></td><td>Both sides ready + <b>sync starting numbers</b></td><td>Ordering · gaps · dedup · <b>loss recovery</b></td></tr>
+          <tr><td><b>Made of</b></td><td>SYN · SYN-ACK · ACK</td><td>Sequence numbers · ACKs · timeout/retransmit</td></tr>
+        </tbody>
+      </table></div>
+      <p>The handshake does <b>not</b> solve ordering, loss, or duplicates. The engine <b>assumes</b> the starting numbers are already agreed. <b>Two jobs. Never one.</b></p>
+    </div></details>
+
+    <details class="more" open><summary>★ Loss recovery — the discriminator you keep missing</summary><div>
+      <div class="plain">
+        <span class="tag">In plain English</span>
+        <p>A packet went unanswered. There are <b>two different rescue plans</b>, and <b>you don’t get to choose</b> — the <b>state of the wire</b> chooses for you.</p>
+        <p>If packets are <b>still arriving</b> past the gap, the receiver keeps saying <i>“got everything up to 5… still only up to 5… still only up to 5.”</i> Those <b>repeated identical ACKs are a signal</b>: after <b>three</b> of them the sender knows exactly what is missing and resends it <b>immediately</b> — <b>fast retransmit</b>.</p>
+        <p>But if the wire has gone <b>completely silent</b>, the receiver <b>isn’t saying anything at all</b> — so <b>those repeated ACKs cannot exist</b>. There is no signal to read. All that is left is a <b>stopwatch</b>: wait, hear nothing, resend, and wait longer next time. That is <b>RTO</b>.</p>
+      </div>
+      <figure>
+      <svg viewBox="0 0 900 340" role="img" aria-label="Decision tree choosing RTO versus fast retransmit based on whether the wire is silent or flowing">
+        <defs><marker id="a-t2" markerWidth="9" markerHeight="7" refX="8.5" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 Z" fill="var(--tcp)"/></marker></defs>
+        <rect x="300" y="14" width="300" height="42" rx="2" fill="var(--card)" stroke="var(--hard)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="450" y="32" text-anchor="middle">a packet is UNACKNOWLEDGED</text>
+        <text class="sv-s" x="450" y="47" text-anchor="middle">do NOT name a mechanism yet</text>
+        <path d="M450,56 L450,80" class="arw" stroke="var(--tcp)" marker-end="url(#a-t2)"/>
+        <path d="M450,88 L640,140 L450,192 L260,140 Z" fill="var(--tcp-bg)" stroke="var(--tcp)" stroke-width="1.8"/>
+        <text class="sv-t sv-b" x="450" y="136" text-anchor="middle" fill="var(--tcp)">ASK FIRST:</text>
+        <text class="sv-t sv-b" x="450" y="152" text-anchor="middle" fill="var(--tcp)">is the wire FLOWING or SILENT?</text>
+        <path d="M260,140 L150,140 L150,206" class="arw" stroke="var(--tcp)" marker-end="url(#a-t2)"/>
+        <text class="sv-m sv-b" x="196" y="132" fill="var(--tcp)">SILENT</text>
+        <text class="sv-s" x="150" y="176" text-anchor="middle">nothing coming back at all</text>
+        <rect x="18" y="212" width="264" height="104" rx="2" fill="var(--card)" stroke="var(--tcp)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="150" y="234" text-anchor="middle" fill="var(--tcp)">RETRANSMISSION TIMEOUT</text>
+        <text class="sv-t" x="34" y="256">trigger: a <tspan class="sv-b">TIMER</tspan> expires</text>
+        <text class="sv-t" x="34" y="274">action: resend</text>
+        <text class="sv-t" x="34" y="292">then: <tspan class="sv-b">exponential backoff</tspan></text>
+        <text class="sv-s" x="34" y="308">slow — but it is all you have</text>
+        <path d="M640,140 L750,140 L750,206" class="arw" stroke="var(--tcp)" marker-end="url(#a-t2)"/>
+        <text class="sv-m sv-b" x="672" y="132" fill="var(--tcp)">FLOWING</text>
+        <text class="sv-s" x="750" y="176" text-anchor="middle">packets still arriving PAST the gap</text>
+        <rect x="618" y="212" width="264" height="104" rx="2" fill="var(--card)" stroke="var(--tcp)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="750" y="234" text-anchor="middle" fill="var(--tcp)">FAST RETRANSMIT</text>
+        <text class="sv-t" x="634" y="256">receiver keeps re-ACKing</text>
+        <text class="sv-t" x="634" y="274">the last in-order byte →</text>
+        <text class="sv-t" x="634" y="292">trigger: <tspan class="sv-b">3 DUPLICATE ACKs</tspan></text>
+        <text class="sv-s" x="634" y="308">fast — no timer wait</text>
+        <rect x="300" y="232" width="300" height="70" rx="2" fill="var(--err-bg)" stroke="var(--err)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="450" y="254" text-anchor="middle" fill="var(--err)">NO TRAFFIC ⇒ NO DUP-ACKs</text>
+        <text class="sv-s" x="450" y="272" text-anchor="middle" fill="var(--err)">dup-ACKs are produced BY the receiver</text>
+        <text class="sv-s" x="450" y="286" text-anchor="middle" fill="var(--err)">receiving MORE packets. on a silent wire</text>
+        <text class="sv-s" x="450" y="298" text-anchor="middle" fill="var(--err)">the trigger CANNOT be met.</text>
+      </svg>
+      <figcaption>
+        <b>Fast retransmit on a silent wire is not merely “unused” — it is <em>impossible</em>.</b> Duplicate ACKs are
+        generated <b>by the receiver receiving further packets</b>. If nothing arrives, the receiver emits nothing, so
+        the 3-dup-ACK trigger <b>can never be met</b>. Only the timer is left. <b>This is the exact question you flared
+        on at the Session-4 gate, and again on 2026-07-11</b> — both times you named a mechanism without naming the condition.
+      </figcaption>
+      </figure>
+      <p><b>Dedup at the receiver:</b> when the retransmitted segment arrives, the receiver checks its <b>sequence number</b>. Byte-range already present → <b>drop it</b>. Absent → <b>keep it and ACK</b>.</p>
+      <div class="box trap"><span class="tag">Polish nits from your own tracker</span>
+        <ul><li>It is <b>3</b> duplicate ACKs. <b>Say the number.</b></li>
+        <li>The security layer is <b>TLS</b> — not TCP, not HTTP.</li>
+        <li>ACKs are the steady <b>“got it” heartbeat</b>, not just a loss signal.</li></ul>
+      </div>
+    </div></details>
+  </div>
+</details>
+
+<!-- ══════════ UDP ══════════ -->
+<details class="card u" id="udp">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">LAYER 2b</span><span class="sum-t">UDP</span>
+      <span class="sum-s">the escape hatch — you derived this, you didn’t memorise it</span><span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div>UDP is fast and <span class="no">NOT accurate</span>. Say “accurate” about UDP and you do not hold the model.</div>
+      <div>It exists to escape <b>head-of-line blocking</b> — TCP’s hidden cost, which is <b>latency</b>.</div>
+      <div><b>TCP: rather late than wrong. UDP: rather wrong than late.</b></div>
+    </div>
+  </summary>
+  <div class="body">
+
+    <div class="plain">
+      <span class="tag">In plain English</span>
+      <p>You are watching a <b>live football match</b>. A packet carrying one video frame gets lost.</p>
+      <p><b>TCP’s answer:</b> “Stop. Nobody sees anything further until I fetch that missing frame again.” So the frames that <b>already arrived</b> — perfectly intact, sitting right there — are <b>held hostage</b>, and your stream <b>freezes</b> while a frame from a second ago is re-fetched. And when it finally unfreezes, <b>you get to watch a moment that has already passed.</b></p>
+      <p>That is absurd for live video. You didn’t want that frame — <b>you wanted to be current</b>. So UDP says: <b>“the frame is gone. Forget it. Show me the next one, now.”</b> A missing frame is a flicker. <b>A late frame is a broken broadcast.</b></p>
+      <p>That is the entire trade, and it is why UDP had to be invented. Not because it is “simpler” — <b>because in-order delivery has a price, and sometimes that price is too high.</b></p>
+    </div>
+
+    <details class="more" open><summary>The derivation — rebuild it, don’t recall it</summary><div>
+      <p>TCP guarantees <b>in-order</b> delivery. So if packet 2 is lost, packets 3, 4 and 5 may have <b>already arrived and be sitting in the buffer, perfectly intact</b> — and TCP <b>will not hand them up</b>, because doing so would break the ordering promise. <b>Every ready packet is frozen behind one missing one.</b></p>
+      <figure>
+      <svg viewBox="0 0 880 300" role="img" aria-label="Head-of-line blocking: TCP holds packets 3, 4 and 5 while packet 2 is missing; UDP delivers them at once">
+        <text class="sv-m sv-b" x="14" y="20">PACKET 2 IS LOST. PACKETS 3, 4 AND 5 HAVE ALREADY ARRIVED, INTACT.</text>
+        <text class="sv-t sv-b" x="14" y="62" fill="var(--tcp)">TCP</text>
+        <text class="sv-s" x="14" y="78" fill="var(--tcp)">ordered</text>
+        <rect x="90" y="44" width="60" height="42" rx="2" fill="var(--tcp-bg)" stroke="var(--tcp)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="120" y="70" text-anchor="middle" fill="var(--tcp)">1</text>
+        <rect x="158" y="44" width="60" height="42" rx="2" fill="var(--err-bg)" stroke="var(--err)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text class="sv-t sv-b" x="188" y="70" text-anchor="middle" fill="var(--err)">✗ 2</text>
+        <rect x="226" y="44" width="60" height="42" rx="2" fill="var(--ground-2)" stroke="var(--ink-3)" stroke-width="1.2"/>
+        <text class="sv-t sv-b" x="256" y="70" text-anchor="middle" fill="var(--ink-3)">3</text>
+        <rect x="294" y="44" width="60" height="42" rx="2" fill="var(--ground-2)" stroke="var(--ink-3)" stroke-width="1.2"/>
+        <text class="sv-t sv-b" x="324" y="70" text-anchor="middle" fill="var(--ink-3)">4</text>
+        <rect x="362" y="44" width="60" height="42" rx="2" fill="var(--ground-2)" stroke="var(--ink-3)" stroke-width="1.2"/>
+        <text class="sv-t sv-b" x="392" y="70" text-anchor="middle" fill="var(--ink-3)">5</text>
+        <path d="M226,96 L422,96" stroke="var(--err)" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
+        <text class="sv-t sv-b" x="440" y="70" fill="var(--err)">HELD. FROZEN.</text>
+        <text class="sv-s" x="440" y="86" fill="var(--err)">intact, ready, undeliverable — only because 2 is missing</text>
+        <text class="sv-s" x="440" y="102" fill="var(--ink-2)">the app waits a full round trip while 2 is re-fetched</text>
+        <line x1="14" y1="124" x2="866" y2="124" stroke="var(--rule)" stroke-width="1"/>
+        <text class="sv-t sv-b" x="14" y="168" fill="var(--udp)">UDP</text>
+        <text class="sv-s" x="14" y="184" fill="var(--udp)">unordered</text>
+        <rect x="90" y="150" width="60" height="42" rx="2" fill="var(--udp-bg)" stroke="var(--udp)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="120" y="176" text-anchor="middle" fill="var(--udp)">1</text>
+        <rect x="158" y="150" width="60" height="42" rx="2" fill="var(--err-bg)" stroke="var(--err)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text class="sv-t sv-b" x="188" y="176" text-anchor="middle" fill="var(--err)">✗ 2</text>
+        <rect x="226" y="150" width="60" height="42" rx="2" fill="var(--udp-bg)" stroke="var(--udp)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="256" y="176" text-anchor="middle" fill="var(--udp)">3</text>
+        <rect x="294" y="150" width="60" height="42" rx="2" fill="var(--udp-bg)" stroke="var(--udp)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="324" y="176" text-anchor="middle" fill="var(--udp)">4</text>
+        <rect x="362" y="150" width="60" height="42" rx="2" fill="var(--udp-bg)" stroke="var(--udp)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="392" y="176" text-anchor="middle" fill="var(--udp)">5</text>
+        <path d="M430,171 L520,171" class="arw" stroke="var(--udp)" stroke-width="1.6"/>
+        <text class="sv-t sv-b" x="440" y="164" fill="var(--udp)">DELIVERED IMMEDIATELY</text>
+        <text class="sv-s" x="440" y="188" fill="var(--ink-2)">2 is simply gone. the app copes — a dropped frame, a lost audio sample</text>
+        <rect x="14" y="216" width="852" height="70" rx="2" fill="var(--ground-2)" stroke="var(--hard)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="30" y="240">HEAD-OF-LINE BLOCKING — one stuck item at the front of an in-order queue freezes every READY item behind it.</text>
+        <text class="sv-t" x="30" y="260">TCP’s cost is <tspan class="sv-b">LATENCY</tspan>. Not privacy. Not bandwidth.</text>
+        <text class="sv-t" x="30" y="278">Dropping ORDERING alone is not enough — reliability still forces the re-fetch round trip. Drop <tspan class="sv-b">BOTH</tspan>. That is UDP.</text>
+      </svg>
+      <figcaption><b>Your own derivation chain from Session 4:</b> in-order delivery → one loss freezes ready packets → that is <b>head-of-line blocking</b> → its cost is <b>latency</b> → dropping ordering alone still leaves the re-fetch round trip → so drop <b>ordering AND reliability</b> → <b>therefore UDP must exist</b>.</figcaption>
+      </figure>
+      <div class="box trap"><span class="tag">Word precision — you got this wrong on 2026-07-11</span>
+        <p>You said UDP is for <i>“fast and <b>accurate</b>”</i> connections. UDP is fast and <span class="no">NOT</span> accurate. <b>That word is the entire trade.</b></p>
+      </div>
+    </div></details>
+
+    <details class="more"><summary>TCP vs UDP, side by side</summary><div>
+      <div class="scroll"><table>
+        <thead><tr><th></th><th>TCP</th><th>UDP</th></tr></thead>
+        <tbody>
+          <tr><td><b>Handshake</b></td><td>3-way, before any data</td><td><b>None.</b> Just send.</td></tr>
+          <tr><td><b>Ordering</b></td><td>Guaranteed</td><td>None</td></tr>
+          <tr><td><b>Loss recovery</b></td><td>ACK + retransmit</td><td>None — a lost packet is <b>simply gone</b></td></tr>
+          <tr><td><b>The price it pays</b></td><td><b>Latency</b> (head-of-line blocking)</td><td><b>Correctness</b> (gaps, disorder)</td></tr>
+          <tr><td><b>Its motto</b></td><td><b>“Rather be late than wrong.”</b></td><td><b>“Rather be wrong than late.”</b></td></tr>
+          <tr><td><b>Use it for</b></td><td>Anything where a missing byte corrupts meaning: pages, APIs, files, payments</td><td>Live video, voice, games — where a <b>stale frame is worse than a missing one</b></td></tr>
+        </tbody>
+      </table></div>
+    </div></details>
+  </div>
+</details>
+
+<!-- ══════════ TLS ══════════ -->
+<details class="card s" id="tls">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">LAYER 3</span><span class="sum-t">TLS</span>
+      <span class="sum-s">identity, then secrecy</span>
+      <span style="font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.06em;color:var(--err);border:1px solid var(--err);padding:.1rem .35rem;border-radius:2px">NOT YET GATED</span>
+      <span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div><b>Routing is not secrecy.</b> Reliable ≠ private — every hop on the path can read plain TCP.</div>
+      <div><b>Diffie–Hellman:</b> the shared secret is <b>built independently on both ends</b> and is <b>never sent</b>.</div>
+      <div><b>Cert = identity. DH = secrecy.</b> Two jobs. <b>Check the ID first</b>, or you build a perfect secure channel with an attacker.</div>
+    </div>
+  </summary>
+  <div class="body">
+
+    <div class="plain">
+      <span class="tag">In plain English — the paradox first</span>
+      <p>You and a stranger are standing in a <b>crowded room</b>. You have never met. You need to agree on a <b>secret password</b> — but <b>everyone in the room can hear every word you say.</b> Your gut says this is impossible. It isn’t, and the trick is genuinely beautiful.</p>
+      <p>Think of <b>mixing paint</b>. Everyone can see a pot of <b>yellow</b> — that’s public. You <b>secretly</b> add your own red and shout out the resulting <b>orange</b>. He <b>secretly</b> adds his own blue and shouts out his <b>green</b>. Now you take <b>his green</b> and stir in <b>your secret red</b>. He takes <b>your orange</b> and stirs in <b>his secret blue</b>.</p>
+      <p><b>You both end up holding the exact same murky brown</b> — yellow + red + blue. And the room? The room heard <b>yellow, orange and green</b>, and that is all. To get to brown they’d need somebody’s <b>secret</b> colour — and <b>you cannot un-mix paint</b> to recover it.</p>
+      <p><b>The secret was never spoken. It was built, twice, in two places.</b> That is Diffie–Hellman, and the real “paint” is just arithmetic that is easy forwards and hopeless backwards.</p>
+    </div>
+
+    <div class="box trap"><span class="tag">But paint-mixing alone has a hole — and it is the whole reason certificates exist</span>
+      <p>You mixed paint with <b>whoever was standing there</b>. <b>It never proved who he was.</b> If an attacker stood in the middle, he mixes paint with <b>you</b> and separately mixes paint with <b>the real bank</b> — then reads everything you send, re-encrypts it, and passes it on. <b>Both sides feel perfectly secure.</b></p>
+      <p><b>Encryption hides the message. It does nothing to prove identity. You can have a flawlessly private conversation with an impostor.</b></p>
+    </div>
+
+    <details class="more"><summary>The three problems TLS must solve</summary><div>
+      <p>TCP gave you a <b>reliable</b> pipe. Reliable is not <b>safe</b>. Your packets hop through machines you do not own and never chose: home router → ISP → backbone → café WiFi → … → server. <b>Every one of them handles your packets and can read them.</b></p>
+      <div class="box"><span class="tag">The sentence to keep</span><p><b>Routing is not secrecy.</b> The destination IP gets the packet <em>delivered</em>. It does <b>nothing</b> to hide it. On plain TCP, your password to <code>bank.com</code> travels as <b>readable plaintext</b>.</p></div>
+      <ol>
+        <li><b>Eavesdropping</b> — everyone on the path can read your bytes.</li>
+        <li><b>Key exchange</b> — to encrypt you need a shared secret, but you have never met this server, and <b>anything you send to agree on a key is also seen</b>.</li>
+        <li><b>Identity</b> — even with encryption, how do you know the far end is <b>really the bank</b>?</li>
+      </ol>
+    </div></details>
+
+    <details class="more" open><summary>★ Diffie–Hellman — the mechanism (your weak point)</summary><div>
+      <div class="box"><span class="tag">The one property everything rests on</span>
+        <p>Some operations are <b>easy to do and practically impossible to undo</b> — <b>one-way</b>.</p>
+        <ul>
+          <li><b>Reversible</b> (useless for secrets): “7 → 56.” Obviously ×8.</li>
+          <li><b>One-way</b> (useful): <b>blending a smoothie.</b> Trivial to blend banana + mango. Practically impossible to un-blend into clean ingredients.</li>
+        </ul>
+      </div>
+      <figure>
+      <svg viewBox="0 0 880 330" role="img" aria-label="Diffie-Hellman: both sides derive the same secret from a public value plus their own private value">
+        <defs><marker id="a-s2" markerWidth="9" markerHeight="7" refX="8.5" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 Z" fill="var(--tls)"/></marker></defs>
+        <rect x="350" y="10" width="180" height="36" rx="2" fill="var(--ground-2)" stroke="var(--hard)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="440" y="27" text-anchor="middle">PUBLIC INGREDIENT  P</text>
+        <text class="sv-s" x="440" y="40" text-anchor="middle">everyone sees it — including the attacker</text>
+        <rect x="20" y="70" width="230" height="112" rx="2" fill="var(--tls-bg)" stroke="var(--tls)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="135" y="92" text-anchor="middle" fill="var(--tls)">YOU</text>
+        <text class="sv-t" x="36" y="114">private secret <tspan class="sv-b">a</tspan> <tspan class="sv-s">(never leaves you)</tspan></text>
+        <text class="sv-t" x="36" y="136">send <tspan class="sv-b">A = mix(P, a)</tspan></text>
+        <text class="sv-t" x="36" y="164">compute <tspan class="sv-b">mix(B, a)</tspan></text>
+        <rect x="630" y="70" width="230" height="112" rx="2" fill="var(--tls-bg)" stroke="var(--tls)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="745" y="92" text-anchor="middle" fill="var(--tls)">SERVER</text>
+        <text class="sv-t" x="646" y="114">private secret <tspan class="sv-b">b</tspan> <tspan class="sv-s">(never leaves it)</tspan></text>
+        <text class="sv-t" x="646" y="136">send <tspan class="sv-b">B = mix(P, b)</tspan></text>
+        <text class="sv-t" x="646" y="164">compute <tspan class="sv-b">mix(A, b)</tspan></text>
+        <line class="arw" stroke="var(--tls)" marker-end="url(#a-s2)" x1="254" y1="126" x2="622" y2="126"/>
+        <text class="sv-t sv-b" x="440" y="120" text-anchor="middle" fill="var(--tls)">A → (public half, over the open wire)</text>
+        <line class="dsh" stroke="var(--tls)" marker-end="url(#a-s2)" x1="622" y1="152" x2="258" y2="152"/>
+        <text class="sv-t sv-b" x="440" y="168" text-anchor="middle" fill="var(--tls)">← B (public half, over the open wire)</text>
+        <rect x="200" y="200" width="480" height="46" rx="2" fill="var(--card)" stroke="var(--tls)" stroke-width="2"/>
+        <text class="sv-t sv-b" x="440" y="220" text-anchor="middle" fill="var(--tls)">mix(B,a) ≡ mix(A,b) — BOTH EQUAL “P mixed with a AND b”</text>
+        <text class="sv-s" x="440" y="237" text-anchor="middle">order does not matter, exactly like the smoothie. this identical value IS the key.</text>
+        <rect x="140" y="262" width="600" height="56" rx="2" fill="var(--err-bg)" stroke="var(--err)" stroke-width="1.5"/>
+        <text class="sv-t sv-b" x="440" y="282" text-anchor="middle" fill="var(--err)">THE ATTACKER SAW P, A AND B — ALL OF IT — AND STILL CANNOT COMPUTE THE SECRET.</text>
+        <text class="sv-s" x="440" y="300" text-anchor="middle" fill="var(--err)">to get there they need a PRIVATE piece (a or b). but A and B were made with a ONE-WAY mix:</text>
+        <text class="sv-s" x="440" y="313" text-anchor="middle" fill="var(--err)">they cannot be un-mixed. the secret was never on the wire to steal.</text>
+      </svg>
+      <figcaption><b>The line that is the whole of Diffie–Hellman:</b> the shared secret is <b>built independently on both ends</b> and is <b>never transmitted</b>. Neither side ever learns the other’s private piece — only the shared result. (The real “paint” is <b>modular arithmetic with huge numbers</b>; mixing is the intuition, not the mechanism.)</figcaption>
+      </figure>
+    </div></details>
+
+    <details class="more"><summary>Certificates &amp; CAs — how identity is finally proved</summary><div>
+      <p><b>Physical intuition:</b> you believe a police ID not because the card is fancy, but because it is <b>issued by an authority you already trust</b> and is <b>hard to forge</b>. You trust the <em>issuer</em>; the card is a vouching link back to it.</p>
+      <ul>
+        <li>The server presents a <b>certificate signed by a Certificate Authority</b> (DigiCert, Let’s Encrypt). The CA is “the government.”</li>
+        <li>The signature is <b>mathematically unforgeable</b> — only that CA can produce a valid one, but <b>anyone can verify it</b>. Same flavour of one-way maths: <b>easy to check, impossible to counterfeit</b>.</li>
+        <li>It <b>binds the identity</b> (“this is bank.com”) to the server’s <b>own key</b>.</li>
+        <li><b>Why it works though you never met the bank:</b> your browser ships with a <b>pre-installed list of trusted CAs</b>. You do not trust the bank — you trust a CA that <b>vouches for</b> it, and that trust <b>shipped with your machine</b>.</li>
+      </ul>
+      <h4>Why MITM now fails — both attacks</h4>
+      <ul>
+        <li>Attacker <b>copies</b> the bank’s certificate → but does <b>not hold the private key</b> it is bound to, so cannot prove ownership. <b>Fails.</b></li>
+        <li>Attacker <b>forges</b> its own cert saying “I am bank.com” → <b>no trusted CA will sign it</b> → the browser shows the big red warning. <b>Fails.</b></li>
+      </ul>
+      <div class="box"><span class="tag">Ordering is the punchline</span>
+        <ol>
+          <li><b>IDENTITY</b> — the CA-signed certificate. <b>Verified FIRST.</b></li>
+          <li><b>KEY EXCHANGE</b> — Diffie–Hellman builds a shared secret in the open.</li>
+          <li><b>ENCRYPTION</b> — that secret becomes a fast <b>symmetric session key</b> for the real traffic.</li>
+        </ol>
+        <p>Do the key exchange <em>first</em> and skip identity, and you will happily build a beautifully secure channel <b>with a man in the middle</b>. <b>Check the ID, then share the secret. Never the reverse.</b></p>
+      </div>
+      <p><b>The attacker’s way into the middle</b> is usually <b>DNS spoofing</b> — feeding you a fake IP. The layers connect.</p>
+    </div></details>
+  </div>
+</details>
+
+<!-- ══════════ HTTP ══════════ -->
+<details class="card h" id="http">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">LAYER 4</span><span class="sum-t">HTTP</span>
+      <span class="sum-s">giving the pipe meaning</span><span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div><b>HTTP is paper; the browser/server is the hand that writes it.</b> Protocol ≠ actor.</div>
+      <div><b>safe ⊂ idempotent ⊂ all.</b> GET safe+idempotent · PUT/DELETE idempotent · <b>POST neither</b> → needs an <b>idempotency key</b>.</div>
+      <div><b>Idempotency = same end STATE</b>, <span class="no">not the same response</span>. <b>4xx = your fault</b> (don’t retry) · <b>5xx = server’s</b> (retry + backoff).</div>
+    </div>
+  </summary>
+  <div class="body">
+
+    <div class="plain">
+      <span class="tag">In plain English</span>
+      <p>TCP and TLS built you a <b>perfect telephone line</b> to the server — clear, reliable, private. And now… <b>silence.</b> Because a phone line doesn’t give you a <b>language</b>. The server has your connection and <b>no idea whether you want the homepage, want to log in, or want to delete your account.</b></p>
+      <p>HTTP is that language. And it is <b>only</b> a language. <b>It is paper.</b> A form never fills itself in and never files itself — <b>the browser writes on it, and the server reads it and acts.</b> Whenever you catch yourself saying “HTTP does X,” <b>stop</b>: paper does nothing. <b>Ask which hand is holding the pen.</b></p>
+    </div>
+
+    <details class="more"><summary>The request &amp; the response — derived from need</summary><div>
+      <pre>GET /search HTTP/1.1          <span class="c">← request line</span>
+Host: google.com              <span class="c">┐</span>
+Accept-Encoding: gzip         <span class="c">├ headers  (Key: Value, one per line)</span>
+Cookie: session=ab12          <span class="c">┘</span>
+                              <span class="c">← BLANK LINE — terminates the headers</span>
+&lt;body — usually empty for GET&gt;</pre>
+      <div class="scroll"><table>
+        <thead><tr><th>Request line part</th><th>The need it answers</th></tr></thead>
+        <tbody>
+          <tr><td><b>method</b> <code>GET</code></td><td><b>What action?</b> The server can do many things; it cannot guess which.</td></tr>
+          <tr><td><b>path</b> <code>/search</code></td><td><b>Which resource?</b> The server holds thousands of things; this names one.</td></tr>
+          <tr><td><b>version</b> <code>HTTP/1.1</code></td><td><b>How do I parse the rest of you?</b> A parsing contract, declared up front.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="box trap"><span class="tag">Path ≠ route</span><p><b>The browser writes the path.</b> <b>Routing</b> — matching that path to handler code — is <b>the server’s job</b>. Do not fuse them.</p></div>
+      <p>The <b>blank line</b> is an unambiguous terminator, so a server reading byte-by-byte knows where headers end. <code>Content-Length</code> then says <b>how many body bytes to read</b>.</p>
+      <pre>HTTP/1.1 200 OK               <span class="c">← status line</span>
+Content-Type: text/html       <span class="c">┐ headers</span>
+Content-Length: 8141          <span class="c">┘</span>
+                              <span class="c">← blank line</span>
+&lt;!doctype html&gt;...            <span class="c">← body</span></pre>
+      <div class="box"><span class="tag">Why a NUMBER, not English?</span>
+        <p><span class="no">Not</span> “because machines only understand numbers” — everything is bytes anyway. The real reason: a code is a <b>small, fixed, agreed-upon enumeration</b>. <code>404</code> means <b>exactly one thing, everywhere, in every language</b> → <code>if (status === 404)</code> is one integer compare. English is open-ended prose — infinite phrasings, languages, typos — and therefore <b>unbranchable</b>.</p>
+      </div>
+      <div class="box"><span class="tag">Content-Type — a body-interpretation contract</span>
+        <p>A body is <b>just bytes</b>, and bytes have <b>no inherent type</b>. The same bytes could be HTML (render), JPEG (paint), JSON (hand to JS), PDF (download). Without <code>Content-Type</code> the browser cannot know how to read them.</p>
+      </div>
+    </div></details>
+
+    <details class="more"><summary>Status families — the first digit assigns blame</summary><div>
+      <pre>1xx  informational   "still working, hold on"                        <span class="c">(rare)</span>
+2xx  <span class="k">SUCCESS</span>         200 OK · 201 Created · 204 No Content
+3xx  <span class="k">REDIRECT</span>        301 moved · 302 found · 304 not-modified
+4xx  <span class="k">CLIENT error</span>    400 bad · 401 unauth · 403 forbidden · 404 not found · 429 too many
+5xx  <span class="k">SERVER error</span>    500 internal · 502 bad gateway · 503 unavailable · 504 timeout</pre>
+      <div class="box"><span class="tag">4xx vs 5xx is about whose fault</span>
+        <ul>
+          <li><b>4xx = the client screwed up.</b> Retrying the <em>same</em> request is pointless — <code>404</code> stays <code>404</code>; <code>401</code> stays until <b>you</b> add credentials. <b>Do not blindly retry.</b></li>
+          <li><b>5xx = the server screwed up.</b> Your request may have been fine. <b>Retry with backoff.</b> Alert on the <b>5xx rate</b>, never the 4xx rate.</li>
+        </ul>
+        <p>A wall of 404s means users are typo-ing URLs. <b>A wall of 500s means you are on fire.</b></p>
+      </div>
+      <div class="box trap"><span class="tag">Pair not to fuse</span>
+        <ul>
+          <li><b>401 Unauthorized</b> — “I don’t know <b>who you are</b>.”</li>
+          <li><b>403 Forbidden</b> — “I know <b>exactly</b> who you are, and you are <b>not allowed</b>.”</li>
+        </ul>
+      </div>
+    </div></details>
+
+    <details class="more" open><summary>★ safe ⊂ idempotent ⊂ all — and the retry question</summary><div>
+      <div class="plain">
+        <span class="tag">In plain English</span>
+        <p>Both words are about <b>what happens if you do the thing more than once</b>.</p>
+        <p><b>Safe</b> = it changes nothing. Reading a book does not edit the book. Do it a million times; nothing moves.</p>
+        <p><b>Idempotent</b> = it changes something, but <b>doing it again changes nothing further</b>. A light switch set to <b>OFF</b>: flick it to OFF again, and again — the room is just off. <b>The end state is identical no matter how many times you ran it.</b></p>
+        <p><b>POST is neither</b> — it is the “<b>add a new row</b>” button. Press it three times and you have <b>three orders</b>. That is why a timed-out POST is genuinely dangerous, and why it needs a fix the others don’t.</p>
+      </div>
+      <figure>
+      <svg viewBox="0 0 700 250" role="img" aria-label="Nested sets: safe inside idempotent inside all methods, with POST outside both">
+        <rect x="14" y="14" width="672" height="222" rx="3" fill="var(--ground-2)" stroke="var(--ink-3)" stroke-width="1.5"/>
+        <text class="sv-m sv-b" x="30" y="34" fill="var(--ink-2)">EVERYTHING</text>
+        <rect x="42" y="48" width="616" height="160" rx="3" fill="var(--http-bg)" stroke="var(--http)" stroke-width="1.5"/>
+        <text class="sv-m sv-b" x="58" y="68" fill="var(--http)">IDEMPOTENT — “N times = once, in END STATE”</text>
+        <rect x="70" y="82" width="300" height="106" rx="3" fill="var(--card)" stroke="var(--ok)" stroke-width="1.8"/>
+        <text class="sv-m sv-b" x="86" y="102" fill="var(--ok)">SAFE — changes NOTHING</text>
+        <text class="sv-t sv-b" x="86" y="130" fill="var(--ok)">GET</text>
+        <text class="sv-s" x="86" y="148">pure read. safe AND idempotent.</text>
+        <text class="sv-s" x="86" y="164">every safe method is idempotent…</text>
+        <text class="sv-s" x="86" y="180">…but not every idempotent one is safe.</text>
+        <text class="sv-t sv-b" x="400" y="110" fill="var(--http)">PUT</text>
+        <text class="sv-s" x="440" y="110">set name="Hema" twice → still "Hema"</text>
+        <text class="sv-t sv-b" x="400" y="134" fill="var(--http)">DELETE</text>
+        <text class="sv-s" x="460" y="134">delete /x twice → still gone</text>
+        <text class="sv-s" x="400" y="158" fill="var(--ink-3)">state changes — but the END STATE is identical</text>
+        <text class="sv-s" x="400" y="172" fill="var(--ink-3)">however many times you run it</text>
+        <text class="sv-t sv-b" x="440" y="230" fill="var(--err)">POST ✗</text>
+        <text class="sv-s" x="486" y="230" fill="var(--err)">NEITHER. each call creates NEW state → duplicates. it sits outside both rings.</text>
+      </svg>
+      <figcaption><b>Idempotency = same end STATE. It is NOT the same response.</b> A second <code>DELETE /x</code> often returns <code>404</code> (“already gone”) — a <em>different</em> status code, and <b>still perfectly idempotent</b>, because the <b>server state</b> is unchanged. <b>Never equate “same status code” with idempotent.</b> You made exactly this error on 2026-07-11.</figcaption>
+      </figure>
+      <div class="box"><span class="tag">After a timeout — can I retry?</span>
+        <p>You sent a request and <b>nothing came back</b>. You <b>cannot tell</b> whether the server never got it, or did the work and the <b>reply</b> was lost. <em>(Exactly the same ambiguity as TCP’s lost-packet-vs-lost-ACK — one layer up. Same shape, same fix: make the retry harmless rather than trying to tell the cases apart.)</em></p>
+        <ul>
+          <li><b>Idempotent methods (GET / PUT / DELETE) → retry blindly.</b> Repeating lands the same end state. <b>Retry-safe = idempotent</b> — <em>broader</em> than GET alone.</li>
+          <li><b>POST → NOT safe to blind-retry.</b> Fix: an <b>idempotency key</b> — the <b>client</b> attaches a unique id; the <b>server</b> records the keys it has processed, and on a retry with the same key <b>returns the original result instead of acting again</b>.</li>
+        </ul>
+      </div>
+      <div class="box trap"><span class="tag">The money-transfer trap</span>
+        <p><b>Never put a state change behind <code>GET</code>.</b> GET is <em>supposed</em> to be safe, so browsers, proxies, crawlers and prefetchers <b>fire GET URLs automatically</b>. <code>GET /transfer?amount=500</code> could move money <b>with nobody clicking</b> — and since a transfer is <b>not idempotent</b>, every automatic retry moves it <b>again</b>.</p>
+      </div>
+    </div></details>
+  </div>
+</details>
+
+<!-- ══════════ PATTERNS ══════════ -->
+<details class="card n" id="patterns">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">TRANSFER</span><span class="sum-t">Portable patterns</span>
+      <span class="sum-s">what survives after the facts expire</span><span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div><b>Trust anchors</b> · <b>pull+cache+TTL</b> · <b>delegation</b> · <b>dumb core, smart edges</b> · <b>protocol ≠ actor</b></div>
+      <div><b>The ambiguity of silence</b> — “lost request” and “lost reply” are indistinguishable, so make the <b>retry harmless</b> instead.</div>
+      <div><b>Late vs wrong</b> · <b>head-of-line blocking</b> · <b>identity before secrecy</b> · <b>stale ≠ error</b></div>
+    </div>
+  </summary>
+  <div class="body">
+    <p>Facts about TCP will fade. <b>These will not</b> — they reappear in databases, caching, consensus, and every system you will ever design. This is the actual reason we go this slowly.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Pattern</th><th>Where you met it</th><th>Where it comes back</th></tr></thead>
+      <tbody>
+        <tr><td><b>Trust anchors</b><br><span style="color:var(--ink-2)">bootstrap trust by shipping a small fixed set of trusted things in advance — escaping the infinite “but who do I trust first?”</span></td><td>Hardcoded <b>root DNS IPs</b> ≅ pre-installed <b>root CAs</b></td><td>PKI, secure boot, distributed systems</td></tr>
+        <tr><td><b>Push fails at scale → pull + cache + TTL</b></td><td>DNS</td><td>Every cache you will ever design</td></tr>
+        <tr><td><b>Delegation / deliberate ignorance</b></td><td>root → TLD → authoritative</td><td>Sharding, service discovery, hierarchical routing</td></tr>
+        <tr><td><b>Dumb core, smart edges</b></td><td>IP is best-effort; the <b>endpoints</b> add reliability</td><td>The end-to-end principle — the deepest idea in networking</td></tr>
+        <tr><td><b>Protocol ≠ actor</b></td><td>HTTP is paper; the browser/server is the hand</td><td>Every layered system. <b>Your #1 personal failure mode.</b></td></tr>
+        <tr><td><b>The ambiguity of silence</b></td><td>TCP dedups by sequence number · HTTP dedups by idempotency key</td><td>Exactly-once delivery, message queues, distributed transactions</td></tr>
+        <tr><td><b>Late vs wrong</b></td><td>TCP late-not-wrong · UDP wrong-not-late</td><td>Every consistency-vs-availability tradeoff you will make</td></tr>
+        <tr><td><b>Head-of-line blocking</b></td><td>TCP ordering</td><td>Queues, pipelines — and <b>HTTP/2 &amp; HTTP/3</b>, your next topics</td></tr>
+        <tr><td><b>Identity before secrecy</b></td><td>TLS: verify the cert, <b>then</b> trust the key exchange</td><td>Any auth system</td></tr>
+        <tr><td><b>Stale ≠ error</b> — and the <b>quiet</b> failure is the dangerous one</td><td>DNS TTL</td><td>Every cache-invalidation problem in existence</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</details>
+
+<!-- ══════════ BLIND SPOT ══════════ -->
+<details class="card n" id="blind">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">★ READ BEFORE EVERY GATE</span><span class="sum-t">Your blind spot</span>
+      <span class="sum-s">layer-fusion / sequencing collapse</span><span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div>Under pressure you <b>flatten an ordered pipeline</b> and hand a job to the <b>wrong actor</b>. It is a <b>habit</b>, not a knowledge gap.</div>
+      <div>Worse than being wrong: <b>you answer <em>around</em> the discriminator</b> instead of committing to it.</div>
+      <div>Run the checklist: <b>which layer? which actor? which condition?</b></div>
+    </div>
+  </summary>
+  <div class="body">
+    <div class="scroll"><table>
+      <thead><tr><th>What you said</th><th>What was true</th><th>The shape of the error</th></tr></thead>
+      <tbody>
+        <tr><td>HTTP <b>500</b> for a DNS failure</td><td>DNS fails <b>before</b> TCP, before HTTP. <b>No status code can exist.</b></td><td>gave a job to a layer that had not run yet</td></tr>
+        <tr><td>The port comes “from DNS”</td><td>Port comes from <b>convention</b> (<code>https</code>). DNS gives the <b>IP only</b>.</td><td>fused two sources into one</td></tr>
+        <tr><td>“Nginx chooses the port”</td><td>The <b>OS kernel</b> demultiplexes. Nginx <b>listens</b>.</td><td>gave the job to the wrong actor</td></tr>
+        <tr><td>Dup-ACKs on a <b>silent</b> connection <span style="color:var(--ink-3)">(S4 gate · and again 2026-07-11)</span></td><td>Silent ⇒ <b>RTO</b>. Dup-ACKs are <b>impossible</b> without traffic.</td><td>picked a mechanism <b>without naming the condition</b></td></tr>
+        <tr><td>Root holds authoritative IPs <span style="color:var(--ink-3)">(2026-07-11)</span></td><td><b>root → TLD → authoritative.</b></td><td>collapsed an ordered chain</td></tr>
+        <tr><td>Idempotency = same <b>response</b> <span style="color:var(--ink-3)">(2026-07-11)</span></td><td>Same end <b>STATE</b>.</td><td>defined by what the <b>client sees</b>, not what the <b>server holds</b></td></tr>
+      </tbody>
+    </table></div>
+    <div class="box trap"><span class="tag">The second tell — worse than being wrong</span>
+      <p>On the two questions that hit the blind spot squarely, <b>you did not answer wrong. You answered <em>around</em> them.</b> Asked <i>“which</i> mechanism?<i>”</i> you described retransmission in general. Asked for a <b>yes/no</b>, you gave neither.</p>
+      <p><b>Under pressure you widen the answer instead of committing to the discriminator.</b> An interviewer reads that instantly and starts drilling exactly there. <b>Commit. Being precisely wrong is recoverable; being vague is not.</b></p>
+    </div>
+    <div class="box"><span class="tag">The checklist — run it out loud on every layered answer</span>
+      <ol>
+        <li><b>Which layer owns this job?</b> — and has that layer even <em>run</em> yet?</li>
+        <li><b>Which ACTOR performs it?</b> — never “which protocol.” Protocols are paper; actors are hands.</li>
+        <li><b>What CONDITION is the system in?</b> — the condition picks the mechanism, never the reverse. <em>Is the wire flowing, or silent?</em></li>
+      </ol>
+      <p>And the rule of engagement: <b>if you are guessing, say “this is a guess.”</b> A guess dressed as an answer is worse than silence — it hides the gap from both of us.</p>
+    </div>
+  </div>
+</details>
+
+<!-- ══════════ DRILL ══════════ -->
+<details class="card n" id="drill">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">TEST</span><span class="sum-t">Drill</span>
+      <span class="sum-s">39 questions · say it out loud, THEN reveal</span><span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div>If you only <b>read</b> the answers you have achieved <b>recognition</b> — the exact illusion that let a month of decay go unnoticed.</div>
+      <div><b>Speak first. Always.</b></div>
+    </div>
+  </summary>
+  <div class="body">
+    <div class="drill-top">
+      <p style="margin:0;color:var(--ink-2);font-size:.9rem">Answers are hidden. Click to reveal <em>after</em> you have said yours.</p>
+      <button class="btn" id="reset" type="button">Hide all</button>
+    </div>
+    <div class="drill" id="drillbox">
+      <div class="row d"><span class="q">Root NS is asked for <code>google.com</code>. What comes back?</span><button class="a" type="button" data-shown="false">A referral: “go ask .com”. Not an IP, not the auth server</button></div>
+      <div class="row d"><span class="q">Name the three tiers in order.</span><button class="a" type="button" data-shown="false">Root → TLD → authoritative</button></div>
+      <div class="row d"><span class="q">Which actor actually <em>walks</em> the chain?</span><button class="a" type="button" data-shown="false">The recursive resolver. The tiers only point</button></div>
+      <div class="row d"><span class="q">A cached record is past its TTL.</span><button class="a" type="button" data-shown="false">STALE, not an error. It points at the old address</button></div>
+      <div class="row d"><span class="q">Which stale outcome is more dangerous, and why?</span><button class="a" type="button" data-shown="false">Old server still alive → silently wrong box. Quiet beats loud for danger</button></div>
+      <div class="row d"><span class="q">Where does the port number come from?</span><button class="a" type="button" data-shown="false">Convention — the `https` scheme ⇒ 443. NEVER from DNS</button></div>
+      <div class="row d"><span class="q">Who reads the destination port, and what is that called?</span><button class="a" type="button" data-shown="false">The OS kernel. Demultiplexing. Routers read the IP, not the port</button></div>
+      <div class="row d"><span class="q">DNS fails outright. Is there an HTTP status code?</span><button class="a" type="button" data-shown="false">NO. No TCP, no request, no server ever saw you</button></div>
+      <div class="row t"><span class="q">What does “IP is best-effort” mean?</span><button class="a" type="button" data-shown="false">Tries, promises nothing: lost / reordered / duplicated / corrupted / unACKed</button></div>
+      <div class="row t"><span class="q">The ONE job of the 3-way handshake?</span><button class="a" type="button" data-shown="false">Sync starting sequence numbers, BOTH directions. Liveness is a side effect</button></div>
+      <div class="row t"><span class="q">Why three messages, not two?</span><button class="a" type="button" data-shown="false">Two confirms only one direction; the third confirms the second</button></div>
+      <div class="row t"><span class="q">Packet lost. The wire is <b>SILENT</b>.</span><button class="a" type="button" data-shown="false">RTO — a timer expires → resend, exponential backoff</button></div>
+      <div class="row t"><span class="q">Packet lost. Packets are <b>STILL FLOWING</b>.</span><button class="a" type="button" data-shown="false">Fast retransmit — 3 duplicate ACKs</button></div>
+      <div class="row t"><span class="q">Why can fast retransmit never fire on a silent wire?</span><button class="a" type="button" data-shown="false">Dup-ACKs are produced by the receiver getting MORE packets. None arrive ⇒ none exist</button></div>
+      <div class="row t"><span class="q">Timeout means retransmit, or terminate?</span><button class="a" type="button" data-shown="false">RETRANSMIT. Terminate only after many repeated failures</button></div>
+      <div class="row t"><span class="q">Why is blind retransmission safe?</span><button class="a" type="button" data-shown="false">Sequence numbers let the receiver detect and drop the duplicate</button></div>
+      <div class="row u"><span class="q">Why does UDP exist at all?</span><button class="a" type="button" data-shown="false">To escape head-of-line blocking — TCP’s cost is LATENCY</button></div>
+      <div class="row u"><span class="q">Is dropping ordering alone enough?</span><button class="a" type="button" data-shown="false">No — reliability still forces the re-fetch round trip. Drop BOTH</button></div>
+      <div class="row u"><span class="q">Complete both mottos.</span><button class="a" type="button" data-shown="false">TCP: rather late than wrong. UDP: rather wrong than late</button></div>
+      <div class="row u"><span class="q">Is UDP “fast and accurate”?</span><button class="a" type="button" data-shown="false">NO. Fast and NOT accurate. That word is the whole trade</button></div>
+      <div class="row s"><span class="q">Why is a reliable TCP pipe not a private one?</span><button class="a" type="button" data-shown="false">Every hop can read it. Routing is not secrecy</button></div>
+      <div class="row s"><span class="q">The three problems TLS solves.</span><button class="a" type="button" data-shown="false">Eavesdropping · key exchange · identity</button></div>
+      <div class="row s"><span class="q">Is the DH shared secret sent over the wire?</span><button class="a" type="button" data-shown="false">NO — built independently on both ends. Never transmitted</button></div>
+      <div class="row s"><span class="q">The attacker saw P, A and B. Why can’t they compute it?</span><button class="a" type="button" data-shown="false">They need a PRIVATE half; the mix is one-way and can’t be un-mixed</button></div>
+      <div class="row s"><span class="q">What attack does DH <em>alone</em> leave open, and why?</span><button class="a" type="button" data-shown="false">MITM — DH shares a secret with WHOEVER is there, not with who they claim to be</button></div>
+      <div class="row s"><span class="q">Who proves the server is really the bank?</span><button class="a" type="button" data-shown="false">The certificate. NOT Diffie–Hellman. Cert = identity, DH = secrecy</button></div>
+      <div class="row s"><span class="q">Why check identity BEFORE the key exchange?</span><button class="a" type="button" data-shown="false">Else you build a flawless secure channel with a man in the middle</button></div>
+      <div class="row s"><span class="q">The two trust anchors, and their shared pattern.</span><button class="a" type="button" data-shown="false">Hardcoded root DNS IPs + pre-installed root CAs — bootstrap trust in advance</button></div>
+      <div class="row h"><span class="q">What does HTTP add that the pipe cannot?</span><button class="a" type="button" data-shown="false">Meaning. TCP/TLS are dumb couriers — bytes, no instructions</button></div>
+      <div class="row h"><span class="q">Request line: three parts, and the need each answers.</span><button class="a" type="button" data-shown="false">method=what action · path=which resource · version=how to parse me</button></div>
+      <div class="row h"><span class="q">Path vs route — who does which?</span><button class="a" type="button" data-shown="false">Browser writes the path. Server does the routing</button></div>
+      <div class="row h"><span class="q">Why a numeric status code, not English?</span><button class="a" type="button" data-shown="false">A small FIXED enumeration → machine-branchable. NOT “machines only read numbers”</button></div>
+      <div class="row h"><span class="q">4xx vs 5xx.</span><button class="a" type="button" data-shown="false">4xx your fault, don’t retry · 5xx server’s fault, retry+backoff, page on-call</button></div>
+      <div class="row h"><span class="q">401 vs 403.</span><button class="a" type="button" data-shown="false">401: who are you? · 403: I know you, and you’re not allowed</button></div>
+      <div class="row h"><span class="q">Define idempotent. Precisely.</span><button class="a" type="button" data-shown="false">N runs = same END STATE as one run. NOT the same response</button></div>
+      <div class="row h"><span class="q">2nd DELETE /x returns 404. Still idempotent?</span><button class="a" type="button" data-shown="false">YES. Different status, same server state. That IS the definition</button></div>
+      <div class="row h"><span class="q">Which methods can you blindly retry, and why?</span><button class="a" type="button" data-shown="false">All IDEMPOTENT ones — GET, PUT, DELETE. Broader than “safe”</button></div>
+      <div class="row h"><span class="q">A POST times out. The fix?</span><button class="a" type="button" data-shown="false">Idempotency key — client sends a unique id, the SERVER dedups on it</button></div>
+      <div class="row h"><span class="q">Two reasons <code>GET /transfer?amount=500</code> is wrong.</span><button class="a" type="button" data-shown="false">GET must be safe (auto-fired by crawlers) + transfer isn’t idempotent → retries re-charge</button></div>
+    </div>
+  </div>
+</details>
+
+<!-- ══════════ FRONTIER ══════════ -->
+<details class="card n" id="frontier">
+  <summary>
+    <div class="sum-top">
+      <span class="tag-l">HONESTY</span><span class="sum-t">The frontier</span>
+      <span class="sum-s">what is deliberately NOT in this bible</span><span class="chev"></span>
+    </div>
+    <div class="spine">
+      <div>These are <b>not</b> gaps to feel bad about. They are the <b>syllabus ahead</b> — and nothing is added here until you have <b>derived it and passed its gate</b>.</div>
+    </div>
+  </summary>
+  <div class="body">
+    <p class="lede">This page contains only what you have been <strong>taught</strong>, and where marked, <strong>demonstrated cold</strong>. Nothing below has content, on purpose. <strong>“Covered” must never be allowed to masquerade as “known.”</strong></p>
+    <h4>Immediately next</h4>
+    <div class="front">
+      <div class="fr"><div class="ft">TLS re-gate</div><div class="fs">Diffie–Hellman is the focus. Taught and rebuilt — <b>never passed cold. Your standing debt.</b></div></div>
+      <div class="fr"><div class="ft">Browser rendering</div><div class="fs">Step 23. Completes the google.com walk, end to end.</div></div>
+    </div>
+    <h4>Then, per the syllabus</h4>
+    <div class="front">
+      <div class="fr"><div class="ft">HTTP/2 · HTTP/3</div><div class="fs">You already hold the key that unlocks both — <b>head-of-line blocking</b>. That is not an accident.</div></div>
+      <div class="fr"><div class="ft">Cookies &amp; sessions</div><div class="fs">How a stateless protocol carries state.</div></div>
+      <div class="fr"><div class="ft">Reverse proxy</div><div class="fs">And what Nginx <em>actually</em> does.</div></div>
+      <div class="fr"><div class="ft">Load balancing</div><div class="fs">Where the walk stops ending at one server.</div></div>
+    </div>
+    <h4>Inside TCP, not yet opened</h4>
+    <div class="front">
+      <div class="fr"><div class="ft">Flow control</div><div class="fs">The receive window. Not taught.</div></div>
+      <div class="fr"><div class="ft">Congestion control</div><div class="fs">Slow start, AIMD. Not taught.</div></div>
+      <div class="fr"><div class="ft">Teardown</div><div class="fs">FIN, TIME_WAIT. Not taught.</div></div>
+    </div>
+    <p style="margin-top:.8rem;color:var(--ink-2)"><b>Do not read ahead about these.</b> You will be made to <b>derive</b> them, exactly as you derived UDP — the single best piece of learning in this module, and the reason UDP is the one topic you can rebuild from first principles instead of recall.</p>
+  </div>
+</details>
+
+</div>
+
+<script>
+  const cards = () => document.querySelectorAll("details.card");
+  document.getElementById("expand").onclick   = () => cards().forEach(d => d.open = true);
+  document.getElementById("collapse").onclick = () => cards().forEach(d => d.open = false);
+
+  const box = document.getElementById("drillbox");
+  box.addEventListener("click", e => {
+    const b = e.target.closest(".a");
+    if (b) b.dataset.shown = b.dataset.shown === "false" ? "true" : "false";
+  });
+  document.getElementById("reset").onclick = () =>
+    box.querySelectorAll(".a").forEach(b => b.dataset.shown = "false");
+
+  // open whatever card a #hash points at
+  const openHash = () => {
+    const el = document.querySelector(location.hash || "#none");
+    if (el && el.tagName === "DETAILS") el.open = true;
+  };
+  addEventListener("hashchange", openHash); openHash();
+</script>
+</body>
+</html>

@@ -14,8 +14,34 @@ Hard rules for this command:
 
 Run these 8 layers as needed for this atom (skip none that apply): 1) Vocabulary 2) Intuition 3) Internal mechanics 4) Tradeoffs 5) Production usage 6) Implementation 7) Failure analysis 8) Interview perspective.
 
-Blind-spot guard (active): this learner exhibits **layer-fusion / sequencing collapse**. When the atom touches an ordered pipeline or multiple actors, make him **list the actors-in-order** and **label guesses as guesses** before answering. Hold exact vocabulary (retransmit≠terminate, stale≠error).
+---
+
+## ★ NAME-AT-BIRTH — mandatory since 2026-07-11. Do not skip this.
+
+**The finding:** *what Hema derives, survives. What he is handed, rots.* After a 29-day gap he could still **derive** head-of-line blocking, fast retransmit, RTO and the CA's role — and could **name none of them**. Concepts were derived; terms were handed over as labels. **Only the terms decayed.** Writing the terms into a document did not fix it either — *reading a term does not install it; only retrieving it does.*
+
+So **terms are derived too.** Every time this atom produces a new term:
+
+1. **He derives the mechanism first.** (He can. The machinery is intact.)
+2. **He christens it himself.** *"You've just described it. Now name it — what is stuck, and where is it stuck?"*
+3. **Then** give the real term **with its etymology** — the name **is** the description:
+   *head of the **line** → **blocking*** · *fast retransmit = a retransmit, **fast*** · *RTO = **R**etransmission **T**ime-**O**ut* · *man-in-the-middle = literally **in the middle*** · *idempotent = **idem** (same) + **potens** (power)*.
+4. **He uses it in a working sentence**, not a definition: *"we made the endpoint idempotent so the retry couldn't double-charge."* **Using ≠ defining.**
+5. **Append it to `trackers/GLOSSARY.md`** with its etymology and a `WARM` status. (`WARM` never counts as retention — only a cold recall in a **later** session earns `COLD`.)
+
+**Never let him believe these names are arbitrary.** He said so out loud — *"who in their right mind would come up with head-of-line blocking"* — and that belief is precisely why he stopped trying to retain them. They are the concept, compressed into a phrase. He must leave able to **regenerate** the word.
+
+---
+
+Blind-spot guard (active): **layer-fusion / sequencing collapse.** When the atom touches an ordered pipeline or multiple actors, make him **list the actors-in-order** and **label guesses as guesses** before answering. Hold exact vocabulary (retransmit≠terminate, stale≠error, CA≠middle-man).
+
+Discriminator guard (active): when he answers *around* a specific question with a general description, **refuse the restatement and demand the specific.** A hedge ("X, or maybe Y") is a miss — make him **commit**. Being precisely wrong is recoverable; vague is not.
 
 For a dense single atom, you MAY delegate one deep isolated explanation to the **concept-explainer** agent — but still gate it yourself afterward.
 
-End the teach turn with: a one-line recall anchor, and a single pointed question that tests whether he *owns* it (Feynman: "explain it to a junior without jargon"). Do NOT mark anything mastered here — that's `/gate`'s job. When the atom feels solid, suggest `/quiz recent` then `/gate $ARGUMENTS`.
+## After the atom lands
+- **`/visual <module>`** — fold the new atom into the module's `BIBLE.html`. (He explicitly asked for the visual page *after* depth teaching, 2026-07-11. It is part of the loop now, not an extra.)
+- **`/references <atom>`** — verified video + reading. **Never fabricate a URL.**
+- Then a one-line recall anchor, and a pointed Feynman question ("explain it to a junior without jargon").
+
+Do NOT mark anything mastered here — that's `/gate`'s job. When the atom feels solid: `/terms $ARGUMENTS` → `/quiz recent` → `/gate $ARGUMENTS`.

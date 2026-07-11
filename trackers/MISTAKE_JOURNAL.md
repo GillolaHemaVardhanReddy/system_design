@@ -4,11 +4,36 @@
 ## Recurring Mistake Tracker
 | Mistake | Times Repeated | Last Seen |
 |---|---|---|
-| Layer-fusion (wrong layer / pipeline collapsed) | 6 | Session 4 (TCP re-gate Q5: assigned the **duplicate-ACK** mechanism to a **total-silence** condition where it physically can't fire — right concept, wrong condition. Caught under gate pressure, repaired cold on targeted re-gate, no discriminator fed) |
-| Retreat-to-structure (restates the message skeleton instead of committing to the specific decision asked) | 1 | Session 2 (HTTP gate Part 2: described headers instead of naming method + status codes) |
-| Idempotency / safe-method mis-assignment | 1 | Session 2 (HTTP gate Part 5: attached "idempotency key" to GET; GET is safe because it's a read) |
+| **TERM DECAY — describes the machinery correctly, cannot NAME it** | **5 terms in one session** | **Session 5 (2026-07-11) — see Entry 005. The biggest live problem.** |
+| Retreat-to-structure / **discriminator-dodging** (answers *around* a specific question with a general description) | **5** | Session 5 (4×: named a mechanism without the condition · described HOL without naming it · hedged "not chosen *or* impossible" · restated the general rule instead of answering the packet-5 case) |
+| Layer-fusion (wrong layer / pipeline collapsed) | 8 | Session 5 (root NS "holds authoritative IPs" — deleted the TLD tier; and "sender must test if the receiver is ready" — imported the **handshake's** job into **loss recovery**). *But:* walked DNS→TCP→HTTP correctly unaided in the same session. **Trend: shrinking.** |
+| Idempotency mis-definition | 2 | Session 5 ("idempotency means same **response**" — it is same end **STATE**) |
 
-## Weakest Topics: 1. Cross-layer sequencing (which actor, which job, what order). 2. Protocol-vs-actor distinction (a format doesn't *do* things; a program does).
+## Weakest Topics: 1. **Vocabulary — naming what he can already explain.** 2. Cross-layer sequencing (which actor, which job, what order). 3. Protocol-vs-actor distinction (a format doesn't *do* things; a program does).
+
+---
+
+## Entry 005 — TERM DECAY: understands the machinery, cannot name the parts ⭐ *the finding*
+- **Topic:** all of Module 1. Surfaced 2026-07-11 (Session 5), cold sweep after a **29-day gap**.
+- **Instances, all in one session:**
+  1. Described packets 3/4/5 frozen behind a missing 2 — **could not name head-of-line blocking.** (He *derived UDP from it* in S4.)
+  2. *"I don't know what the other mechanism is"* — **fast retransmit**, which he then re-derived from scratch minutes later.
+  3. Described the timer + doubling perfectly — **never said RTO / exponential backoff.**
+  4. Described the CA's role correctly — **called it "the middle man."** That is the **attacker's** name.
+  5. *"Idempotency means the same **response**"* — it is the same end **STATE**.
+- **Category:** vocabulary gap. **NOT a knowledge gap** — the reasoning was intact and, once prompted, he rebuilt every mechanism unaided.
+- **Root cause:** ***what he derives, survives; what he is handed, rots.*** His behaviour file has said *"learns by deriving, not receiving"* since Session 1 — and the consequence was never drawn: **the terms were the one thing he never derived.** They were handed to him as labels in a recall-anchors list. So the concepts came back after a month and the names did not. His own words: *"who in their right mind would come up with fast retransmit or head-of-line blocking"* — he had concluded the names were **arbitrary**, and stopped trying to hold them.
+- **Why it also explains blind spot 2:** the "answering around the question" habit is largely a **symptom of this**. He is **reaching for a word that isn't there**, and description is what he falls back on. This reframes the S2 "retreat-to-structure" diagnosis.
+- **Correct model:** **the names are the concept, compressed.** *Head of the **line** → **blocking**. Fast retransmit → a retransmit, **fast**. RTO → **R**etransmission **T**ime-**O**ut. Man-in-the-middle → literally **in the middle**. Idempotent → **idem** (same) + **potens** (power).* Every one is regenerable by a derivation learner.
+- **Memory anchor:** **"The name is the handle. Without it you can't pick the idea up under pressure."**
+- **Mitigation (all now in the toolkit):**
+  - **Name-at-birth** (CLAUDE.md §4): derive → **he christens it** → real name **+ etymology** → **use it in a sentence**, not a definition.
+  - **`/terms`** — term-first drill: scenario in, **word out**, cold. Every other command tested the opposite direction (recognition).
+  - **`trackers/GLOSSARY.md`** — terms tracked separately, on a **faster clock** than concepts.
+  - **Gate rule:** description **without the term** = **not a pass**.
+  - ❌ **What does NOT work:** writing the terms into a document. He was given `BIBLE.html` with fast retransmit in a red box and a decision-tree diagram — and 20 minutes later did not know the mechanism existed. **Reading a term does not install it. Only retrieving it does.**
+- **Retest:** `/terms due` at the **start of every session** until each term is produced **COLD in a later session.** Track in `GLOSSARY.md`.
+- **Jimmy's share of the blame:** logged in `trackers/TEACHING_LOG.md` Entry 001. This is a **teaching failure** before it is a learning failure.
 
 ## Entry 001 — Layer-fusion blind spot
 - **Topic:** Networking (DNS/TCP/TLS/web-server routing)
@@ -49,4 +74,7 @@
 - **Correct model:** **Packets still arriving → fast retransmit (3 duplicate ACKs). Total silence → retransmission timeout (timer expiry + backoff).** The discriminator is "is anything still arriving to provoke an ACK?"
 - **Memory anchor:** "No traffic, no dup-ACKs — silence is the timer's job, not the ACK's."
 - **Mitigation:** before naming a recovery/repair mechanism, ask "what condition is the wire in *right now* — flowing or silent?" then pick.
-- **Retest:** PASSED same session on targeted 2-question re-gate — separated RTO vs fast-retransmit cold, explicitly stated dup-ACK *can't* fire in silence, no nudge. **Confidence 8/10. Spot-check the condition→mechanism mapping when TLS/HTTP retries come up.**
+- **Retest:** ~~PASSED same session… Confidence 8/10~~ — **CORRECTED 2026-07-11. That score was fiction.**
+- **⚠️ CONFIDENCE CORRECTION (2026-07-11):** the S4 "pass" was a **same-session** re-gate, minutes after being drilled on the exact point. That measures **working memory, not retention** — and it was written into this file as if it measured retention, which made the topic *look* safe so it was never re-queued. **29 days later Hema did not know fast retransmit existed** ("I don't know what the other mechanism is"). **Real confidence at S5 open: 2/10.**
+- **Rule change (now in CLAUDE.md §1):** a same-session re-gate **caps at 5/10**. Only a **cold gate in a LATER session** can raise a score. See `trackers/TEACHING_LOG.md` Entry 002 — this was Jimmy's error, not Hema's.
+- **S5 outcome:** **re-derived cold, from scratch, unaided.** Given "packet 2 lost, 3/4/5 arrive," he produced cumulative re-ACKing → **3 duplicate ACKs → fast retransmit**; then, handed the *packet-5-is-the-last-packet* counterexample, he **destroyed his own wrong discriminator** ("data lost vs ACK lost") and arrived at the correct one — **flowing vs silent**. The mechanism is now genuinely his; **the NAME was the thing missing.** Confidence (mechanism) **7/10**; retest cold **next session** before it goes higher.

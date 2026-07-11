@@ -1,8 +1,26 @@
 # Behavior & Learning-Style File
 > How Hema learns best. Jimmy updates this whenever a teaching approach clearly works or fails, then adapts future lessons. This is about LEARNING BEHAVIOR, not topic knowledge.
 
+## ⭐ THE GOVERNING LAW (S5, 2026-07-11) — everything else follows from this
+> ### What he DERIVES, survives. What he is HANDED, rots.
+
+After a **29-day gap**: every **concept** he had derived came back intact (he rebuilt fast retransmit from scratch, and destroyed his own wrong discriminator with a counterexample). Every **term** he had merely been *given* was gone — head-of-line blocking, fast retransmit, RTO, exponential backoff; he called the **CA** "the middle man." **He understands the machinery and cannot name the parts.**
+
+**This is not two facts, it is one.** Terms rotted **because terms were the one thing never derived**. The behaviour note below said "learns by deriving" from Session 1 — and nobody drew the consequence for vocabulary.
+
+**Therefore: derive the terms too.** Name-at-birth (CLAUDE.md §4) — he derives the mechanism, **he christens it himself**, then he gets the real name **with its etymology** (*head of the **line** → **blocking***), then he **uses it in a working sentence**. He must be able to **regenerate** a term, never store it.
+
+**Two corollaries, both proven the hard way on 2026-07-11:**
+- ❌ **Giving him a document does not work.** He was handed `BIBLE.html` with fast retransmit in a red trap-box *and* a decision-tree diagram — and 20 minutes later said *"I don't know what the other mechanism is."* **Reading a term does not install it. Only retrieving it does.** → this is what `/terms` exists for.
+- 🔎 **His "answering around the question" habit is largely a SYMPTOM of the term gap.** He is **reaching for a word that isn't there**, and description is the fallback. Fix the vocabulary and much of the evasion should go with it. **He also believed the names were arbitrary** (*"who in their right mind would come up with head-of-line blocking"*) — showing him the etymology visibly changed his stance. **Never present a term as a label.**
+
+---
+
 ## Learning style (observed)
-- **Learns by deriving, not receiving.** Constraint-first Socratic prompts work far better than lectures — he reconstructed DNS, TCP, and TLS himself when handed the constraint and asked to design.
+- **Learns by deriving, not receiving.** Constraint-first Socratic prompts work far better than lectures — he reconstructed DNS, TCP, and TLS himself when handed the constraint and asked to design. **(See the governing law above: this applies to TERMS as much as to concepts.)**
+- **Wants the visual AFTER the depth (S5, his own request).** In-depth Socratic teaching first, *then* an HTML page + a video reference to consolidate. He explicitly asked for this. `/visual` + `/references` are now part of the standard loop.
+- **Wants progressive disclosure, not less content (S5).** *"I want all the content… but it's too huge… I want clarity and depth and easy to understand."* Not a contradiction — solved by **layering** (3-line spine → plain English → depth on demand), never by cutting. Plain-English-before-jargon lands hard; keep the postcards/live-match/paint-mixing/light-switch analogies.
+- **Self-diagnoses accurately and asks for the system to adapt (S5).** He identified his own term-loss before it was fully named, and asked what should change in `.claude/` to fix it long-term. **Treat him as a collaborator on the method, not just its subject** — he engages with the meta-level and it motivates him.
 - **Analogies are high-leverage.** Postal/postcards (TCP), apartment+building (ports), paint-mixing (Diffie–Hellman), police-ID (certificates) all landed. Reach for a concrete physical analogy before formal mechanics.
 - **Needs the "why it exists" before the "how".** Motivate every mechanism with the problem it solves first.
 - **Generalizes well** once a pattern clicks (transferred redundancy DNS→GoDaddy; spotted the MITM hole before being shown). Reward and name transfers.

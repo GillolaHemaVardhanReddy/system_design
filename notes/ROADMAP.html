@@ -158,7 +158,8 @@
   #scrim{position:fixed;inset:0;background:rgba(6,10,20,.55);backdrop-filter:blur(3px);display:none;place-content:center;z-index:40;padding:22px}
   #scrim.show{display:grid}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
-    width:min(780px,100%);max-height:88vh;overflow:auto;animation:rise .28s ease;position:relative}
+    width:min(1180px,100%);max-height:90vh;overflow:auto;animation:rise .28s ease;position:relative}
+  .card.narrow{width:min(780px,100%)}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .closeb{position:absolute;top:14px;right:14px;z-index:3;border:1px solid var(--line);background:var(--panel);color:var(--ink);
     width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:15px}
@@ -196,20 +197,31 @@
   .tag.plain:hover{border-color:var(--line);color:var(--ink-soft)}
 
   /* ============ ATOM VIEW ============ */
-  .agraph{background:var(--panel2);border:1px solid var(--line-soft);border-radius:11px;padding:10px;overflow-x:auto}
+  .agraph{background:var(--panel2);border:1px solid var(--line-soft);border-radius:11px;padding:12px;overflow-x:auto}
   .agraph svg{display:block;height:auto}
   .an{cursor:pointer}
   .an rect{fill:var(--panel);stroke:var(--a);stroke-width:2}
   .an.locked rect{stroke:var(--st-locked);stroke-dasharray:3 3}
-  .an text{font:700 10.5px ui-monospace,monospace;fill:var(--a);text-anchor:middle;dominant-baseline:central;pointer-events:none}
-  .an.locked text{fill:var(--ink-soft)}
+  .an .aid{font:700 9.5px ui-monospace,monospace;fill:var(--a);text-anchor:middle;letter-spacing:.04em}
+  .an .anm{font:600 11px ui-sans-serif,system-ui;fill:var(--ink);text-anchor:middle}
+  .an text{pointer-events:none}
+  .an.locked .aid{fill:var(--ink-soft)}
+  .an.locked .anm{fill:var(--ink-soft)}
   .an:hover rect{filter:brightness(1.08);stroke-width:3}
-  .an.dim{opacity:.18}
+  .an.dim{opacity:.16}
   .an.cur rect{stroke-width:3.5}
-  .aedge{fill:none;stroke:var(--line);stroke-width:1.6;opacity:.55;marker-end:url(#ah)}
-  .aedge.hl{stroke:var(--accent);opacity:1;stroke-width:2.4}
-  .aedge.dim{opacity:.06}
+  /* external prerequisite — an atom that lives in ANOTHER module */
+  .an.ext rect{fill:var(--panel2);stroke-dasharray:5 3;stroke-width:1.6}
+  .an.ext .aid{font-size:9px;letter-spacing:.08em}
+  .an.ext .anm{font-weight:500;font-style:italic;fill:var(--ink-soft)}
+  .aedge{fill:none;stroke:var(--line);stroke-width:1.6;opacity:.6;marker-end:url(#ah)}
+  .aedge.x{stroke-dasharray:5 4;opacity:.45}
+  .aedge.hl{stroke:var(--accent);opacity:1;stroke-width:2.4;marker-end:url(#ahl)}
+  .aedge.dim{opacity:.05}
   .alvl{fill:var(--ink-soft);font:700 9px ui-monospace,monospace;letter-spacing:.1em}
+  .alvl.x{fill:var(--accent)}
+  .ghint{font:600 11px ui-sans-serif,system-ui;color:var(--ink-soft);margin-bottom:7px}
+  .ghint b{color:var(--ink)}
 
   .alist{display:flex;flex-direction:column;gap:6px}
   .arow{display:grid;grid-template-columns:46px 1fr auto;gap:10px;align-items:start;background:var(--panel2);
@@ -338,7 +350,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "OSI (7) vs TCP/IP (4)"
    },
    {
     "id": "1.2",
@@ -350,7 +363,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "1.1"
-    ]
+    ],
+    "short": "IP · best-effort"
    },
    {
     "id": "1.3",
@@ -363,7 +377,8 @@ const MODULES = [
     "note": "re-retrieved cold S5 (root→TLD→authoritative repaired)",
     "deps": [
      "1.2"
-    ]
+    ],
+    "short": "DNS"
    },
    {
     "id": "1.4",
@@ -375,7 +390,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "1.2"
-    ]
+    ],
+    "short": "TCP 3-way handshake"
    },
    {
     "id": "1.5",
@@ -389,7 +405,8 @@ const MODULES = [
     "note": "MECHANISM re-derived cold S5, unaided. TERMS: none produced. Demoted S6.",
     "deps": [
      "1.4"
-    ]
+    ],
+    "short": "TCP loss recovery"
    },
    {
     "id": "1.6",
@@ -401,7 +418,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "1.5"
-    ]
+    ],
+    "short": "TCP congestion control"
    },
    {
     "id": "1.7",
@@ -415,7 +433,8 @@ const MODULES = [
     "note": "derived S4 from TCP's head-of-line cost. Never gated.",
     "deps": [
      "1.5"
-    ]
+    ],
+    "short": "UDP + head-of-line blocking"
    },
    {
     "id": "1.8",
@@ -428,7 +447,8 @@ const MODULES = [
     "deps": [
      "1.4",
      "1.7"
-    ]
+    ],
+    "short": "Sockets"
    },
    {
     "id": "1.9",
@@ -442,7 +462,8 @@ const MODULES = [
     "note": "OPENED S6 — source announced, forcing question posed, NOT answered.",
     "deps": [
      "1.4"
-    ]
+    ],
+    "short": "TLS 1.3 + Diffie–Hellman"
    },
    {
     "id": "1.10",
@@ -455,7 +476,8 @@ const MODULES = [
     "note": "idempotent misdefined as 'same response' in S5 — precision to re-firm.",
     "deps": [
      "1.4"
-    ]
+    ],
+    "short": "HTTP/1.1"
    },
    {
     "id": "1.11",
@@ -467,7 +489,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "1.10"
-    ]
+    ],
+    "short": "Browser rendering"
    },
    {
     "id": "1.12",
@@ -480,7 +503,8 @@ const MODULES = [
     "deps": [
      "1.10",
      "1.5"
-    ]
+    ],
+    "short": "HTTP/2 · multiplexing"
    },
    {
     "id": "1.13",
@@ -493,7 +517,8 @@ const MODULES = [
     "deps": [
      "1.12",
      "1.7"
-    ]
+    ],
+    "short": "HTTP/3 · QUIC"
    },
    {
     "id": "1.14",
@@ -505,7 +530,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "1.10"
-    ]
+    ],
+    "short": "Cookies · sessions · JWT"
    },
    {
     "id": "1.15",
@@ -517,7 +543,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "1.10"
-    ]
+    ],
+    "short": "Reverse proxy · vhosting"
    },
    {
     "id": "1.16",
@@ -530,7 +557,8 @@ const MODULES = [
     "deps": [
      "1.15",
      "1.4"
-    ]
+    ],
+    "short": "Load balancing — L4 vs L7"
    },
    {
     "id": "1.17",
@@ -543,7 +571,8 @@ const MODULES = [
     "deps": [
      "1.10",
      "1.4"
-    ]
+    ],
+    "short": "WebSockets"
    },
    {
     "id": "1.18",
@@ -555,7 +584,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "1.12"
-    ]
+    ],
+    "short": "gRPC"
    },
    {
     "id": "1.19",
@@ -568,7 +598,8 @@ const MODULES = [
     "deps": [
      "1.10",
      "1.16"
-    ]
+    ],
+    "short": "API design · retries · jitter"
    }
   ],
   "ph": 0,
@@ -599,7 +630,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "CPU + memory hierarchy"
    },
    {
     "id": "0.2",
@@ -611,7 +643,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.1"
-    ]
+    ],
+    "short": "Process vs thread"
    },
    {
     "id": "0.3",
@@ -623,7 +656,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.2"
-    ]
+    ],
+    "short": "Concurrency vs parallelism"
    },
    {
     "id": "0.4",
@@ -636,7 +670,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.2"
-    ]
+    ],
+    "short": "Scheduling · VM · paging"
    },
    {
     "id": "0.5",
@@ -648,7 +683,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.3"
-    ]
+    ],
+    "short": "Locks, mutexes, semaphores…"
    },
    {
     "id": "0.6",
@@ -660,7 +696,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.5"
-    ]
+    ],
+    "short": "Race conditions · deadlock (the…"
    },
    {
     "id": "0.7",
@@ -673,7 +710,8 @@ const MODULES = [
     "deps": [
      "0.5",
      "0.6"
-    ]
+    ],
+    "short": "Producer–consumer · dining phil."
    },
    {
     "id": "0.8",
@@ -687,7 +725,8 @@ const MODULES = [
     "deps": [
      "0.2",
      "0.4"
-    ]
+    ],
+    "short": "Blocking vs non-blocking I/O"
    },
    {
     "id": "0.9",
@@ -699,7 +738,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.8"
-    ]
+    ],
+    "short": "select → poll → epoll"
    },
    {
     "id": "0.10",
@@ -712,7 +752,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.9"
-    ]
+    ],
+    "short": "The event loop · libuv"
    },
    {
     "id": "0.11",
@@ -724,7 +765,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.10"
-    ]
+    ],
+    "short": "Event-loop starvation"
    }
   ],
   "ph": 1,
@@ -753,7 +795,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Relational vs NoSQL"
    },
    {
     "id": "2.2",
@@ -765,7 +808,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.1"
-    ]
+    ],
+    "short": "ACID"
    },
    {
     "id": "2.3",
@@ -777,7 +821,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.2"
-    ]
+    ],
+    "short": "Transactions"
    },
    {
     "id": "2.4",
@@ -792,7 +837,8 @@ const MODULES = [
      "2.3",
      "0.5",
      "0.6"
-    ]
+    ],
+    "short": "Isolation & serializability"
    },
    {
     "id": "2.5",
@@ -804,7 +850,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.4"
-    ]
+    ],
+    "short": "MVCC"
    },
    {
     "id": "2.6",
@@ -816,7 +863,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.1"
-    ]
+    ],
+    "short": "B-tree vs LSM-tree"
    },
    {
     "id": "2.7",
@@ -829,7 +877,8 @@ const MODULES = [
     "deps": [
      "2.6",
      "2.3"
-    ]
+    ],
+    "short": "WAL"
    },
    {
     "id": "2.8",
@@ -841,7 +890,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.6"
-    ]
+    ],
+    "short": "Indexing"
    },
    {
     "id": "2.9",
@@ -853,7 +903,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.8"
-    ]
+    ],
+    "short": "Query planning · EXPLAIN"
    },
    {
     "id": "2.10",
@@ -865,7 +916,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.1"
-    ]
+    ],
+    "short": "Normalize vs denormalize"
    },
    {
     "id": "2.11",
@@ -877,7 +929,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.7"
-    ]
+    ],
+    "short": "Replication"
    },
    {
     "id": "2.12",
@@ -889,7 +942,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.11"
-    ]
+    ],
+    "short": "Partitioning · sharding"
    },
    {
     "id": "2.13",
@@ -901,7 +955,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.11"
-    ]
+    ],
+    "short": "Read replicas · lag"
    },
    {
     "id": "2.14",
@@ -915,7 +970,8 @@ const MODULES = [
     "deps": [
      "2.11",
      "2.12"
-    ]
+    ],
+    "short": "CAP → PACELC"
    }
   ],
   "ph": 2,
@@ -944,7 +1000,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.1"
-    ]
+    ],
+    "short": "Why caches exist"
    },
    {
     "id": "3.2",
@@ -956,7 +1013,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "3.1"
-    ]
+    ],
+    "short": "Cache-aside / write-through"
    },
    {
     "id": "3.3",
@@ -969,7 +1027,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.10"
-    ]
+    ],
+    "short": "Redis internals"
    },
    {
     "id": "3.4",
@@ -982,7 +1041,8 @@ const MODULES = [
     "deps": [
      "3.3",
      "1.4"
-    ]
+    ],
+    "short": "RESP — a protocol on TCP"
    },
    {
     "id": "3.5",
@@ -994,7 +1054,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "3.3"
-    ]
+    ],
+    "short": "Persistence — RDB vs AOF"
    },
    {
     "id": "3.6",
@@ -1006,7 +1067,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "3.1"
-    ]
+    ],
+    "short": "Eviction — sampled LRU"
    },
    {
     "id": "3.7",
@@ -1019,7 +1081,8 @@ const MODULES = [
     "deps": [
      "3.2",
      "1.3"
-    ]
+    ],
+    "short": "Invalidation & TTL"
    },
    {
     "id": "3.8",
@@ -1031,7 +1094,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "3.7"
-    ]
+    ],
+    "short": "Stampede · thundering herd"
    }
   ],
   "ph": 2,
@@ -1060,7 +1124,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Vertical vs horizontal"
    },
    {
     "id": "4.2",
@@ -1072,7 +1137,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "4.1"
-    ]
+    ],
+    "short": "Stateless vs stateful"
    },
    {
     "id": "4.3",
@@ -1084,7 +1150,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "4.2"
-    ]
+    ],
+    "short": "Load balancers"
    },
    {
     "id": "4.4",
@@ -1096,7 +1163,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "4.3"
-    ]
+    ],
+    "short": "CDN"
    },
    {
     "id": "4.5",
@@ -1108,7 +1176,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "4.3"
-    ]
+    ],
+    "short": "Consistent hashing"
    },
    {
     "id": "4.6",
@@ -1120,7 +1189,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "4.2"
-    ]
+    ],
+    "short": "Rate limiting"
    },
    {
     "id": "4.7",
@@ -1133,7 +1203,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "0.1"
-    ]
+    ],
+    "short": "Back-of-envelope estimation"
    },
    {
     "id": "4.8",
@@ -1145,7 +1216,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "4.7"
-    ]
+    ],
+    "short": "The USE method"
    },
    {
     "id": "4.9",
@@ -1158,7 +1230,8 @@ const MODULES = [
     "deps": [
      "4.8",
      "4.6"
-    ]
+    ],
+    "short": "Cascading failures"
    }
   ],
   "ph": 3,
@@ -1188,7 +1261,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Fallacies of distributed"
    },
    {
     "id": "5.2",
@@ -1200,7 +1274,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.1"
-    ]
+    ],
+    "short": "Failure detectors"
    },
    {
     "id": "5.3",
@@ -1212,7 +1287,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.1"
-    ]
+    ],
+    "short": "Physical clocks"
    },
    {
     "id": "5.4",
@@ -1224,7 +1300,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.3"
-    ]
+    ],
+    "short": "Logical clocks — Lamport"
    },
    {
     "id": "5.5",
@@ -1236,7 +1313,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.4"
-    ]
+    ],
+    "short": "Vector clocks"
    },
    {
     "id": "5.6",
@@ -1249,7 +1327,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.5"
-    ]
+    ],
+    "short": "Consistency models"
    },
    {
     "id": "5.7",
@@ -1261,7 +1340,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.6"
-    ]
+    ],
+    "short": "Quorum — R+W>N"
    },
    {
     "id": "5.8",
@@ -1274,7 +1354,8 @@ const MODULES = [
     "deps": [
      "5.2",
      "5.7"
-    ]
+    ],
+    "short": "Consensus"
    },
    {
     "id": "5.9",
@@ -1286,7 +1367,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.8"
-    ]
+    ],
+    "short": "Leader election"
    },
    {
     "id": "5.10",
@@ -1298,7 +1380,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.9"
-    ]
+    ],
+    "short": "Raft — and BUILD it"
    },
    {
     "id": "5.11",
@@ -1310,7 +1393,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.10"
-    ]
+    ],
+    "short": "Paxos (overview)"
    },
    {
     "id": "5.12",
@@ -1322,7 +1406,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "5.10"
-    ]
+    ],
+    "short": "Distributed locks"
    },
    {
     "id": "5.13",
@@ -1335,7 +1420,8 @@ const MODULES = [
     "deps": [
      "5.5",
      "5.6"
-    ]
+    ],
+    "short": "CRDTs"
    }
   ],
   "ph": 3,
@@ -1363,7 +1449,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Queues vs pub/sub"
    },
    {
     "id": "6.2",
@@ -1375,7 +1462,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "6.1"
-    ]
+    ],
+    "short": "Event-driven architecture"
    },
    {
     "id": "6.3",
@@ -1387,7 +1475,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "6.2"
-    ]
+    ],
+    "short": "Streaming"
    },
    {
     "id": "6.4",
@@ -1399,7 +1488,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "6.1"
-    ]
+    ],
+    "short": "Kafka — segmented log"
    },
    {
     "id": "6.5",
@@ -1412,7 +1502,8 @@ const MODULES = [
     "deps": [
      "6.4",
      "0.4"
-    ]
+    ],
+    "short": "Page cache · zero-copy"
    },
    {
     "id": "6.6",
@@ -1425,7 +1516,8 @@ const MODULES = [
     "deps": [
      "6.4",
      "5.7"
-    ]
+    ],
+    "short": "ISR replication"
    },
    {
     "id": "6.7",
@@ -1437,7 +1529,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "6.4"
-    ]
+    ],
+    "short": "Consumer groups · offsets"
    },
    {
     "id": "6.8",
@@ -1451,7 +1544,8 @@ const MODULES = [
     "deps": [
      "6.7",
      "1.10"
-    ]
+    ],
+    "short": "Delivery semantics"
    },
    {
     "id": "6.9",
@@ -1463,7 +1557,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "6.4"
-    ]
+    ],
+    "short": "Ordering guarantees"
    },
    {
     "id": "6.10",
@@ -1475,7 +1570,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "6.7"
-    ]
+    ],
+    "short": "Backpressure"
    },
    {
     "id": "6.11",
@@ -1487,7 +1583,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "6.8"
-    ]
+    ],
+    "short": "Dead-letter queues"
    }
   ],
   "ph": 3,
@@ -1514,7 +1611,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Object / blob storage"
    },
    {
     "id": "7.2",
@@ -1526,7 +1624,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "7.1"
-    ]
+    ],
+    "short": "Distributed storage"
    },
    {
     "id": "7.3",
@@ -1538,7 +1637,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "7.2"
-    ]
+    ],
+    "short": "Erasure coding"
    },
    {
     "id": "7.4",
@@ -1550,7 +1650,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "7.1"
-    ]
+    ],
+    "short": "Data lakes vs warehouses"
    },
    {
     "id": "7.5",
@@ -1563,7 +1664,8 @@ const MODULES = [
     "deps": [
      "7.4",
      "2.6"
-    ]
+    ],
+    "short": "Columnar storage"
    },
    {
     "id": "7.6",
@@ -1575,7 +1677,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "7.2"
-    ]
+    ],
+    "short": "GFS"
    },
    {
     "id": "7.7",
@@ -1588,7 +1691,8 @@ const MODULES = [
     "deps": [
      "7.6",
      "2.6"
-    ]
+    ],
+    "short": "Bigtable — LSM/SSTable"
    }
   ],
   "ph": 3,
@@ -1615,7 +1719,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Logging"
    },
    {
     "id": "8.2",
@@ -1627,7 +1732,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "4.8"
-    ]
+    ],
+    "short": "Metrics — RED / USE"
    },
    {
     "id": "8.3",
@@ -1639,7 +1745,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "8.2"
-    ]
+    ],
+    "short": "Distributed tracing"
    },
    {
     "id": "8.4",
@@ -1651,7 +1758,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "8.2"
-    ]
+    ],
+    "short": "SLI / SLO · error budgets"
    },
    {
     "id": "8.5",
@@ -1664,7 +1772,8 @@ const MODULES = [
     "deps": [
      "8.4",
      "8.3"
-    ]
+    ],
+    "short": "Postmortems"
    }
   ],
   "ph": 4,
@@ -1691,7 +1800,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "AuthN vs AuthZ"
    },
    {
     "id": "9.2",
@@ -1704,7 +1814,8 @@ const MODULES = [
     "deps": [
      "9.1",
      "1.14"
-    ]
+    ],
+    "short": "Sessions vs JWT"
    },
    {
     "id": "9.3",
@@ -1716,7 +1827,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "9.2"
-    ]
+    ],
+    "short": "OAuth2 / OIDC"
    },
    {
     "id": "9.4",
@@ -1728,7 +1840,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "1.9"
-    ]
+    ],
+    "short": "Symmetric vs asymmetric"
    },
    {
     "id": "9.5",
@@ -1740,7 +1853,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "9.4"
-    ]
+    ],
+    "short": "Hashing & salting"
    },
    {
     "id": "9.6",
@@ -1753,7 +1867,8 @@ const MODULES = [
     "deps": [
      "1.9",
      "9.4"
-    ]
+    ],
+    "short": "TLS in depth"
    },
    {
     "id": "9.7",
@@ -1765,7 +1880,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "9.5"
-    ]
+    ],
+    "short": "Secrets management"
    },
    {
     "id": "9.8",
@@ -1777,7 +1893,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "9.1"
-    ]
+    ],
+    "short": "CSRF · XSS · SQLi · SSRF"
    }
   ],
   "ph": 4,
@@ -1804,7 +1921,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Docker"
    },
    {
     "id": "10.2",
@@ -1817,7 +1935,8 @@ const MODULES = [
     "deps": [
      "10.1",
      "0.2"
-    ]
+    ],
+    "short": "Containers vs VMs"
    },
    {
     "id": "10.3",
@@ -1829,7 +1948,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "10.2"
-    ]
+    ],
+    "short": "Kubernetes"
    },
    {
     "id": "10.4",
@@ -1841,7 +1961,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "10.3"
-    ]
+    ],
+    "short": "Service discovery"
    },
    {
     "id": "10.5",
@@ -1853,7 +1974,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "10.1"
-    ]
+    ],
+    "short": "CI/CD"
    },
    {
     "id": "10.6",
@@ -1865,7 +1987,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "10.3"
-    ]
+    ],
+    "short": "Infrastructure as code"
    },
    {
     "id": "10.7",
@@ -1877,7 +2000,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "4.2"
-    ]
+    ],
+    "short": "Twelve-Factor"
    },
    {
     "id": "10.8",
@@ -1890,7 +2014,8 @@ const MODULES = [
     "deps": [
      "10.5",
      "10.3"
-    ]
+    ],
+    "short": "Blue-green & canary"
    }
   ],
   "ph": 4,
@@ -1919,7 +2044,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "6.1"
-    ]
+    ],
+    "short": "CQRS"
    },
    {
     "id": "13.2",
@@ -1931,7 +2057,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "13.1"
-    ]
+    ],
+    "short": "Event sourcing"
    },
    {
     "id": "13.3",
@@ -1943,7 +2070,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "13.7"
-    ]
+    ],
+    "short": "Saga"
    },
    {
     "id": "13.4",
@@ -1955,7 +2083,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "13.3"
-    ]
+    ],
+    "short": "The outbox pattern"
    },
    {
     "id": "13.5",
@@ -1965,7 +2094,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Service mesh"
    },
    {
     "id": "13.6",
@@ -1977,7 +2107,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.14"
-    ]
+    ],
+    "short": "Multi-region"
    },
    {
     "id": "13.7",
@@ -1989,7 +2120,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "2.3"
-    ]
+    ],
+    "short": "2PC — and why it's avoided"
    },
    {
     "id": "13.8",
@@ -2001,7 +2133,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "13.7"
-    ]
+    ],
+    "short": "Distributed transactions"
    }
   ],
   "ph": 4,
@@ -2028,7 +2161,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "The framework"
    },
    {
     "id": "11.2",
@@ -2040,7 +2174,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "URL Shortener"
    },
    {
     "id": "11.3",
@@ -2052,7 +2187,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Pastebin"
    },
    {
     "id": "11.4",
@@ -2064,7 +2200,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "WhatsApp"
    },
    {
     "id": "11.5",
@@ -2076,7 +2213,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Twitter"
    },
    {
     "id": "11.6",
@@ -2088,7 +2226,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Instagram"
    },
    {
     "id": "11.7",
@@ -2100,7 +2239,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Uber"
    },
    {
     "id": "11.8",
@@ -2112,7 +2252,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Netflix"
    },
    {
     "id": "11.9",
@@ -2124,7 +2265,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "YouTube"
    },
    {
     "id": "11.10",
@@ -2136,7 +2278,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Dropbox"
    },
    {
     "id": "11.11",
@@ -2148,7 +2291,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Swiggy"
    },
    {
     "id": "11.12",
@@ -2160,7 +2304,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "News Feed"
    },
    {
     "id": "11.13",
@@ -2172,7 +2317,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Notification Service"
    },
    {
     "id": "11.14",
@@ -2184,7 +2330,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Rate Limiter"
    },
    {
     "id": "11.15",
@@ -2196,7 +2343,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Web Crawler"
    },
    {
     "id": "11.16",
@@ -2208,7 +2356,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "11.1"
-    ]
+    ],
+    "short": "Typeahead"
    }
   ],
   "ph": 5,
@@ -2235,7 +2384,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Deep vs shallow modules"
    },
    {
     "id": "12.2",
@@ -2247,7 +2397,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.1"
-    ]
+    ],
+    "short": "Information leakage"
    },
    {
     "id": "12.3",
@@ -2259,7 +2410,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.1"
-    ]
+    ],
+    "short": "Tactical vs strategic"
    },
    {
     "id": "12.4",
@@ -2271,7 +2423,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.1"
-    ]
+    ],
+    "short": "Refactoring — named moves"
    },
    {
     "id": "12.5",
@@ -2283,7 +2436,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.1"
-    ]
+    ],
+    "short": "SOLID as heuristics"
    },
    {
     "id": "12.6",
@@ -2296,7 +2450,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.5"
-    ]
+    ],
+    "short": "Patterns in TypeScript"
    },
    {
     "id": "12.7",
@@ -2308,7 +2463,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.2"
-    ]
+    ],
+    "short": "Repository"
    },
    {
     "id": "12.8",
@@ -2320,7 +2476,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.7"
-    ]
+    ],
+    "short": "Service Layer"
    },
    {
     "id": "12.9",
@@ -2332,7 +2489,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.8"
-    ]
+    ],
+    "short": "Unit of Work"
    },
    {
     "id": "12.10",
@@ -2344,7 +2502,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.9"
-    ]
+    ],
+    "short": "Aggregate"
    },
    {
     "id": "12.11",
@@ -2356,7 +2515,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.10"
-    ]
+    ],
+    "short": "Message Bus"
    },
    {
     "id": "12.12",
@@ -2368,7 +2528,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.7"
-    ]
+    ],
+    "short": "Fowler's EAA catalog"
    },
    {
     "id": "12.13",
@@ -2380,7 +2541,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.4"
-    ]
+    ],
+    "short": "Parking Lot"
    },
    {
     "id": "12.14",
@@ -2392,7 +2554,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.4"
-    ]
+    ],
+    "short": "Elevator"
    },
    {
     "id": "12.15",
@@ -2404,7 +2567,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.4"
-    ]
+    ],
+    "short": "Splitwise"
    },
    {
     "id": "12.16",
@@ -2416,7 +2580,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.4"
-    ]
+    ],
+    "short": "BookMyShow"
    },
    {
     "id": "12.17",
@@ -2428,7 +2593,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.4"
-    ]
+    ],
+    "short": "ATM"
    },
    {
     "id": "12.18",
@@ -2440,7 +2606,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.4"
-    ]
+    ],
+    "short": "Chess"
    },
    {
     "id": "12.19",
@@ -2452,7 +2619,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.4"
-    ]
+    ],
+    "short": "Vending Machine"
    },
    {
     "id": "12.20",
@@ -2464,7 +2632,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.13"
-    ]
+    ],
+    "short": "In-memory KV store"
    },
    {
     "id": "12.21",
@@ -2476,7 +2645,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.13"
-    ]
+    ],
+    "short": "Rate limiter"
    },
    {
     "id": "12.22",
@@ -2489,7 +2659,8 @@ const MODULES = [
     "deps": [
      "12.13",
      "0.5"
-    ]
+    ],
+    "short": "Connection pool"
    },
    {
     "id": "12.23",
@@ -2501,7 +2672,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "12.13"
-    ]
+    ],
+    "short": "Circuit breaker"
    }
   ],
   "ph": 5,
@@ -2526,7 +2698,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Escalating mocks"
    },
    {
     "id": "14.2",
@@ -2538,7 +2711,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "14.1"
-    ]
+    ],
+    "short": "Architecture defense"
    },
    {
     "id": "14.3",
@@ -2548,7 +2722,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "Whiteboarding"
    },
    {
     "id": "14.4",
@@ -2560,7 +2735,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "14.1"
-    ]
+    ],
+    "short": "Requirement clarification"
    },
    {
     "id": "14.5",
@@ -2573,7 +2749,8 @@ const MODULES = [
     "nextDue": null,
     "deps": [
      "14.2"
-    ]
+    ],
+    "short": "Tradeoff articulation"
    },
    {
     "id": "14.6",
@@ -2583,7 +2760,8 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": null,
-    "deps": []
+    "deps": [],
+    "short": "STAR stories"
    }
   ],
   "ph": 5,
@@ -2810,6 +2988,7 @@ function flashAtom(aid){
 
 function render(){
   const m=byId[curMod], st=modStatus(m);
+  card.classList.toggle("narrow", curTab==="overview");   // the atom graph needs the room
   const need=deps[m.id].map(x=>`<span class="tag" data-go="${x}">${byId[x].code} · ${byId[x].name}</span>`).join("")
     || `<span class="tag plain">nothing — this is the floor</span>`;
   const unl=unlocksOf(m.id).map(x=>`<span class="tag" data-go="${x}">${byId[x].code} · ${byId[x].name} →</span>`).join("")
@@ -2852,11 +3031,16 @@ function overview(m,need,unl){
   </div>`;
 }
 
-/* ---- THE ATOMS VIEW: a real sub-atom dependency graph, then the list ---- */
+/* ---- THE ATOMS VIEW: a real sub-atom dependency graph, then the list ----
+   Layered DAG. One band per dependency LEVEL: nothing in L2 can be attempted
+   until its L1 parents are true. Prerequisites that live in ANOTHER module are
+   drawn too, as dashed nodes in a band above — because "you cannot do Redis
+   internals until you've done the event loop in Module 0" is exactly the kind
+   of edge this page exists to make undeniable.                                */
 function atomsView(m){
   const inMod=new Set(m.atoms.map(a=>a.id));
 
-  // longest-path depth over IN-MODULE deps → one band per level
+  // longest-path depth over IN-MODULE deps
   const depth={};
   const calc=id=>{
     if(depth[id]!==undefined)return depth[id];
@@ -2868,52 +3052,79 @@ function atomsView(m){
   m.atoms.forEach(a=>calc(a.id));
 
   const levels=[];
-  m.atoms.forEach(a=>{ const L=depth[a.id]; (levels[L]=levels[L]||[]).push(a); });
+  m.atoms.forEach(a=>{ const L=depth[a.id]; (levels[L]=levels[L]||[]).push(a.id); });
 
-  // wrap wide levels so nothing gets crushed
-  const PER=6, NW=76, NH=27, GX=18, GY=48, PAD=12, LX=44;
-  const bands=[];
-  levels.forEach((as,l)=>{ if(!as)return;
-    for(let i=0;i<as.length;i+=PER) bands.push({lvl:l,atoms:as.slice(i,i+PER),first:i===0}); });
+  // every prerequisite that lives OUTSIDE this module
+  const exts=[...new Set(m.atoms.flatMap(a=>(a.deps||[]).filter(x=>!inMod.has(x))))]
+    .sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
 
-  const cols=Math.max(...bands.map(b=>b.atoms.length));
-  const inner=cols*NW+(cols-1)*GX;
+  const PER=5, NW=196, NH=44, GX=20, GY=80, PAD=14, LX=48;
+  const inner=PER*NW+(PER-1)*GX;
   const GW=LX+PAD*2+inner;
-  const GH=PAD*2+(bands.length-1)*GY+NH;
 
-  const P={};
-  bands.forEach((b,bi)=>{
-    const y=PAD+bi*GY;
-    const rowW=b.atoms.length*NW+(b.atoms.length-1)*GX;
-    const x0=LX+PAD+(inner-rowW)/2;
-    b.atoms.forEach((a,i)=>{P[a.id]={x:x0+i*(NW+GX),y};});
+  const P={}, CX={}, bandLabels=[];
+  let bi=0;
+  const placeBand=(ids,label,isExt)=>{
+    for(let i=0;i<ids.length;i+=PER){
+      const c=ids.slice(i,i+PER), y=PAD+bi*GY;
+      const rowW=c.length*NW+(c.length-1)*GX;
+      const x0=LX+PAD+(inner-rowW)/2;
+      c.forEach((id,j)=>{ const x=x0+j*(NW+GX); P[id]={x,y,ext:isExt}; CX[id]=x+NW/2; });
+      if(i===0) bandLabels.push({y,label,isExt});
+      bi++;
+    }
+  };
+
+  // barycentre ordering: put each node near the average x of its parents.
+  // Without this, a hub like 11.1 → 15 children fans into a hairball.
+  const bary=id=>{
+    const ps=(atomById[id].deps||[]).filter(d=>CX[d]!==undefined);
+    return ps.length ? ps.reduce((s,d)=>s+CX[d],0)/ps.length : -1;
+  };
+
+  if(exts.length) placeBand(exts,"NEEDS",true);
+  levels.forEach((ids,l)=>{
+    if(!ids)return;
+    const ordered = l===0 && !exts.length
+      ? ids
+      : ids.map((id,i)=>({id,i,b:bary(id)}))
+           .sort((a,b)=> (a.b<0)-(b.b<0) || a.b-b.b || a.i-b.i)
+           .map(o=>o.id);
+    placeBand(ordered,"L"+l,false);
   });
+  const GH=PAD*2+(bi-1)*GY+NH;
 
   let edges="";
   m.atoms.forEach(a=>(a.deps||[]).forEach(dp=>{
-    if(!inMod.has(dp)||!P[dp]||!P[a.id])return;
-    const A=P[dp],B=P[a.id];
-    const x1=A.x+NW/2,y1=A.y+NH,x2=B.x+NW/2,y2=B.y-5,my=(y1+y2)/2;
-    edges+=`<path class="aedge" data-from="${dp}" data-to="${a.id}" d="M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}"></path>`;
+    const A=P[dp],B=P[a.id]; if(!A||!B)return;
+    const x1=A.x+NW/2, y1=A.y+NH, x2=B.x+NW/2, y2=B.y-6, my=(y1+y2)/2;
+    edges+=`<path class="aedge${A.ext?" x":""}" data-from="${dp}" data-to="${a.id}"
+             d="M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}"></path>`;
   }));
 
-  const nodes=m.atoms.map(a=>{
-    const p=P[a.id]; if(!p)return"";
-    return `<g class="an${a.s==="locked"?" locked":""}" data-id="${a.id}" tabindex="0" role="button"
-        style="--a:var(${ST[a.s].c})" aria-label="Atom ${a.id}. ${ST[a.s].l}.">
-      <rect x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="7"></rect>
-      <text x="${p.x+NW/2}" y="${p.y+NH/2+.5}">${a.id}</text></g>`;
-  }).join("");
+  const node=(id,isExt)=>{
+    const a=atomById[id], p=P[id]; if(!p)return"";
+    const cx=p.x+NW/2;
+    const top = isExt ? `${atomMod[id].code} · ${id}` : id;
+    return `<g class="an${a.s==="locked"?" locked":""}${isExt?" ext":""}" data-id="${id}"
+        ${isExt?`data-goatom="${id}"`:""} tabindex="0" role="button"
+        style="--a:var(${ST[a.s].c})"
+        aria-label="${isExt?"External prerequisite":"Atom"} ${id}, ${a.short}. ${ST[a.s].l}.">
+      <rect x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="9"></rect>
+      <text class="aid" x="${cx}" y="${p.y+16}">${top}${isExt?" ↗":""}</text>
+      <text class="anm" x="${cx}" y="${p.y+32}">${a.short}</text></g>`;
+  };
+  const nodes = exts.map(id=>node(id,true)).join("") + m.atoms.map(a=>node(a.id,false)).join("");
 
-  const lvl=bands.map((b,bi)=>b.first
-    ? `<text class="alvl" x="8" y="${PAD+bi*GY+NH/2+4}">L${b.lvl}</text>`:"").join("");
+  const lvl=bandLabels.map(b=>
+    `<text class="alvl${b.isExt?" x":""}" x="8" y="${b.y+NH/2+4}">${b.label}</text>`).join("");
 
   const rows=m.atoms.map(a=>{
     const ext=(a.deps||[]).filter(x=>!inMod.has(x));
     const inn=(a.deps||[]).filter(x=>inMod.has(x));
     const chips=[
       ...inn.map(x=>`<b>${x}</b>`),
-      ...ext.map(x=>`<span class="xdep" data-goatom="${x}">${x} · ${atomMod[x].code}</span>`)
+      ...ext.map(x=>`<span class="xdep" data-goatom="${x}">↗ ${atomMod[x].code} · ${x} ${atomById[x].short}</span>`)
     ].join(" ");
     return `<div class="arow${a.s==="locked"?" locked":""}" id="row-${cssId(a.id)}" style="--a:var(${ST[a.s].c})">
       <div class="aid">${a.id}</div>
@@ -2931,10 +3142,16 @@ function atomsView(m){
   return `<div class="body-in">
     <div class="sect">
       <div class="h">Sub-atom dependencies — what must be true before what</div>
+      <div class="ghint">Each band is a <b>dependency level</b>: nothing in <b>L2</b> can be attempted until its <b>L1</b> parents are true.
+        ${exts.length?`The dashed <b>NEEDS</b> band at the top is <b>${exts.length} prerequisite${exts.length>1?"s":""} that live in another module</b> — click one to jump to it.`:`This module needs nothing from outside itself.`}</div>
       <div class="agraph">
-        <svg viewBox="0 0 ${GW} ${GH}" style="min-width:${Math.max(GW,400)}px;width:100%">
-          <defs><marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 z" fill="var(--line)"></path></marker></defs>
+        <svg viewBox="0 0 ${GW} ${GH}" style="min-width:${GW}px;width:100%">
+          <defs>
+            <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 z" fill="var(--line)"></path></marker>
+            <marker id="ahl" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 z" fill="var(--accent)"></path></marker>
+          </defs>
           ${lvl}${edges}${nodes}
         </svg>
       </div>
@@ -2944,14 +3161,16 @@ function atomsView(m){
   </div>`;
 }
 
-/* hover an atom → light its whole in-module chain, both directions; click → jump to its row */
+/* hover an atom → light its whole chain, both directions, EXTERNAL prereqs included.
+   Click an in-module node → jump to its row. Click an external one → jump to its module. */
 function wireAtomGraph(m){
-  const inMod=new Set(m.atoms.map(a=>a.id));
+  const drawn=new Set([...cc.querySelectorAll(".an")].map(n=>n.dataset.id));
   const up={},down={};
-  m.atoms.forEach(a=>{
-    up[a.id]=(a.deps||[]).filter(x=>inMod.has(x));
-    down[a.id]=m.atoms.filter(x=>(x.deps||[]).includes(a.id)).map(x=>x.id);
-  });
+  drawn.forEach(id=>{ up[id]=[]; down[id]=[]; });
+  m.atoms.forEach(a=>(a.deps||[]).forEach(d=>{
+    if(!drawn.has(d))return;
+    up[a.id].push(d); down[d].push(a.id);
+  }));
   const walk=(id,dir,set)=>(dir==="up"?up[id]:down[id]).forEach(n=>{if(!set.has(n)){set.add(n);walk(n,dir,set);}});
 
   const ns=[...cc.querySelectorAll(".an")], es=[...cc.querySelectorAll(".aedge")];
@@ -2963,13 +3182,14 @@ function wireAtomGraph(m){
       e.classList.toggle("hl",rel);e.classList.toggle("dim",!rel);});
   };
   ns.forEach(n=>{
-    const id=n.dataset.id;
+    const id=n.dataset.id, isExt=n.classList.contains("ext");
     n.addEventListener("mouseenter",()=>lite(id));
     n.addEventListener("focus",()=>lite(id));
     n.addEventListener("mouseleave",clear);
     n.addEventListener("blur",clear);
-    n.addEventListener("click",()=>flashAtom(id));
-    n.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flashAtom(id);}});
+    const go=()=> isExt ? openCard(atomMod[id].id,"atoms",id) : flashAtom(id);
+    n.addEventListener("click",go);
+    n.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});
   });
 }
 

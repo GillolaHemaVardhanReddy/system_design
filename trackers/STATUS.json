@@ -57,7 +57,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "OSI (7) vs TCP/IP (4)"
         },
         {
           "id": "1.2",
@@ -69,7 +70,8 @@
           "nextDue": null,
           "deps": [
             "1.1"
-          ]
+          ],
+          "short": "IP · best-effort"
         },
         {
           "id": "1.3",
@@ -82,7 +84,8 @@
           "note": "re-retrieved cold S5 (root→TLD→authoritative repaired)",
           "deps": [
             "1.2"
-          ]
+          ],
+          "short": "DNS"
         },
         {
           "id": "1.4",
@@ -94,7 +97,8 @@
           "nextDue": null,
           "deps": [
             "1.2"
-          ]
+          ],
+          "short": "TCP 3-way handshake"
         },
         {
           "id": "1.5",
@@ -108,7 +112,8 @@
           "note": "MECHANISM re-derived cold S5, unaided. TERMS: none produced. Demoted S6.",
           "deps": [
             "1.4"
-          ]
+          ],
+          "short": "TCP loss recovery"
         },
         {
           "id": "1.6",
@@ -120,7 +125,8 @@
           "nextDue": null,
           "deps": [
             "1.5"
-          ]
+          ],
+          "short": "TCP congestion control"
         },
         {
           "id": "1.7",
@@ -134,7 +140,8 @@
           "note": "derived S4 from TCP's head-of-line cost. Never gated.",
           "deps": [
             "1.5"
-          ]
+          ],
+          "short": "UDP + head-of-line blocking"
         },
         {
           "id": "1.8",
@@ -147,7 +154,8 @@
           "deps": [
             "1.4",
             "1.7"
-          ]
+          ],
+          "short": "Sockets"
         },
         {
           "id": "1.9",
@@ -161,7 +169,8 @@
           "note": "OPENED S6 — source announced, forcing question posed, NOT answered.",
           "deps": [
             "1.4"
-          ]
+          ],
+          "short": "TLS 1.3 + Diffie–Hellman"
         },
         {
           "id": "1.10",
@@ -174,7 +183,8 @@
           "note": "idempotent misdefined as 'same response' in S5 — precision to re-firm.",
           "deps": [
             "1.4"
-          ]
+          ],
+          "short": "HTTP/1.1"
         },
         {
           "id": "1.11",
@@ -186,7 +196,8 @@
           "nextDue": null,
           "deps": [
             "1.10"
-          ]
+          ],
+          "short": "Browser rendering"
         },
         {
           "id": "1.12",
@@ -199,7 +210,8 @@
           "deps": [
             "1.10",
             "1.5"
-          ]
+          ],
+          "short": "HTTP/2 · multiplexing"
         },
         {
           "id": "1.13",
@@ -212,7 +224,8 @@
           "deps": [
             "1.12",
             "1.7"
-          ]
+          ],
+          "short": "HTTP/3 · QUIC"
         },
         {
           "id": "1.14",
@@ -224,7 +237,8 @@
           "nextDue": null,
           "deps": [
             "1.10"
-          ]
+          ],
+          "short": "Cookies · sessions · JWT"
         },
         {
           "id": "1.15",
@@ -236,7 +250,8 @@
           "nextDue": null,
           "deps": [
             "1.10"
-          ]
+          ],
+          "short": "Reverse proxy · vhosting"
         },
         {
           "id": "1.16",
@@ -249,7 +264,8 @@
           "deps": [
             "1.15",
             "1.4"
-          ]
+          ],
+          "short": "Load balancing — L4 vs L7"
         },
         {
           "id": "1.17",
@@ -262,7 +278,8 @@
           "deps": [
             "1.10",
             "1.4"
-          ]
+          ],
+          "short": "WebSockets"
         },
         {
           "id": "1.18",
@@ -274,7 +291,8 @@
           "nextDue": null,
           "deps": [
             "1.12"
-          ]
+          ],
+          "short": "gRPC"
         },
         {
           "id": "1.19",
@@ -287,7 +305,8 @@
           "deps": [
             "1.10",
             "1.16"
-          ]
+          ],
+          "short": "API design · retries · jitter"
         }
       ],
       "ph": 0,
@@ -318,7 +337,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "CPU + memory hierarchy"
         },
         {
           "id": "0.2",
@@ -330,7 +350,8 @@
           "nextDue": null,
           "deps": [
             "0.1"
-          ]
+          ],
+          "short": "Process vs thread"
         },
         {
           "id": "0.3",
@@ -342,7 +363,8 @@
           "nextDue": null,
           "deps": [
             "0.2"
-          ]
+          ],
+          "short": "Concurrency vs parallelism"
         },
         {
           "id": "0.4",
@@ -355,7 +377,8 @@
           "nextDue": null,
           "deps": [
             "0.2"
-          ]
+          ],
+          "short": "Scheduling · VM · paging"
         },
         {
           "id": "0.5",
@@ -367,7 +390,8 @@
           "nextDue": null,
           "deps": [
             "0.3"
-          ]
+          ],
+          "short": "Locks, mutexes, semaphores…"
         },
         {
           "id": "0.6",
@@ -379,7 +403,8 @@
           "nextDue": null,
           "deps": [
             "0.5"
-          ]
+          ],
+          "short": "Race conditions · deadlock (the…"
         },
         {
           "id": "0.7",
@@ -392,7 +417,8 @@
           "deps": [
             "0.5",
             "0.6"
-          ]
+          ],
+          "short": "Producer–consumer · dining phil."
         },
         {
           "id": "0.8",
@@ -406,7 +432,8 @@
           "deps": [
             "0.2",
             "0.4"
-          ]
+          ],
+          "short": "Blocking vs non-blocking I/O"
         },
         {
           "id": "0.9",
@@ -418,7 +445,8 @@
           "nextDue": null,
           "deps": [
             "0.8"
-          ]
+          ],
+          "short": "select → poll → epoll"
         },
         {
           "id": "0.10",
@@ -431,7 +459,8 @@
           "nextDue": null,
           "deps": [
             "0.9"
-          ]
+          ],
+          "short": "The event loop · libuv"
         },
         {
           "id": "0.11",
@@ -443,7 +472,8 @@
           "nextDue": null,
           "deps": [
             "0.10"
-          ]
+          ],
+          "short": "Event-loop starvation"
         }
       ],
       "ph": 1,
@@ -472,7 +502,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Relational vs NoSQL"
         },
         {
           "id": "2.2",
@@ -484,7 +515,8 @@
           "nextDue": null,
           "deps": [
             "2.1"
-          ]
+          ],
+          "short": "ACID"
         },
         {
           "id": "2.3",
@@ -496,7 +528,8 @@
           "nextDue": null,
           "deps": [
             "2.2"
-          ]
+          ],
+          "short": "Transactions"
         },
         {
           "id": "2.4",
@@ -511,7 +544,8 @@
             "2.3",
             "0.5",
             "0.6"
-          ]
+          ],
+          "short": "Isolation & serializability"
         },
         {
           "id": "2.5",
@@ -523,7 +557,8 @@
           "nextDue": null,
           "deps": [
             "2.4"
-          ]
+          ],
+          "short": "MVCC"
         },
         {
           "id": "2.6",
@@ -535,7 +570,8 @@
           "nextDue": null,
           "deps": [
             "2.1"
-          ]
+          ],
+          "short": "B-tree vs LSM-tree"
         },
         {
           "id": "2.7",
@@ -548,7 +584,8 @@
           "deps": [
             "2.6",
             "2.3"
-          ]
+          ],
+          "short": "WAL"
         },
         {
           "id": "2.8",
@@ -560,7 +597,8 @@
           "nextDue": null,
           "deps": [
             "2.6"
-          ]
+          ],
+          "short": "Indexing"
         },
         {
           "id": "2.9",
@@ -572,7 +610,8 @@
           "nextDue": null,
           "deps": [
             "2.8"
-          ]
+          ],
+          "short": "Query planning · EXPLAIN"
         },
         {
           "id": "2.10",
@@ -584,7 +623,8 @@
           "nextDue": null,
           "deps": [
             "2.1"
-          ]
+          ],
+          "short": "Normalize vs denormalize"
         },
         {
           "id": "2.11",
@@ -596,7 +636,8 @@
           "nextDue": null,
           "deps": [
             "2.7"
-          ]
+          ],
+          "short": "Replication"
         },
         {
           "id": "2.12",
@@ -608,7 +649,8 @@
           "nextDue": null,
           "deps": [
             "2.11"
-          ]
+          ],
+          "short": "Partitioning · sharding"
         },
         {
           "id": "2.13",
@@ -620,7 +662,8 @@
           "nextDue": null,
           "deps": [
             "2.11"
-          ]
+          ],
+          "short": "Read replicas · lag"
         },
         {
           "id": "2.14",
@@ -634,7 +677,8 @@
           "deps": [
             "2.11",
             "2.12"
-          ]
+          ],
+          "short": "CAP → PACELC"
         }
       ],
       "ph": 2,
@@ -663,7 +707,8 @@
           "nextDue": null,
           "deps": [
             "0.1"
-          ]
+          ],
+          "short": "Why caches exist"
         },
         {
           "id": "3.2",
@@ -675,7 +720,8 @@
           "nextDue": null,
           "deps": [
             "3.1"
-          ]
+          ],
+          "short": "Cache-aside / write-through"
         },
         {
           "id": "3.3",
@@ -688,7 +734,8 @@
           "nextDue": null,
           "deps": [
             "0.10"
-          ]
+          ],
+          "short": "Redis internals"
         },
         {
           "id": "3.4",
@@ -701,7 +748,8 @@
           "deps": [
             "3.3",
             "1.4"
-          ]
+          ],
+          "short": "RESP — a protocol on TCP"
         },
         {
           "id": "3.5",
@@ -713,7 +761,8 @@
           "nextDue": null,
           "deps": [
             "3.3"
-          ]
+          ],
+          "short": "Persistence — RDB vs AOF"
         },
         {
           "id": "3.6",
@@ -725,7 +774,8 @@
           "nextDue": null,
           "deps": [
             "3.1"
-          ]
+          ],
+          "short": "Eviction — sampled LRU"
         },
         {
           "id": "3.7",
@@ -738,7 +788,8 @@
           "deps": [
             "3.2",
             "1.3"
-          ]
+          ],
+          "short": "Invalidation & TTL"
         },
         {
           "id": "3.8",
@@ -750,7 +801,8 @@
           "nextDue": null,
           "deps": [
             "3.7"
-          ]
+          ],
+          "short": "Stampede · thundering herd"
         }
       ],
       "ph": 2,
@@ -779,7 +831,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Vertical vs horizontal"
         },
         {
           "id": "4.2",
@@ -791,7 +844,8 @@
           "nextDue": null,
           "deps": [
             "4.1"
-          ]
+          ],
+          "short": "Stateless vs stateful"
         },
         {
           "id": "4.3",
@@ -803,7 +857,8 @@
           "nextDue": null,
           "deps": [
             "4.2"
-          ]
+          ],
+          "short": "Load balancers"
         },
         {
           "id": "4.4",
@@ -815,7 +870,8 @@
           "nextDue": null,
           "deps": [
             "4.3"
-          ]
+          ],
+          "short": "CDN"
         },
         {
           "id": "4.5",
@@ -827,7 +883,8 @@
           "nextDue": null,
           "deps": [
             "4.3"
-          ]
+          ],
+          "short": "Consistent hashing"
         },
         {
           "id": "4.6",
@@ -839,7 +896,8 @@
           "nextDue": null,
           "deps": [
             "4.2"
-          ]
+          ],
+          "short": "Rate limiting"
         },
         {
           "id": "4.7",
@@ -852,7 +910,8 @@
           "nextDue": null,
           "deps": [
             "0.1"
-          ]
+          ],
+          "short": "Back-of-envelope estimation"
         },
         {
           "id": "4.8",
@@ -864,7 +923,8 @@
           "nextDue": null,
           "deps": [
             "4.7"
-          ]
+          ],
+          "short": "The USE method"
         },
         {
           "id": "4.9",
@@ -877,7 +937,8 @@
           "deps": [
             "4.8",
             "4.6"
-          ]
+          ],
+          "short": "Cascading failures"
         }
       ],
       "ph": 3,
@@ -907,7 +968,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Fallacies of distributed"
         },
         {
           "id": "5.2",
@@ -919,7 +981,8 @@
           "nextDue": null,
           "deps": [
             "5.1"
-          ]
+          ],
+          "short": "Failure detectors"
         },
         {
           "id": "5.3",
@@ -931,7 +994,8 @@
           "nextDue": null,
           "deps": [
             "5.1"
-          ]
+          ],
+          "short": "Physical clocks"
         },
         {
           "id": "5.4",
@@ -943,7 +1007,8 @@
           "nextDue": null,
           "deps": [
             "5.3"
-          ]
+          ],
+          "short": "Logical clocks — Lamport"
         },
         {
           "id": "5.5",
@@ -955,7 +1020,8 @@
           "nextDue": null,
           "deps": [
             "5.4"
-          ]
+          ],
+          "short": "Vector clocks"
         },
         {
           "id": "5.6",
@@ -968,7 +1034,8 @@
           "nextDue": null,
           "deps": [
             "5.5"
-          ]
+          ],
+          "short": "Consistency models"
         },
         {
           "id": "5.7",
@@ -980,7 +1047,8 @@
           "nextDue": null,
           "deps": [
             "5.6"
-          ]
+          ],
+          "short": "Quorum — R+W>N"
         },
         {
           "id": "5.8",
@@ -993,7 +1061,8 @@
           "deps": [
             "5.2",
             "5.7"
-          ]
+          ],
+          "short": "Consensus"
         },
         {
           "id": "5.9",
@@ -1005,7 +1074,8 @@
           "nextDue": null,
           "deps": [
             "5.8"
-          ]
+          ],
+          "short": "Leader election"
         },
         {
           "id": "5.10",
@@ -1017,7 +1087,8 @@
           "nextDue": null,
           "deps": [
             "5.9"
-          ]
+          ],
+          "short": "Raft — and BUILD it"
         },
         {
           "id": "5.11",
@@ -1029,7 +1100,8 @@
           "nextDue": null,
           "deps": [
             "5.10"
-          ]
+          ],
+          "short": "Paxos (overview)"
         },
         {
           "id": "5.12",
@@ -1041,7 +1113,8 @@
           "nextDue": null,
           "deps": [
             "5.10"
-          ]
+          ],
+          "short": "Distributed locks"
         },
         {
           "id": "5.13",
@@ -1054,7 +1127,8 @@
           "deps": [
             "5.5",
             "5.6"
-          ]
+          ],
+          "short": "CRDTs"
         }
       ],
       "ph": 3,
@@ -1082,7 +1156,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Queues vs pub/sub"
         },
         {
           "id": "6.2",
@@ -1094,7 +1169,8 @@
           "nextDue": null,
           "deps": [
             "6.1"
-          ]
+          ],
+          "short": "Event-driven architecture"
         },
         {
           "id": "6.3",
@@ -1106,7 +1182,8 @@
           "nextDue": null,
           "deps": [
             "6.2"
-          ]
+          ],
+          "short": "Streaming"
         },
         {
           "id": "6.4",
@@ -1118,7 +1195,8 @@
           "nextDue": null,
           "deps": [
             "6.1"
-          ]
+          ],
+          "short": "Kafka — segmented log"
         },
         {
           "id": "6.5",
@@ -1131,7 +1209,8 @@
           "deps": [
             "6.4",
             "0.4"
-          ]
+          ],
+          "short": "Page cache · zero-copy"
         },
         {
           "id": "6.6",
@@ -1144,7 +1223,8 @@
           "deps": [
             "6.4",
             "5.7"
-          ]
+          ],
+          "short": "ISR replication"
         },
         {
           "id": "6.7",
@@ -1156,7 +1236,8 @@
           "nextDue": null,
           "deps": [
             "6.4"
-          ]
+          ],
+          "short": "Consumer groups · offsets"
         },
         {
           "id": "6.8",
@@ -1170,7 +1251,8 @@
           "deps": [
             "6.7",
             "1.10"
-          ]
+          ],
+          "short": "Delivery semantics"
         },
         {
           "id": "6.9",
@@ -1182,7 +1264,8 @@
           "nextDue": null,
           "deps": [
             "6.4"
-          ]
+          ],
+          "short": "Ordering guarantees"
         },
         {
           "id": "6.10",
@@ -1194,7 +1277,8 @@
           "nextDue": null,
           "deps": [
             "6.7"
-          ]
+          ],
+          "short": "Backpressure"
         },
         {
           "id": "6.11",
@@ -1206,7 +1290,8 @@
           "nextDue": null,
           "deps": [
             "6.8"
-          ]
+          ],
+          "short": "Dead-letter queues"
         }
       ],
       "ph": 3,
@@ -1233,7 +1318,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Object / blob storage"
         },
         {
           "id": "7.2",
@@ -1245,7 +1331,8 @@
           "nextDue": null,
           "deps": [
             "7.1"
-          ]
+          ],
+          "short": "Distributed storage"
         },
         {
           "id": "7.3",
@@ -1257,7 +1344,8 @@
           "nextDue": null,
           "deps": [
             "7.2"
-          ]
+          ],
+          "short": "Erasure coding"
         },
         {
           "id": "7.4",
@@ -1269,7 +1357,8 @@
           "nextDue": null,
           "deps": [
             "7.1"
-          ]
+          ],
+          "short": "Data lakes vs warehouses"
         },
         {
           "id": "7.5",
@@ -1282,7 +1371,8 @@
           "deps": [
             "7.4",
             "2.6"
-          ]
+          ],
+          "short": "Columnar storage"
         },
         {
           "id": "7.6",
@@ -1294,7 +1384,8 @@
           "nextDue": null,
           "deps": [
             "7.2"
-          ]
+          ],
+          "short": "GFS"
         },
         {
           "id": "7.7",
@@ -1307,7 +1398,8 @@
           "deps": [
             "7.6",
             "2.6"
-          ]
+          ],
+          "short": "Bigtable — LSM/SSTable"
         }
       ],
       "ph": 3,
@@ -1334,7 +1426,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Logging"
         },
         {
           "id": "8.2",
@@ -1346,7 +1439,8 @@
           "nextDue": null,
           "deps": [
             "4.8"
-          ]
+          ],
+          "short": "Metrics — RED / USE"
         },
         {
           "id": "8.3",
@@ -1358,7 +1452,8 @@
           "nextDue": null,
           "deps": [
             "8.2"
-          ]
+          ],
+          "short": "Distributed tracing"
         },
         {
           "id": "8.4",
@@ -1370,7 +1465,8 @@
           "nextDue": null,
           "deps": [
             "8.2"
-          ]
+          ],
+          "short": "SLI / SLO · error budgets"
         },
         {
           "id": "8.5",
@@ -1383,7 +1479,8 @@
           "deps": [
             "8.4",
             "8.3"
-          ]
+          ],
+          "short": "Postmortems"
         }
       ],
       "ph": 4,
@@ -1410,7 +1507,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "AuthN vs AuthZ"
         },
         {
           "id": "9.2",
@@ -1423,7 +1521,8 @@
           "deps": [
             "9.1",
             "1.14"
-          ]
+          ],
+          "short": "Sessions vs JWT"
         },
         {
           "id": "9.3",
@@ -1435,7 +1534,8 @@
           "nextDue": null,
           "deps": [
             "9.2"
-          ]
+          ],
+          "short": "OAuth2 / OIDC"
         },
         {
           "id": "9.4",
@@ -1447,7 +1547,8 @@
           "nextDue": null,
           "deps": [
             "1.9"
-          ]
+          ],
+          "short": "Symmetric vs asymmetric"
         },
         {
           "id": "9.5",
@@ -1459,7 +1560,8 @@
           "nextDue": null,
           "deps": [
             "9.4"
-          ]
+          ],
+          "short": "Hashing & salting"
         },
         {
           "id": "9.6",
@@ -1472,7 +1574,8 @@
           "deps": [
             "1.9",
             "9.4"
-          ]
+          ],
+          "short": "TLS in depth"
         },
         {
           "id": "9.7",
@@ -1484,7 +1587,8 @@
           "nextDue": null,
           "deps": [
             "9.5"
-          ]
+          ],
+          "short": "Secrets management"
         },
         {
           "id": "9.8",
@@ -1496,7 +1600,8 @@
           "nextDue": null,
           "deps": [
             "9.1"
-          ]
+          ],
+          "short": "CSRF · XSS · SQLi · SSRF"
         }
       ],
       "ph": 4,
@@ -1523,7 +1628,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Docker"
         },
         {
           "id": "10.2",
@@ -1536,7 +1642,8 @@
           "deps": [
             "10.1",
             "0.2"
-          ]
+          ],
+          "short": "Containers vs VMs"
         },
         {
           "id": "10.3",
@@ -1548,7 +1655,8 @@
           "nextDue": null,
           "deps": [
             "10.2"
-          ]
+          ],
+          "short": "Kubernetes"
         },
         {
           "id": "10.4",
@@ -1560,7 +1668,8 @@
           "nextDue": null,
           "deps": [
             "10.3"
-          ]
+          ],
+          "short": "Service discovery"
         },
         {
           "id": "10.5",
@@ -1572,7 +1681,8 @@
           "nextDue": null,
           "deps": [
             "10.1"
-          ]
+          ],
+          "short": "CI/CD"
         },
         {
           "id": "10.6",
@@ -1584,7 +1694,8 @@
           "nextDue": null,
           "deps": [
             "10.3"
-          ]
+          ],
+          "short": "Infrastructure as code"
         },
         {
           "id": "10.7",
@@ -1596,7 +1707,8 @@
           "nextDue": null,
           "deps": [
             "4.2"
-          ]
+          ],
+          "short": "Twelve-Factor"
         },
         {
           "id": "10.8",
@@ -1609,7 +1721,8 @@
           "deps": [
             "10.5",
             "10.3"
-          ]
+          ],
+          "short": "Blue-green & canary"
         }
       ],
       "ph": 4,
@@ -1638,7 +1751,8 @@
           "nextDue": null,
           "deps": [
             "6.1"
-          ]
+          ],
+          "short": "CQRS"
         },
         {
           "id": "13.2",
@@ -1650,7 +1764,8 @@
           "nextDue": null,
           "deps": [
             "13.1"
-          ]
+          ],
+          "short": "Event sourcing"
         },
         {
           "id": "13.3",
@@ -1662,7 +1777,8 @@
           "nextDue": null,
           "deps": [
             "13.7"
-          ]
+          ],
+          "short": "Saga"
         },
         {
           "id": "13.4",
@@ -1674,7 +1790,8 @@
           "nextDue": null,
           "deps": [
             "13.3"
-          ]
+          ],
+          "short": "The outbox pattern"
         },
         {
           "id": "13.5",
@@ -1684,7 +1801,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Service mesh"
         },
         {
           "id": "13.6",
@@ -1696,7 +1814,8 @@
           "nextDue": null,
           "deps": [
             "2.14"
-          ]
+          ],
+          "short": "Multi-region"
         },
         {
           "id": "13.7",
@@ -1708,7 +1827,8 @@
           "nextDue": null,
           "deps": [
             "2.3"
-          ]
+          ],
+          "short": "2PC — and why it's avoided"
         },
         {
           "id": "13.8",
@@ -1720,7 +1840,8 @@
           "nextDue": null,
           "deps": [
             "13.7"
-          ]
+          ],
+          "short": "Distributed transactions"
         }
       ],
       "ph": 4,
@@ -1747,7 +1868,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "The framework"
         },
         {
           "id": "11.2",
@@ -1759,7 +1881,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "URL Shortener"
         },
         {
           "id": "11.3",
@@ -1771,7 +1894,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Pastebin"
         },
         {
           "id": "11.4",
@@ -1783,7 +1907,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "WhatsApp"
         },
         {
           "id": "11.5",
@@ -1795,7 +1920,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Twitter"
         },
         {
           "id": "11.6",
@@ -1807,7 +1933,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Instagram"
         },
         {
           "id": "11.7",
@@ -1819,7 +1946,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Uber"
         },
         {
           "id": "11.8",
@@ -1831,7 +1959,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Netflix"
         },
         {
           "id": "11.9",
@@ -1843,7 +1972,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "YouTube"
         },
         {
           "id": "11.10",
@@ -1855,7 +1985,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Dropbox"
         },
         {
           "id": "11.11",
@@ -1867,7 +1998,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Swiggy"
         },
         {
           "id": "11.12",
@@ -1879,7 +2011,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "News Feed"
         },
         {
           "id": "11.13",
@@ -1891,7 +2024,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Notification Service"
         },
         {
           "id": "11.14",
@@ -1903,7 +2037,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Rate Limiter"
         },
         {
           "id": "11.15",
@@ -1915,7 +2050,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Web Crawler"
         },
         {
           "id": "11.16",
@@ -1927,7 +2063,8 @@
           "nextDue": null,
           "deps": [
             "11.1"
-          ]
+          ],
+          "short": "Typeahead"
         }
       ],
       "ph": 5,
@@ -1954,7 +2091,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Deep vs shallow modules"
         },
         {
           "id": "12.2",
@@ -1966,7 +2104,8 @@
           "nextDue": null,
           "deps": [
             "12.1"
-          ]
+          ],
+          "short": "Information leakage"
         },
         {
           "id": "12.3",
@@ -1978,7 +2117,8 @@
           "nextDue": null,
           "deps": [
             "12.1"
-          ]
+          ],
+          "short": "Tactical vs strategic"
         },
         {
           "id": "12.4",
@@ -1990,7 +2130,8 @@
           "nextDue": null,
           "deps": [
             "12.1"
-          ]
+          ],
+          "short": "Refactoring — named moves"
         },
         {
           "id": "12.5",
@@ -2002,7 +2143,8 @@
           "nextDue": null,
           "deps": [
             "12.1"
-          ]
+          ],
+          "short": "SOLID as heuristics"
         },
         {
           "id": "12.6",
@@ -2015,7 +2157,8 @@
           "nextDue": null,
           "deps": [
             "12.5"
-          ]
+          ],
+          "short": "Patterns in TypeScript"
         },
         {
           "id": "12.7",
@@ -2027,7 +2170,8 @@
           "nextDue": null,
           "deps": [
             "12.2"
-          ]
+          ],
+          "short": "Repository"
         },
         {
           "id": "12.8",
@@ -2039,7 +2183,8 @@
           "nextDue": null,
           "deps": [
             "12.7"
-          ]
+          ],
+          "short": "Service Layer"
         },
         {
           "id": "12.9",
@@ -2051,7 +2196,8 @@
           "nextDue": null,
           "deps": [
             "12.8"
-          ]
+          ],
+          "short": "Unit of Work"
         },
         {
           "id": "12.10",
@@ -2063,7 +2209,8 @@
           "nextDue": null,
           "deps": [
             "12.9"
-          ]
+          ],
+          "short": "Aggregate"
         },
         {
           "id": "12.11",
@@ -2075,7 +2222,8 @@
           "nextDue": null,
           "deps": [
             "12.10"
-          ]
+          ],
+          "short": "Message Bus"
         },
         {
           "id": "12.12",
@@ -2087,7 +2235,8 @@
           "nextDue": null,
           "deps": [
             "12.7"
-          ]
+          ],
+          "short": "Fowler's EAA catalog"
         },
         {
           "id": "12.13",
@@ -2099,7 +2248,8 @@
           "nextDue": null,
           "deps": [
             "12.4"
-          ]
+          ],
+          "short": "Parking Lot"
         },
         {
           "id": "12.14",
@@ -2111,7 +2261,8 @@
           "nextDue": null,
           "deps": [
             "12.4"
-          ]
+          ],
+          "short": "Elevator"
         },
         {
           "id": "12.15",
@@ -2123,7 +2274,8 @@
           "nextDue": null,
           "deps": [
             "12.4"
-          ]
+          ],
+          "short": "Splitwise"
         },
         {
           "id": "12.16",
@@ -2135,7 +2287,8 @@
           "nextDue": null,
           "deps": [
             "12.4"
-          ]
+          ],
+          "short": "BookMyShow"
         },
         {
           "id": "12.17",
@@ -2147,7 +2300,8 @@
           "nextDue": null,
           "deps": [
             "12.4"
-          ]
+          ],
+          "short": "ATM"
         },
         {
           "id": "12.18",
@@ -2159,7 +2313,8 @@
           "nextDue": null,
           "deps": [
             "12.4"
-          ]
+          ],
+          "short": "Chess"
         },
         {
           "id": "12.19",
@@ -2171,7 +2326,8 @@
           "nextDue": null,
           "deps": [
             "12.4"
-          ]
+          ],
+          "short": "Vending Machine"
         },
         {
           "id": "12.20",
@@ -2183,7 +2339,8 @@
           "nextDue": null,
           "deps": [
             "12.13"
-          ]
+          ],
+          "short": "In-memory KV store"
         },
         {
           "id": "12.21",
@@ -2195,7 +2352,8 @@
           "nextDue": null,
           "deps": [
             "12.13"
-          ]
+          ],
+          "short": "Rate limiter"
         },
         {
           "id": "12.22",
@@ -2208,7 +2366,8 @@
           "deps": [
             "12.13",
             "0.5"
-          ]
+          ],
+          "short": "Connection pool"
         },
         {
           "id": "12.23",
@@ -2220,7 +2379,8 @@
           "nextDue": null,
           "deps": [
             "12.13"
-          ]
+          ],
+          "short": "Circuit breaker"
         }
       ],
       "ph": 5,
@@ -2245,7 +2405,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Escalating mocks"
         },
         {
           "id": "14.2",
@@ -2257,7 +2418,8 @@
           "nextDue": null,
           "deps": [
             "14.1"
-          ]
+          ],
+          "short": "Architecture defense"
         },
         {
           "id": "14.3",
@@ -2267,7 +2429,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "Whiteboarding"
         },
         {
           "id": "14.4",
@@ -2279,7 +2442,8 @@
           "nextDue": null,
           "deps": [
             "14.1"
-          ]
+          ],
+          "short": "Requirement clarification"
         },
         {
           "id": "14.5",
@@ -2292,7 +2456,8 @@
           "nextDue": null,
           "deps": [
             "14.2"
-          ]
+          ],
+          "short": "Tradeoff articulation"
         },
         {
           "id": "14.6",
@@ -2302,7 +2467,8 @@
           "lastCold": null,
           "gatedIn": null,
           "nextDue": null,
-          "deps": []
+          "deps": [],
+          "short": "STAR stories"
         }
       ],
       "ph": 5,

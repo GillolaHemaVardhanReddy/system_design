@@ -34,6 +34,266 @@
   },
   "modules": [
     {
+      "id": 1,
+      "code": "M1",
+      "name": "Networking",
+      "x": 192,
+      "y": 330,
+      "broke": "Two computers. <b>No shared memory.</b> The only way to know anything about another machine is to send a message and wait — and the message may never arrive. <b>Every single thing in distributed systems is a consequence of that one fact.</b>",
+      "buys": "A name resolves to an address (DNS). An address becomes a reliable ordered byte pipe (TCP). The pipe becomes private and authenticated (TLS). The tunnel carries a request and gets a response (HTTP). That is the whole internet, and you can now walk it end to end.",
+      "costs": "Reliability is bought with <b>latency</b> — that is head-of-line blocking, and it is why UDP exists, why HTTP/2 did not fix what it claimed to, and why QUIC was built. And the wire gives you <b>one machine</b>. The moment there are ten of them: <b>where does the truth live?</b> That question <i>is</i> a database.",
+      "unlocks": [
+        2,
+        3,
+        9
+      ],
+      "atoms": [
+        {
+          "id": "1.1",
+          "t": "OSI (7 layers) vs the real TCP/IP model (4 layers)",
+          "s": "locked",
+          "ref": "RFC 1122 (primary source) · Beej's Network Concepts",
+          "trap": "The internet is 4 layers. OSI's 7 are a teaching artifact you must be able to NAME but will rarely use.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": []
+        },
+        {
+          "id": "1.2",
+          "t": "IP · best-effort delivery",
+          "s": "banked",
+          "ref": "Systems Approach ch. 3",
+          "lastCold": "2026-06-12",
+          "gatedIn": "S4",
+          "nextDue": null,
+          "deps": [
+            "1.1"
+          ]
+        },
+        {
+          "id": "1.3",
+          "t": "DNS — recursive resolver · root → TLD → authoritative · TTL · stale · trust anchor",
+          "s": "banked",
+          "ref": "⭐ Implement DNS in a Weekend (you build a resolver)",
+          "lastCold": "2026-07-11",
+          "gatedIn": "S3",
+          "nextDue": null,
+          "note": "re-retrieved cold S5 (root→TLD→authoritative repaired)",
+          "deps": [
+            "1.2"
+          ]
+        },
+        {
+          "id": "1.4",
+          "t": "TCP — the 3-way handshake. Purpose: sync sequence numbers BOTH directions; liveness is a side-effect",
+          "s": "banked",
+          "ref": "Systems Approach ch. 5",
+          "lastCold": "2026-06-12",
+          "gatedIn": "S4",
+          "nextDue": null,
+          "deps": [
+            "1.2"
+          ]
+        },
+        {
+          "id": "1.5",
+          "t": "TCP loss recovery — flowing → fast retransmit (3 dup-ACKs) · silent → RTO + exponential backoff",
+          "s": "termslost",
+          "ref": "HPBN ch. 2",
+          "trap": "Mechanism re-derived COLD in S5 — but he could name none of it. Under the gate rule (description without the term is not a pass) this is NOT banked. Re-gate due.",
+          "lastCold": "2026-07-11",
+          "gatedIn": null,
+          "nextDue": null,
+          "note": "MECHANISM re-derived cold S5, unaided. TERMS: none produced. Demoted S6.",
+          "deps": [
+            "1.4"
+          ]
+        },
+        {
+          "id": "1.6",
+          "t": "TCP congestion control — slow start, AIMD",
+          "s": "locked",
+          "ref": "Systems Approach ch. 6",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.5"
+          ]
+        },
+        {
+          "id": "1.7",
+          "t": "UDP — and head-of-line blocking as its reason to exist. TCP: rather late than wrong. UDP: rather wrong than late",
+          "s": "covered",
+          "ref": "HPBN ch. 3",
+          "trap": "Derived in S4, NEVER GATED. Covered proves nothing.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "note": "derived S4 from TCP's head-of-line cost. Never gated.",
+          "deps": [
+            "1.5"
+          ]
+        },
+        {
+          "id": "1.8",
+          "t": "Sockets — the actual API under everything above",
+          "s": "locked",
+          "ref": "⭐ Beej's Guide to Network Programming (v3.3.2, 2026)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.4",
+            "1.7"
+          ]
+        },
+        {
+          "id": "1.9",
+          "t": "TLS 1.3 + Diffie–Hellman — cert = IDENTITY, DH = SECRECY; the secret is built on both ends and NEVER SENT",
+          "s": "here",
+          "ref": "⭐⭐ tls13.xargs.org (byte-by-byte, names every field) · RFC 8446",
+          "trap": "DO NOT use hpbn.co's TLS chapter — it is from 2013 and predates TLS 1.3. It will teach you a handshake that no longer exists.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "note": "OPENED S6 — source announced, forcing question posed, NOT answered.",
+          "deps": [
+            "1.4"
+          ]
+        },
+        {
+          "id": "1.10",
+          "t": "HTTP/1.1 — request/response · safe ⊂ idempotent ⊂ all · idempotency key · 4xx vs 5xx",
+          "s": "banked",
+          "ref": "RFC 9110",
+          "lastCold": "2026-06-05",
+          "gatedIn": "S2",
+          "nextDue": null,
+          "note": "idempotent misdefined as 'same response' in S5 — precision to re-firm.",
+          "deps": [
+            "1.4"
+          ]
+        },
+        {
+          "id": "1.11",
+          "t": "Browser rendering — completes the google.com walk",
+          "s": "locked",
+          "ref": "HPBN ch. 10",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.10"
+          ]
+        },
+        {
+          "id": "1.12",
+          "t": "HTTP/2 — framing, multiplexing… and why it did NOT fix head-of-line blocking",
+          "s": "locked",
+          "ref": "HPBN ch. 12",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.10",
+            "1.5"
+          ]
+        },
+        {
+          "id": "1.13",
+          "t": "HTTP/3 / QUIC — the payoff for the term you already own",
+          "s": "locked",
+          "ref": "⭐ http3-explained (why-quic/why-tcphol) · RFC 9000/9114",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.12",
+            "1.7"
+          ]
+        },
+        {
+          "id": "1.14",
+          "t": "Cookies · sessions · JWT-vs-session",
+          "s": "locked",
+          "ref": "RFC 6265",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.10"
+          ]
+        },
+        {
+          "id": "1.15",
+          "t": "Reverse proxy · virtual hosting (picks a SITE, never a port)",
+          "s": "locked",
+          "ref": "nginx docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.10"
+          ]
+        },
+        {
+          "id": "1.16",
+          "t": "Load balancing — L4 vs L7",
+          "s": "locked",
+          "ref": "AWS Builders' Library",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.15",
+            "1.4"
+          ]
+        },
+        {
+          "id": "1.17",
+          "t": "WebSockets — the HTTP Upgrade handshake; why it is not 'HTTP but persistent'",
+          "s": "locked",
+          "ref": "RFC 6455",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.10",
+            "1.4"
+          ]
+        },
+        {
+          "id": "1.18",
+          "t": "gRPC — protobuf, 4 call types. gRPC IS HTTP/2, so it inherits its properties",
+          "s": "locked",
+          "ref": "grpc.io",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.12"
+          ]
+        },
+        {
+          "id": "1.19",
+          "t": "API design: REST vs gRPC vs GraphQL · pagination · versioning · retries, timeouts, JITTER",
+          "s": "locked",
+          "ref": "⭐ AWS Builders' Library (timeouts/retries/backoff-with-jitter)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "1.10",
+            "1.16"
+          ]
+        }
+      ],
+      "ph": 0,
+      "seq": 0
+    },
+    {
       "id": 0,
       "code": "M0",
       "name": "Foundations",
@@ -57,7 +317,8 @@
           "trap": "Jeff Dean's latency numbers are ~2010 — several are now wrong by 10×. Teach them as intuition; ESTIMATE with napkin-math.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "0.2",
@@ -66,7 +327,10 @@
           "ref": "OSTEP ch. 4–6, 26",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.1"
+          ]
         },
         {
           "id": "0.3",
@@ -75,7 +339,10 @@
           "ref": "OSTEP ch. 26",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.2"
+          ]
         },
         {
           "id": "0.4",
@@ -85,7 +352,10 @@
           "trap": "OSTEP's book.pdf does not exist (404). Chapter PDFs only.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.2"
+          ]
         },
         {
           "id": "0.5",
@@ -94,7 +364,10 @@
           "ref": "OSTEP ch. 28–31",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.3"
+          ]
         },
         {
           "id": "0.6",
@@ -103,7 +376,10 @@
           "ref": "OSTEP threads-deadlock.pdf",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.5"
+          ]
         },
         {
           "id": "0.7",
@@ -112,7 +388,11 @@
           "ref": "⭐ Little Book of Semaphores (it is a problem book)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.5",
+            "0.6"
+          ]
         },
         {
           "id": "0.8",
@@ -122,7 +402,11 @@
           "trap": "C10K is 2014 — no io_uring, benchmarks meaningless. Keep the axes, discard every recommendation.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.2",
+            "0.4"
+          ]
         },
         {
           "id": "0.9",
@@ -131,7 +415,10 @@
           "ref": "epoll(7) man page",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.8"
+          ]
         },
         {
           "id": "0.10",
@@ -141,7 +428,10 @@
           "trap": "uvbook (~2012) has API drift. Concepts only; official libuv docs for API truth.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.9"
+          ]
         },
         {
           "id": "0.11",
@@ -150,206 +440,14 @@
           "ref": "Node 'Don't Block the Event Loop'",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.10"
+          ]
         }
-      ]
-    },
-    {
-      "id": 1,
-      "code": "M1",
-      "name": "Networking",
-      "x": 192,
-      "y": 330,
-      "broke": "Two computers. <b>No shared memory.</b> The only way to know anything about another machine is to send a message and wait — and the message may never arrive. <b>Every single thing in distributed systems is a consequence of that one fact.</b>",
-      "buys": "A name resolves to an address (DNS). An address becomes a reliable ordered byte pipe (TCP). The pipe becomes private and authenticated (TLS). The tunnel carries a request and gets a response (HTTP). That is the whole internet, and you can now walk it end to end.",
-      "costs": "Reliability is bought with <b>latency</b> — that is head-of-line blocking, and it is why UDP exists, why HTTP/2 did not fix what it claimed to, and why QUIC was built. And the wire gives you <b>one machine</b>. The moment there are ten of them: <b>where does the truth live?</b> That question <i>is</i> a database.",
-      "unlocks": [
-        2,
-        3,
-        9
       ],
-      "atoms": [
-        {
-          "id": "1.1",
-          "t": "OSI (7 layers) vs the real TCP/IP model (4 layers)",
-          "s": "locked",
-          "ref": "RFC 1122 (primary source) · Beej's Network Concepts",
-          "trap": "The internet is 4 layers. OSI's 7 are a teaching artifact you must be able to NAME but will rarely use.",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.2",
-          "t": "IP · best-effort delivery",
-          "s": "banked",
-          "ref": "Systems Approach ch. 3",
-          "lastCold": "2026-06-12",
-          "gatedIn": "S4",
-          "nextDue": null
-        },
-        {
-          "id": "1.3",
-          "t": "DNS — recursive resolver · root → TLD → authoritative · TTL · stale · trust anchor",
-          "s": "banked",
-          "ref": "⭐ Implement DNS in a Weekend (you build a resolver)",
-          "lastCold": "2026-07-11",
-          "gatedIn": "S3",
-          "nextDue": null,
-          "note": "re-retrieved cold S5 (root→TLD→authoritative repaired)"
-        },
-        {
-          "id": "1.4",
-          "t": "TCP — the 3-way handshake. Purpose: sync sequence numbers BOTH directions; liveness is a side-effect",
-          "s": "banked",
-          "ref": "Systems Approach ch. 5",
-          "lastCold": "2026-06-12",
-          "gatedIn": "S4",
-          "nextDue": null
-        },
-        {
-          "id": "1.5",
-          "t": "TCP loss recovery — flowing → fast retransmit (3 dup-ACKs) · silent → RTO + exponential backoff",
-          "s": "termslost",
-          "ref": "HPBN ch. 2",
-          "trap": "Mechanism re-derived COLD in S5 — but he could name none of it. Under the gate rule (description without the term is not a pass) this is NOT banked. Re-gate due.",
-          "lastCold": "2026-07-11",
-          "gatedIn": null,
-          "nextDue": null,
-          "note": "MECHANISM re-derived cold S5, unaided. TERMS: none produced. Demoted S6."
-        },
-        {
-          "id": "1.6",
-          "t": "TCP congestion control — slow start, AIMD",
-          "s": "locked",
-          "ref": "Systems Approach ch. 6",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.7",
-          "t": "UDP — and head-of-line blocking as its reason to exist. TCP: rather late than wrong. UDP: rather wrong than late",
-          "s": "covered",
-          "ref": "HPBN ch. 3",
-          "trap": "Derived in S4, NEVER GATED. Covered proves nothing.",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null,
-          "note": "derived S4 from TCP's head-of-line cost. Never gated."
-        },
-        {
-          "id": "1.8",
-          "t": "Sockets — the actual API under everything above",
-          "s": "locked",
-          "ref": "⭐ Beej's Guide to Network Programming (v3.3.2, 2026)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.9",
-          "t": "TLS 1.3 + Diffie–Hellman — cert = IDENTITY, DH = SECRECY; the secret is built on both ends and NEVER SENT",
-          "s": "here",
-          "ref": "⭐⭐ tls13.xargs.org (byte-by-byte, names every field) · RFC 8446",
-          "trap": "DO NOT use hpbn.co's TLS chapter — it is from 2013 and predates TLS 1.3. It will teach you a handshake that no longer exists.",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null,
-          "note": "OPENED S6 — source announced, forcing question posed, NOT answered."
-        },
-        {
-          "id": "1.10",
-          "t": "HTTP/1.1 — request/response · safe ⊂ idempotent ⊂ all · idempotency key · 4xx vs 5xx",
-          "s": "banked",
-          "ref": "RFC 9110",
-          "lastCold": "2026-06-05",
-          "gatedIn": "S2",
-          "nextDue": null,
-          "note": "idempotent misdefined as 'same response' in S5 — precision to re-firm."
-        },
-        {
-          "id": "1.11",
-          "t": "Browser rendering — completes the google.com walk",
-          "s": "locked",
-          "ref": "HPBN ch. 10",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.12",
-          "t": "HTTP/2 — framing, multiplexing… and why it did NOT fix head-of-line blocking",
-          "s": "locked",
-          "ref": "HPBN ch. 12",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.13",
-          "t": "HTTP/3 / QUIC — the payoff for the term you already own",
-          "s": "locked",
-          "ref": "⭐ http3-explained (why-quic/why-tcphol) · RFC 9000/9114",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.14",
-          "t": "Cookies · sessions · JWT-vs-session",
-          "s": "locked",
-          "ref": "RFC 6265",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.15",
-          "t": "Reverse proxy · virtual hosting (picks a SITE, never a port)",
-          "s": "locked",
-          "ref": "nginx docs",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.16",
-          "t": "Load balancing — L4 vs L7",
-          "s": "locked",
-          "ref": "AWS Builders' Library",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.17",
-          "t": "WebSockets — the HTTP Upgrade handshake; why it is not 'HTTP but persistent'",
-          "s": "locked",
-          "ref": "RFC 6455",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.18",
-          "t": "gRPC — protobuf, 4 call types. gRPC IS HTTP/2, so it inherits its properties",
-          "s": "locked",
-          "ref": "grpc.io",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "1.19",
-          "t": "API design: REST vs gRPC vs GraphQL · pagination · versioning · retries, timeouts, JITTER",
-          "s": "locked",
-          "ref": "⭐ AWS Builders' Library (timeouts/retries/backoff-with-jitter)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        }
-      ]
+      "ph": 1,
+      "seq": 1
     },
     {
       "id": 2,
@@ -373,7 +471,8 @@
           "ref": "DDIA 2e ch. 3",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "2.2",
@@ -382,7 +481,10 @@
           "ref": "DDIA 2e · Postgres docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.1"
+          ]
         },
         {
           "id": "2.3",
@@ -391,7 +493,10 @@
           "ref": "DDIA 2e",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.2"
+          ]
         },
         {
           "id": "2.4",
@@ -401,7 +506,12 @@
           "trap": "REQUIRES M0 atoms 0.5–0.7. This is a concurrency problem wearing a SQL costume. The ANSI phenomena are ill-defined — the paper proves it and defines snapshot isolation.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.3",
+            "0.5",
+            "0.6"
+          ]
         },
         {
           "id": "2.5",
@@ -410,7 +520,10 @@
           "ref": "The Internals of PostgreSQL ch. 5",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.4"
+          ]
         },
         {
           "id": "2.6",
@@ -419,7 +532,10 @@
           "ref": "Petrov (Database Internals) · LSM paper · RocksDB",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.1"
+          ]
         },
         {
           "id": "2.7",
@@ -428,7 +544,11 @@
           "ref": "Internals of PostgreSQL ch. 9 · Petrov",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.6",
+            "2.3"
+          ]
         },
         {
           "id": "2.8",
@@ -437,7 +557,10 @@
           "ref": "⭐ Use The Index, Luke",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.6"
+          ]
         },
         {
           "id": "2.9",
@@ -446,7 +569,10 @@
           "ref": "Internals of PostgreSQL ch. 3",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.8"
+          ]
         },
         {
           "id": "2.10",
@@ -455,7 +581,10 @@
           "ref": "DDIA 2e",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.1"
+          ]
         },
         {
           "id": "2.11",
@@ -464,7 +593,10 @@
           "ref": "DDIA 2e ch. 6",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.7"
+          ]
         },
         {
           "id": "2.12",
@@ -473,7 +605,10 @@
           "ref": "DDIA 2e ch. 7",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.11"
+          ]
         },
         {
           "id": "2.13",
@@ -482,7 +617,10 @@
           "ref": "DDIA 2e",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.11"
+          ]
         },
         {
           "id": "2.14",
@@ -492,9 +630,15 @@
           "trap": "CAP alone is the pop-science version. PACELC is the one that survives contact with a real system.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.11",
+            "2.12"
+          ]
         }
-      ]
+      ],
+      "ph": 2,
+      "seq": 2
     },
     {
       "id": 3,
@@ -516,7 +660,10 @@
           "ref": "ties to atom 0.1",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.1"
+          ]
         },
         {
           "id": "3.2",
@@ -525,7 +672,10 @@
           "ref": "DDIA 2e · AWS Builders' Library",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "3.1"
+          ]
         },
         {
           "id": "3.3",
@@ -535,7 +685,10 @@
           "trap": "Redis's own 'internals' doc is a 2010 artifact — the page says so itself. It is history, not truth.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.10"
+          ]
         },
         {
           "id": "3.4",
@@ -544,7 +697,11 @@
           "ref": "Redis RESP protocol spec",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "3.3",
+            "1.4"
+          ]
         },
         {
           "id": "3.5",
@@ -553,7 +710,10 @@
           "ref": "Redis persistence docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "3.3"
+          ]
         },
         {
           "id": "3.6",
@@ -562,7 +722,10 @@
           "ref": "Redis eviction docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "3.1"
+          ]
         },
         {
           "id": "3.7",
@@ -571,7 +734,11 @@
           "ref": "ties to atom 1.3 (DNS TTL — the same idea)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "3.2",
+            "1.3"
+          ]
         },
         {
           "id": "3.8",
@@ -580,9 +747,14 @@
           "ref": "⭐ Scaling Memcache at Facebook (NSDI'13) — leases, stale sets",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "3.7"
+          ]
         }
-      ]
+      ],
+      "ph": 2,
+      "seq": 3
     },
     {
       "id": 4,
@@ -606,7 +778,8 @@
           "ref": "AWS Builders' Library",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "4.2",
@@ -615,7 +788,10 @@
           "ref": "12factor.net",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.1"
+          ]
         },
         {
           "id": "4.3",
@@ -624,7 +800,10 @@
           "ref": "ties forward to atom 1.16 (L4 vs L7)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.2"
+          ]
         },
         {
           "id": "4.4",
@@ -633,7 +812,10 @@
           "ref": "HPBN",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.3"
+          ]
         },
         {
           "id": "4.5",
@@ -642,7 +824,10 @@
           "ref": "⭐ Dynamo paper (2007)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.3"
+          ]
         },
         {
           "id": "4.6",
@@ -651,7 +836,10 @@
           "ref": "AWS Builders' Library",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.2"
+          ]
         },
         {
           "id": "4.7",
@@ -661,7 +849,10 @@
           "trap": "Teach Jeff Dean's numbers as INTUITION; estimate with napkin-math. Dean's are ~2010 and several are wrong by 10×.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "0.1"
+          ]
         },
         {
           "id": "4.8",
@@ -670,7 +861,10 @@
           "ref": "Brendan Gregg — Utilisation, Saturation, Errors",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.7"
+          ]
         },
         {
           "id": "4.9",
@@ -679,9 +873,15 @@
           "ref": "Google SRE Book ch. 21–23 · Metastable Failures (HotOS'21)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.8",
+            "4.6"
+          ]
         }
-      ]
+      ],
+      "ph": 3,
+      "seq": 4
     },
     {
       "id": 5,
@@ -706,7 +906,8 @@
           "ref": "Vitillo, Understanding Distributed Systems",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "5.2",
@@ -715,7 +916,10 @@
           "ref": "van Steen DS4",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.1"
+          ]
         },
         {
           "id": "5.3",
@@ -724,7 +928,10 @@
           "ref": "⭐ Kleppmann Cambridge notes",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.1"
+          ]
         },
         {
           "id": "5.4",
@@ -733,7 +940,10 @@
           "ref": "⭐ Kleppmann Cambridge notes",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.3"
+          ]
         },
         {
           "id": "5.5",
@@ -742,7 +952,10 @@
           "ref": "Dynamo paper · Kleppmann notes",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.4"
+          ]
         },
         {
           "id": "5.6",
@@ -752,7 +965,10 @@
           "trap": "Jepsen also documents real databases VIOLATING their own claimed guarantees. Read the analyses, not the marketing page.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.5"
+          ]
         },
         {
           "id": "5.7",
@@ -761,7 +977,10 @@
           "ref": "Dynamo paper",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.6"
+          ]
         },
         {
           "id": "5.8",
@@ -770,7 +989,11 @@
           "ref": "Kleppmann notes",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.2",
+            "5.7"
+          ]
         },
         {
           "id": "5.9",
@@ -779,7 +1002,10 @@
           "ref": "Raft paper",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.8"
+          ]
         },
         {
           "id": "5.10",
@@ -788,7 +1014,10 @@
           "ref": "Raft paper + raft.github.io viz + MIT 6.824 Raft lab",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.9"
+          ]
         },
         {
           "id": "5.11",
@@ -797,7 +1026,10 @@
           "ref": "Paxos Made Simple — Lamport",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.10"
+          ]
         },
         {
           "id": "5.12",
@@ -806,7 +1038,10 @@
           "ref": "Kleppmann's 'How to do distributed locking'",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.10"
+          ]
         },
         {
           "id": "5.13",
@@ -815,9 +1050,15 @@
           "ref": "Kleppmann Cambridge notes",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "5.5",
+            "5.6"
+          ]
         }
-      ]
+      ],
+      "ph": 3,
+      "seq": 5
     },
     {
       "id": 6,
@@ -840,7 +1081,8 @@
           "trap": "The LinkedIn URL is DEAD (404). Use the web.archive.org link in REFERENCES.md — every curriculum on the internet still links the dead one.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "6.2",
@@ -849,7 +1091,10 @@
           "ref": "Stopford, Designing Event-Driven Systems (free)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.1"
+          ]
         },
         {
           "id": "6.3",
@@ -858,7 +1103,10 @@
           "ref": "DDIA 2e ch. 11",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.2"
+          ]
         },
         {
           "id": "6.4",
@@ -867,7 +1115,10 @@
           "ref": "Kafka docs, Design section",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.1"
+          ]
         },
         {
           "id": "6.5",
@@ -876,7 +1127,11 @@
           "ref": "Kafka Design docs (ties to atom 0.4, virtual memory)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.4",
+            "0.4"
+          ]
         },
         {
           "id": "6.6",
@@ -885,7 +1140,11 @@
           "ref": "Kafka docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.4",
+            "5.7"
+          ]
         },
         {
           "id": "6.7",
@@ -894,7 +1153,10 @@
           "ref": "Kafka docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.4"
+          ]
         },
         {
           "id": "6.8",
@@ -904,7 +1166,11 @@
           "trap": "'Exactly-once' is a lie without idempotency. This ties STRAIGHT back to atom 1.10 — idempotency keys.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.7",
+            "1.10"
+          ]
         },
         {
           "id": "6.9",
@@ -913,7 +1179,10 @@
           "ref": "Kafka docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.4"
+          ]
         },
         {
           "id": "6.10",
@@ -922,7 +1191,10 @@
           "ref": "Node streams · Kafka",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.7"
+          ]
         },
         {
           "id": "6.11",
@@ -931,9 +1203,14 @@
           "ref": "AWS docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.8"
+          ]
         }
-      ]
+      ],
+      "ph": 3,
+      "seq": 6
     },
     {
       "id": 7,
@@ -955,7 +1232,8 @@
           "ref": "GFS paper · S3",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "7.2",
@@ -964,7 +1242,10 @@
           "ref": "⭐ GFS (2003)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "7.1"
+          ]
         },
         {
           "id": "7.3",
@@ -973,7 +1254,10 @@
           "ref": "DDIA 2e",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "7.2"
+          ]
         },
         {
           "id": "7.4",
@@ -982,7 +1266,10 @@
           "ref": "DDIA 2e ch. 3",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "7.1"
+          ]
         },
         {
           "id": "7.5",
@@ -991,7 +1278,11 @@
           "ref": "DDIA 2e · Bigtable paper",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "7.4",
+            "2.6"
+          ]
         },
         {
           "id": "7.6",
@@ -1000,7 +1291,10 @@
           "ref": "GFS paper",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "7.2"
+          ]
         },
         {
           "id": "7.7",
@@ -1009,9 +1303,15 @@
           "ref": "Bigtable paper (ties to atom 2.6)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "7.6",
+            "2.6"
+          ]
         }
-      ]
+      ],
+      "ph": 3,
+      "seq": 7
     },
     {
       "id": 8,
@@ -1033,7 +1333,8 @@
           "ref": "Google SRE Book",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "8.2",
@@ -1042,7 +1343,10 @@
           "ref": "Brendan Gregg · SRE Book",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.8"
+          ]
         },
         {
           "id": "8.3",
@@ -1051,7 +1355,10 @@
           "ref": "Google SRE Book · OpenTelemetry",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "8.2"
+          ]
         },
         {
           "id": "8.4",
@@ -1060,7 +1367,10 @@
           "ref": "⭐ Google SRE Book",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "8.2"
+          ]
         },
         {
           "id": "8.5",
@@ -1069,9 +1379,15 @@
           "ref": "SRE Workbook · public postmortems",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "8.4",
+            "8.3"
+          ]
         }
-      ]
+      ],
+      "ph": 4,
+      "seq": 8
     },
     {
       "id": 9,
@@ -1093,7 +1409,8 @@
           "ref": "OWASP",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "9.2",
@@ -1102,7 +1419,11 @@
           "ref": "OWASP (ties to atom 1.14)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "9.1",
+            "1.14"
+          ]
         },
         {
           "id": "9.3",
@@ -1111,7 +1432,10 @@
           "ref": "RFC 6749 · OWASP",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "9.2"
+          ]
         },
         {
           "id": "9.4",
@@ -1120,7 +1444,10 @@
           "ref": "revisits atom 1.9 — this is the DH/cert distinction, generalised",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "1.9"
+          ]
         },
         {
           "id": "9.5",
@@ -1129,7 +1456,10 @@
           "ref": "OWASP Password Storage Cheat Sheet",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "9.4"
+          ]
         },
         {
           "id": "9.6",
@@ -1138,7 +1468,11 @@
           "ref": "RFC 8446 · tls13.xargs.org",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "1.9",
+            "9.4"
+          ]
         },
         {
           "id": "9.7",
@@ -1147,7 +1481,10 @@
           "ref": "12factor.net · OWASP",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "9.5"
+          ]
         },
         {
           "id": "9.8",
@@ -1156,9 +1493,14 @@
           "ref": "OWASP Top 10",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "9.1"
+          ]
         }
-      ]
+      ],
+      "ph": 4,
+      "seq": 9
     },
     {
       "id": 10,
@@ -1180,7 +1522,8 @@
           "ref": "Docker docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "10.2",
@@ -1189,7 +1532,11 @@
           "ref": "ties to atom 0.2 (process) and 0.4 (namespaces/cgroups)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "10.1",
+            "0.2"
+          ]
         },
         {
           "id": "10.3",
@@ -1198,7 +1545,10 @@
           "ref": "Burns, Designing Distributed Systems (free)",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "10.2"
+          ]
         },
         {
           "id": "10.4",
@@ -1207,7 +1557,10 @@
           "ref": "Patterns of Distributed Systems",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "10.3"
+          ]
         },
         {
           "id": "10.5",
@@ -1216,7 +1569,10 @@
           "ref": "Google SRE Book",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "10.1"
+          ]
         },
         {
           "id": "10.6",
@@ -1225,7 +1581,10 @@
           "ref": "Terraform docs",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "10.3"
+          ]
         },
         {
           "id": "10.7",
@@ -1234,7 +1593,10 @@
           "ref": "12factor.net",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "4.2"
+          ]
         },
         {
           "id": "10.8",
@@ -1243,391 +1605,15 @@
           "ref": "AWS Builders' Library",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "10.5",
+            "10.3"
+          ]
         }
-      ]
-    },
-    {
-      "id": 11,
-      "code": "M11",
-      "name": "High Level Design",
-      "x": 1052,
-      "y": 340,
-      "broke": "You now know every mechanism. <b>You still cannot design a system</b> — because designing is not recalling mechanisms, it is <b>choosing between them under constraints you had to extract yourself</b>, and defending the choice when someone pushes.",
-      "buys": "A framework that survives an hour of pressure: requirements → estimation → API → data model → architecture → scale → reliability → tradeoffs. And fifteen real designs, each of which you must <b>defend</b>, not recite.",
-      "costs": "Nothing breaks after this — but it is also the module that will most tempt you to shortcut. <b>Grokking is deliberately NOT on this list.</b> It teaches the shape of an answer instead of the machinery, and it rewards exactly the discriminator-dodging reflex already logged as your blind spot.",
-      "unlocks": [
-        14
       ],
-      "atoms": [
-        {
-          "id": "11.1",
-          "t": "The framework: requirements → estimation → API → data model → architecture → scale → reliability → tradeoffs",
-          "s": "locked",
-          "ref": "built from Modules 1–10, not from a book",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.2",
-          "t": "URL Shortener",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.3",
-          "t": "Pastebin",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.4",
-          "t": "WhatsApp",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.5",
-          "t": "Twitter",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.6",
-          "t": "Instagram",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.7",
-          "t": "Uber",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.8",
-          "t": "Netflix",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.9",
-          "t": "YouTube",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.10",
-          "t": "Dropbox",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.11",
-          "t": "Swiggy",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.12",
-          "t": "News Feed",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.13",
-          "t": "Notification Service",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.14",
-          "t": "Rate Limiter",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.15",
-          "t": "Web Crawler",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "11.16",
-          "t": "Typeahead",
-          "s": "locked",
-          "ref": "design AND defend",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        }
-      ]
-    },
-    {
-      "id": 12,
-      "code": "M12",
-      "name": "Low Level Design",
-      "x": 364,
-      "y": 650,
-      "broke": "Inside every box on your HLD diagram is <b>code</b> — and a beautiful architecture made of unmaintainable classes is still unmaintainable. <b>The unit of design is COMPLEXITY, not patterns.</b>",
-      "buys": "Deep modules, information hiding, and the ability to name a refactoring move instead of gesturing at it. <b>Refactoring 2e is smell → NAME → mechanics on every page</b> — which is an unusually good fit for a term-decay blind spot.",
-      "costs": "Nothing — but note the traps: <b>Clean Code is NOT on this list</b> (it installs rules to obey rather than a model to reason with), and GoF's patterns half-collapse into plain functions in TypeScript. Applying them as classes in Node is cargo-cult.",
-      "unlocks": [
-        14
-      ],
-      "atoms": [
-        {
-          "id": "12.1",
-          "t": "⭐ APOSD — deep vs shallow modules",
-          "s": "locked",
-          "ref": "Ousterhout ch. 4",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.2",
-          "t": "Information leakage",
-          "s": "locked",
-          "ref": "Ousterhout ch. 5",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.3",
-          "t": "Tactical vs strategic programming",
-          "s": "locked",
-          "ref": "Ousterhout ch. 3",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.4",
-          "t": "Refactoring — design as named, safe, REVERSIBLE moves",
-          "s": "locked",
-          "ref": "Fowler, Refactoring 2e (JavaScript examples)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.5",
-          "t": "SOLID — as heuristics to RE-DERIVE, never as commandments",
-          "s": "locked",
-          "ref": "derive, then check against Refactoring.Guru",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.6",
-          "t": "Patterns in TypeScript",
-          "s": "locked",
-          "ref": "Refactoring.Guru (TS)",
-          "trap": "Half of GoF (Strategy, Command, Factory Method, Template Method, Iterator) collapses into plain functions and closures in TS. Consult GoF only for its Consequences sections — the costs, which every free site amputates.",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.7",
-          "t": "Repository",
-          "s": "locked",
-          "ref": "⭐ Cosmic Python (derives it from the pain it solves)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.8",
-          "t": "Service Layer",
-          "s": "locked",
-          "ref": "Cosmic Python",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.9",
-          "t": "Unit of Work",
-          "s": "locked",
-          "ref": "Cosmic Python · Fowler EAA",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.10",
-          "t": "Aggregate",
-          "s": "locked",
-          "ref": "Cosmic Python · Khononov",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.11",
-          "t": "Message Bus",
-          "s": "locked",
-          "ref": "Cosmic Python (ties to Module 6)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.12",
-          "t": "Fowler's EAA catalog — the vocabulary behind every ORM you touch",
-          "s": "locked",
-          "ref": "⭐ martinfowler.com/eaaCatalog (read the catalog, not the 2002 book)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.13",
-          "t": "Parking Lot",
-          "s": "locked",
-          "ref": "solve COLD, then diff",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.14",
-          "t": "Elevator",
-          "s": "locked",
-          "ref": "solve COLD, then diff",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.15",
-          "t": "Splitwise",
-          "s": "locked",
-          "ref": "solve COLD, then diff",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.16",
-          "t": "BookMyShow",
-          "s": "locked",
-          "ref": "solve COLD, then diff",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.17",
-          "t": "ATM",
-          "s": "locked",
-          "ref": "solve COLD, then diff",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.18",
-          "t": "Chess",
-          "s": "locked",
-          "ref": "solve COLD, then diff",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.19",
-          "t": "Vending Machine",
-          "s": "locked",
-          "ref": "solve COLD, then diff",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.20",
-          "t": "In-memory KV store",
-          "s": "locked",
-          "ref": "solve COLD (ties to Module 3)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.21",
-          "t": "Rate limiter",
-          "s": "locked",
-          "ref": "solve COLD (ties to atom 4.6)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.22",
-          "t": "Connection pool",
-          "s": "locked",
-          "ref": "solve COLD (ties to Module 0 — this is a semaphore)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        },
-        {
-          "id": "12.23",
-          "t": "Circuit breaker",
-          "s": "locked",
-          "ref": "solve COLD (ties to atom 1.19)",
-          "lastCold": null,
-          "gatedIn": null,
-          "nextDue": null
-        }
-      ]
+      "ph": 4,
+      "seq": 10
     },
     {
       "id": 13,
@@ -1649,7 +1635,10 @@
           "ref": "microservices.io · Fowler",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "6.1"
+          ]
         },
         {
           "id": "13.2",
@@ -1658,7 +1647,10 @@
           "ref": "Fowler (ties to Kreps' 'The Log')",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "13.1"
+          ]
         },
         {
           "id": "13.3",
@@ -1667,7 +1659,10 @@
           "ref": "microservices.io",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "13.7"
+          ]
         },
         {
           "id": "13.4",
@@ -1676,7 +1671,10 @@
           "ref": "microservices.io",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "13.3"
+          ]
         },
         {
           "id": "13.5",
@@ -1685,7 +1683,8 @@
           "ref": "Burns, Designing Distributed Systems",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "13.6",
@@ -1694,7 +1693,10 @@
           "ref": "Spanner paper · PACELC",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.14"
+          ]
         },
         {
           "id": "13.7",
@@ -1703,7 +1705,10 @@
           "ref": "DDIA 2e ch. 9",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "2.3"
+          ]
         },
         {
           "id": "13.8",
@@ -1712,9 +1717,514 @@
           "ref": "DDIA 2e",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "13.7"
+          ]
         }
-      ]
+      ],
+      "ph": 4,
+      "seq": 11
+    },
+    {
+      "id": 11,
+      "code": "M11",
+      "name": "High Level Design",
+      "x": 1052,
+      "y": 340,
+      "broke": "You now know every mechanism. <b>You still cannot design a system</b> — because designing is not recalling mechanisms, it is <b>choosing between them under constraints you had to extract yourself</b>, and defending the choice when someone pushes.",
+      "buys": "A framework that survives an hour of pressure: requirements → estimation → API → data model → architecture → scale → reliability → tradeoffs. And fifteen real designs, each of which you must <b>defend</b>, not recite.",
+      "costs": "Nothing breaks after this — but it is also the module that will most tempt you to shortcut. <b>Grokking is deliberately NOT on this list.</b> It teaches the shape of an answer instead of the machinery, and it rewards exactly the discriminator-dodging reflex already logged as your blind spot.",
+      "unlocks": [
+        14
+      ],
+      "atoms": [
+        {
+          "id": "11.1",
+          "t": "The framework: requirements → estimation → API → data model → architecture → scale → reliability → tradeoffs",
+          "s": "locked",
+          "ref": "built from Modules 1–10, not from a book",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": []
+        },
+        {
+          "id": "11.2",
+          "t": "URL Shortener",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.3",
+          "t": "Pastebin",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.4",
+          "t": "WhatsApp",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.5",
+          "t": "Twitter",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.6",
+          "t": "Instagram",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.7",
+          "t": "Uber",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.8",
+          "t": "Netflix",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.9",
+          "t": "YouTube",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.10",
+          "t": "Dropbox",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.11",
+          "t": "Swiggy",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.12",
+          "t": "News Feed",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.13",
+          "t": "Notification Service",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.14",
+          "t": "Rate Limiter",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.15",
+          "t": "Web Crawler",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        },
+        {
+          "id": "11.16",
+          "t": "Typeahead",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "11.1"
+          ]
+        }
+      ],
+      "ph": 5,
+      "seq": 12
+    },
+    {
+      "id": 12,
+      "code": "M12",
+      "name": "Low Level Design",
+      "x": 364,
+      "y": 650,
+      "broke": "Inside every box on your HLD diagram is <b>code</b> — and a beautiful architecture made of unmaintainable classes is still unmaintainable. <b>The unit of design is COMPLEXITY, not patterns.</b>",
+      "buys": "Deep modules, information hiding, and the ability to name a refactoring move instead of gesturing at it. <b>Refactoring 2e is smell → NAME → mechanics on every page</b> — which is an unusually good fit for a term-decay blind spot.",
+      "costs": "Nothing — but note the traps: <b>Clean Code is NOT on this list</b> (it installs rules to obey rather than a model to reason with), and GoF's patterns half-collapse into plain functions in TypeScript. Applying them as classes in Node is cargo-cult.",
+      "unlocks": [
+        14
+      ],
+      "atoms": [
+        {
+          "id": "12.1",
+          "t": "⭐ APOSD — deep vs shallow modules",
+          "s": "locked",
+          "ref": "Ousterhout ch. 4",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": []
+        },
+        {
+          "id": "12.2",
+          "t": "Information leakage",
+          "s": "locked",
+          "ref": "Ousterhout ch. 5",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.1"
+          ]
+        },
+        {
+          "id": "12.3",
+          "t": "Tactical vs strategic programming",
+          "s": "locked",
+          "ref": "Ousterhout ch. 3",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.1"
+          ]
+        },
+        {
+          "id": "12.4",
+          "t": "Refactoring — design as named, safe, REVERSIBLE moves",
+          "s": "locked",
+          "ref": "Fowler, Refactoring 2e (JavaScript examples)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.1"
+          ]
+        },
+        {
+          "id": "12.5",
+          "t": "SOLID — as heuristics to RE-DERIVE, never as commandments",
+          "s": "locked",
+          "ref": "derive, then check against Refactoring.Guru",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.1"
+          ]
+        },
+        {
+          "id": "12.6",
+          "t": "Patterns in TypeScript",
+          "s": "locked",
+          "ref": "Refactoring.Guru (TS)",
+          "trap": "Half of GoF (Strategy, Command, Factory Method, Template Method, Iterator) collapses into plain functions and closures in TS. Consult GoF only for its Consequences sections — the costs, which every free site amputates.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.5"
+          ]
+        },
+        {
+          "id": "12.7",
+          "t": "Repository",
+          "s": "locked",
+          "ref": "⭐ Cosmic Python (derives it from the pain it solves)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.2"
+          ]
+        },
+        {
+          "id": "12.8",
+          "t": "Service Layer",
+          "s": "locked",
+          "ref": "Cosmic Python",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.7"
+          ]
+        },
+        {
+          "id": "12.9",
+          "t": "Unit of Work",
+          "s": "locked",
+          "ref": "Cosmic Python · Fowler EAA",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.8"
+          ]
+        },
+        {
+          "id": "12.10",
+          "t": "Aggregate",
+          "s": "locked",
+          "ref": "Cosmic Python · Khononov",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.9"
+          ]
+        },
+        {
+          "id": "12.11",
+          "t": "Message Bus",
+          "s": "locked",
+          "ref": "Cosmic Python (ties to Module 6)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.10"
+          ]
+        },
+        {
+          "id": "12.12",
+          "t": "Fowler's EAA catalog — the vocabulary behind every ORM you touch",
+          "s": "locked",
+          "ref": "⭐ martinfowler.com/eaaCatalog (read the catalog, not the 2002 book)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.7"
+          ]
+        },
+        {
+          "id": "12.13",
+          "t": "Parking Lot",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.4"
+          ]
+        },
+        {
+          "id": "12.14",
+          "t": "Elevator",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.4"
+          ]
+        },
+        {
+          "id": "12.15",
+          "t": "Splitwise",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.4"
+          ]
+        },
+        {
+          "id": "12.16",
+          "t": "BookMyShow",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.4"
+          ]
+        },
+        {
+          "id": "12.17",
+          "t": "ATM",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.4"
+          ]
+        },
+        {
+          "id": "12.18",
+          "t": "Chess",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.4"
+          ]
+        },
+        {
+          "id": "12.19",
+          "t": "Vending Machine",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.4"
+          ]
+        },
+        {
+          "id": "12.20",
+          "t": "In-memory KV store",
+          "s": "locked",
+          "ref": "solve COLD (ties to Module 3)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.13"
+          ]
+        },
+        {
+          "id": "12.21",
+          "t": "Rate limiter",
+          "s": "locked",
+          "ref": "solve COLD (ties to atom 4.6)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.13"
+          ]
+        },
+        {
+          "id": "12.22",
+          "t": "Connection pool",
+          "s": "locked",
+          "ref": "solve COLD (ties to Module 0 — this is a semaphore)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.13",
+            "0.5"
+          ]
+        },
+        {
+          "id": "12.23",
+          "t": "Circuit breaker",
+          "s": "locked",
+          "ref": "solve COLD (ties to atom 1.19)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "deps": [
+            "12.13"
+          ]
+        }
+      ],
+      "ph": 5,
+      "seq": 13
     },
     {
       "id": 14,
@@ -1734,7 +2244,8 @@
           "ref": "/mock — the interviewer agent",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "14.2",
@@ -1743,7 +2254,10 @@
           "ref": "—",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "14.1"
+          ]
         },
         {
           "id": "14.3",
@@ -1752,7 +2266,8 @@
           "ref": "C4 model",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         },
         {
           "id": "14.4",
@@ -1761,7 +2276,10 @@
           "ref": "—",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "14.1"
+          ]
         },
         {
           "id": "14.5",
@@ -1771,7 +2289,10 @@
           "trap": "This module is where 'answering around the question' costs you the offer. It is being attacked NOW, in Module 1, on purpose.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": [
+            "14.2"
+          ]
         },
         {
           "id": "14.6",
@@ -1780,9 +2301,12 @@
           "ref": "—",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null
+          "nextDue": null,
+          "deps": []
         }
-      ]
+      ],
+      "ph": 5,
+      "seq": 14
     }
   ],
   "terms": [
@@ -2082,5 +2606,31 @@
       14,
       "hard"
     ]
+  ],
+  "phases": [
+    {
+      "n": "The Wire",
+      "q": "Two computers. No shared memory. The only way to know anything about another machine is to send a message and wait — and it may never arrive."
+    },
+    {
+      "n": "The Machine — the DEBT",
+      "q": "You skipped it. Everything above runs on ONE box with a finite CPU, a memory hierarchy spanning six orders of magnitude, and a scheduler that can take the CPU away mid-sentence."
+    },
+    {
+      "n": "Where the Truth Lives",
+      "q": "Ten servers now, and they're disposable. Where does the truth live? That question IS a database — and the cache you reach for hands you two copies of it."
+    },
+    {
+      "n": "Many Machines",
+      "q": "One box can't take the load. Add boxes and failure becomes PARTIAL — a slow machine is indistinguishable from a dead one. That sentence is the whole field."
+    },
+    {
+      "n": "Running It For Real",
+      "q": "You built something you cannot see, cannot deploy safely, and cannot lock down. It's 3am and it's down. What do you look at?"
+    },
+    {
+      "n": "The Craft",
+      "q": "You know every mechanism and still cannot DESIGN. Designing is choosing under constraints you had to extract yourself — and defending it when someone pushes."
+    }
   ]
 }

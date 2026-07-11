@@ -144,8 +144,9 @@ function build() {
   const tpl = read("notes/_roadmap.template.html");
   const data =
     `const UPDATED = ${JSON.stringify(STATUS.meta.updated + " · Session " + STATUS.meta.session)};\n` +
+    `const PHASES  = ${JSON.stringify(STATUS.phases, null, 1)};\n` +
     `const MODULES = ${JSON.stringify(STATUS.modules, null, 1)};\n` +
-    `const EDGES = ${JSON.stringify(STATUS.edges)};\n`;
+    `const EDGES   = ${JSON.stringify(STATUS.edges)};\n`;
   fs.writeFileSync(p("notes/ROADMAP.html"), tpl.replace("/*__DATA__*/", data));
   console.log(`✅ notes/ROADMAP.html rebuilt from trackers/STATUS.json — ${atoms.length} atoms, ${count("banked")} banked.`);
 }

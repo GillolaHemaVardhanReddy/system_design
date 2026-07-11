@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!-- ⚠️ GENERATED FILE — DO NOT HAND-EDIT.
      Source of truth: trackers/STATUS.json · Template: notes/_roadmap.template.html
      Rebuild: node scripts/status.mjs build -->
@@ -6,386 +6,684 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Roadmap — System Design · Jimmy × Hema</title>
+<title>System Design Mastery Map — Hema Vardhan</title>
 <style>
-:root{
-  --ground:#F1F4F7; --ground-2:#E4EAF0; --card:#FBFCFD;
-  --ink:#131E29; --ink-2:#48596A; --ink-3:#7A8998;
-  --rule:#CAD5DF; --hard:#131E29;
-
-  --banked:#0F7264;   --banked-bg:#DAEFEA;  --banked-ed:#72BFB1;
-  --here:#59409F;     --here-bg:#E8E3F7;    --here-ed:#A392D8;
-  --covered:#9E6B12;  --covered-bg:#FBEFD8; --covered-ed:#DFBA70;
-  --debt:#A93748;     --debt-bg:#FAE0E4;    --debt-ed:#E096A1;
-  --locked:#7A8998;   --locked-bg:#E4EAF0;  --locked-ed:#CAD5DF;
-  --err:#A93748; --err-bg:#FAE0E4;
-
-  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-}
-@media (prefers-color-scheme:dark){
+  /* ============ TOKENS ============ */
   :root{
-    --ground:#0D141B; --ground-2:#161F29; --card:#121B24;
-    --ink:#E3ECF3; --ink-2:#9BAEBF; --ink-3:#6A7E91;
-    --rule:#27343F; --hard:#8CA3B6;
-
-    --banked:#5DC9B6;  --banked-bg:#0E2925;  --banked-ed:#256D61;
-    --here:#A896E7;    --here-bg:#1F1A32;    --here-ed:#51438F;
-    --covered:#EAB65A; --covered-bg:#2B2211; --covered-ed:#785D22;
-    --debt:#E88996;    --debt-bg:#2E161A;    --debt-ed:#7C3843;
-    --locked:#5B6B7C;  --locked-bg:#161F29;  --locked-ed:#27343F;
-    --err:#E88996; --err-bg:#2E161A;
+    --bg:#f4f6fb; --bg2:#e9edf6; --panel:#ffffff; --panel2:#f7f9fd;
+    --ink:#1a2233; --ink-soft:#5a6784; --line:#c3ccdd; --line-soft:#e7ecf5;
+    --accent:#6d5bd0; --accent-soft:#a99ae8;
+    --st-banked:#1f9e63; --st-here:#d8901f; --st-covered:#3f79c9;
+    --st-termslost:#d0454b; --st-locked:#aeb8ca; --st-debt:#c2410c;
+    --shadow:0 10px 40px rgba(28,40,74,.14); --shadow-sm:0 3px 14px rgba(28,40,74,.10);
   }
-}
-:root[data-theme="dark"]{
-  --ground:#0D141B; --ground-2:#161F29; --card:#121B24;
-  --ink:#E3ECF3; --ink-2:#9BAEBF; --ink-3:#6A7E91;
-  --rule:#27343F; --hard:#8CA3B6;
-  --banked:#5DC9B6;  --banked-bg:#0E2925;  --banked-ed:#256D61;
-  --here:#A896E7;    --here-bg:#1F1A32;    --here-ed:#51438F;
-  --covered:#EAB65A; --covered-bg:#2B2211; --covered-ed:#785D22;
-  --debt:#E88996;    --debt-bg:#2E161A;    --debt-ed:#7C3843;
-  --locked:#5B6B7C;  --locked-bg:#161F29;  --locked-ed:#27343F;
-  --err:#E88996; --err-bg:#2E161A;
-}
-:root[data-theme="light"]{
-  --ground:#F1F4F7; --ground-2:#E4EAF0; --card:#FBFCFD;
-  --ink:#131E29; --ink-2:#48596A; --ink-3:#7A8998;
-  --rule:#CAD5DF; --hard:#131E29;
-  --banked:#0F7264;   --banked-bg:#DAEFEA;  --banked-ed:#72BFB1;
-  --here:#59409F;     --here-bg:#E8E3F7;    --here-ed:#A392D8;
-  --covered:#9E6B12;  --covered-bg:#FBEFD8; --covered-ed:#DFBA70;
-  --debt:#A93748;     --debt-bg:#FAE0E4;    --debt-ed:#E096A1;
-  --locked:#7A8998;   --locked-bg:#E4EAF0;  --locked-ed:#CAD5DF;
-  --err:#A93748; --err-bg:#FAE0E4;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:1rem}
-body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.62;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1120px;margin:0 auto;padding:3rem 1.25rem 8rem;display:flex;flex-direction:column;gap:2rem}
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0a0e1a; --bg2:#0e1424; --panel:#141b2e; --panel2:#0f1626;
+      --ink:#e8eefc; --ink-soft:#93a1c2; --line:#2c3852; --line-soft:#1b2438;
+      --accent:#9c8bf0; --accent-soft:#4a3f8a;
+      --st-banked:#33b979; --st-here:#e8a53c; --st-covered:#5089d6;
+      --st-termslost:#f0666c; --st-locked:#3a445c; --st-debt:#f97316;
+      --shadow:0 18px 60px rgba(0,0,0,.55); --shadow-sm:0 4px 18px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f6fb; --bg2:#e9edf6; --panel:#ffffff; --panel2:#f7f9fd;
+    --ink:#1a2233; --ink-soft:#5a6784; --line:#c3ccdd; --line-soft:#e7ecf5;
+    --accent:#6d5bd0; --accent-soft:#a99ae8;
+    --st-banked:#1f9e63; --st-here:#d8901f; --st-covered:#3f79c9;
+    --st-termslost:#d0454b; --st-locked:#aeb8ca; --st-debt:#c2410c;
+    --shadow:0 10px 40px rgba(28,40,74,.14); --shadow-sm:0 3px 14px rgba(28,40,74,.10);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a0e1a; --bg2:#0e1424; --panel:#141b2e; --panel2:#0f1626;
+    --ink:#e8eefc; --ink-soft:#93a1c2; --line:#2c3852; --line-soft:#1b2438;
+    --accent:#9c8bf0; --accent-soft:#4a3f8a;
+    --st-banked:#33b979; --st-here:#e8a53c; --st-covered:#5089d6;
+    --st-termslost:#f0666c; --st-locked:#3a445c; --st-debt:#f97316;
+    --shadow:0 18px 60px rgba(0,0,0,.55); --shadow-sm:0 4px 18px rgba(0,0,0,.4);
+  }
 
-.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
-h1{font-family:var(--mono);font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:600;letter-spacing:-.02em;line-height:1.1}
-h3{font-size:1rem;font-weight:700}
-h4{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
-p,li{max-width:80ch}
-code{font-family:var(--mono);font-size:.86em;background:var(--ground-2);border:1px solid var(--rule);padding:.06rem .3rem;border-radius:2px}
-.lede{border-left:3px solid var(--hard);padding-left:1rem;color:var(--ink-2);font-size:1.02rem}
-.lede strong{color:var(--ink)}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:radial-gradient(120% 90% at 50% -10%, var(--bg2), var(--bg) 60%);
+    color:var(--ink); overflow:hidden;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace}
+  ::selection{background:var(--accent);color:#fff}
 
-/* ── THE ONE BUTTON ── */
-.gate{display:flex;flex-direction:column;align-items:center;gap:1.1rem;padding:3rem 1rem}
-.bigbtn{font-family:var(--mono);font-size:clamp(1.1rem,3vw,1.6rem);font-weight:700;letter-spacing:.18em;
-  text-transform:uppercase;background:var(--card);color:var(--ink);border:2px solid var(--hard);
-  border-radius:3px;padding:1.3rem 2.6rem;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
-.bigbtn:hover{transform:translateY(-2px);box-shadow:0 6px 0 -2px var(--hard)}
-.bigbtn:focus-visible{outline:2px solid var(--here);outline-offset:4px}
-.gate .hint{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);letter-spacing:.06em}
-#graphzone[hidden]{display:none}
+  /* ============ HERO ============ */
+  #hero{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;
+    gap:26px;text-align:center;z-index:20;padding:20px;transition:opacity .5s ease, transform .5s ease}
+  body.open #hero{opacity:0;transform:scale(1.14);pointer-events:none}
+  .eyebrow{font:600 12px/1 ui-monospace,monospace;letter-spacing:.42em;text-transform:uppercase;color:var(--ink-soft)}
+  .core{position:relative;width:250px;height:250px;border:none;background:none;cursor:pointer;display:grid;place-content:center}
+  .core .disc{position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle at 50% 40%, color-mix(in srgb,var(--accent) 34%,transparent), transparent 62%);
+    box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 40%,transparent) inset;}
+  .core .ring{position:absolute;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+  .core .r1{inset:22px;animation:spin 22s linear infinite}
+  .core .r2{inset:54px;border-style:dashed;opacity:.6;animation:spin 34s linear infinite reverse}
+  .core .pulse{position:absolute;inset:70px;border-radius:50%;
+    background:linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent) 40%, var(--st-banked)));
+    box-shadow:0 0 46px color-mix(in srgb,var(--accent) 60%,transparent);animation:breathe 3.4s ease-in-out infinite}
+  .core .label{position:relative;z-index:2;font:800 20px/1.2 ui-monospace,monospace;letter-spacing:.05em;color:#fff;
+    text-shadow:0 1px 10px rgba(0,0,0,.4)}
+  .core:hover .pulse{transform:scale(1.05)}
+  .core:focus-visible{outline:none}
+  .core:focus-visible .disc{box-shadow:0 0 0 3px var(--accent)}
+  .hero-sub{max-width:46ch;color:var(--ink-soft);font-size:15px;line-height:1.6}
+  .hero-sub b{color:var(--ink)}
+  .enter-hint{font:600 12px/1 ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);opacity:.9}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes breathe{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.07);filter:brightness(1.12)}}
 
-/* ── legend ── */
-.legend{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
-.lg{display:flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.7rem;font-weight:700;
-  letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--ed);background:var(--bg);color:var(--fg);
-  padding:.28rem .55rem;border-radius:2px}
-.lg .sw{width:9px;height:9px;background:var(--fg);border-radius:1px;flex:none}
-.lg.banked{--fg:var(--banked);--bg:var(--banked-bg);--ed:var(--banked-ed)}
-.lg.here{--fg:var(--here);--bg:var(--here-bg);--ed:var(--here-ed)}
-.lg.covered{--fg:var(--covered);--bg:var(--covered-bg);--ed:var(--covered-ed)}
-.lg.debt{--fg:var(--debt);--bg:var(--debt-bg);--ed:var(--debt-ed)}
-.lg.locked{--fg:var(--locked);--bg:var(--locked-bg);--ed:var(--locked-ed)}
+  /* ============ APP SHELL ============ */
+  #app{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;transform:scale(.975);pointer-events:none;
+    transition:opacity .55s ease .1s, transform .55s ease .1s}
+  body.open #app{opacity:1;transform:none;pointer-events:auto}
 
-/* ── counters ── */
-.counts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.55rem}
-.ct{border:1px solid var(--rule);border-left:4px solid var(--f,var(--hard));background:var(--card);
-  padding:.7rem .85rem;border-radius:2px}
-.ct .n{font-family:var(--mono);font-size:1.55rem;font-weight:700;color:var(--f,var(--ink));line-height:1.1}
-.ct .l{font-family:var(--mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
-.ct.b{--f:var(--banked)} .ct.h{--f:var(--here)} .ct.c{--f:var(--covered)}
-.ct.d{--f:var(--debt)} .ct.l2{--f:var(--locked)}
+  header.bar{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:14px 22px;border-bottom:1px solid var(--line);
+    background:color-mix(in srgb,var(--panel) 70%,transparent);backdrop-filter:blur(8px)}
+  .brand{display:flex;align-items:center;gap:11px;font:800 14px/1 ui-monospace,monospace;letter-spacing:.04em}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:7px 13px;box-shadow:var(--shadow-sm);min-width:84px}
+  .stat .k{font:700 11px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .stat .v{font:800 19px/1.1 ui-monospace,monospace;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:3px}
+  .stat .v small{font-size:12px;color:var(--ink-soft);font-weight:600}
+  .stat.warn .v{color:var(--st-here)}
+  .stat.bad .v{color:var(--st-termslost)}
+  .iconbtn{border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;width:38px;height:38px;
+    border-radius:10px;font-size:16px;display:grid;place-content:center;box-shadow:var(--shadow-sm)}
+  .iconbtn:hover{border-color:var(--accent)}
 
-/* ── graph ── */
-.graphbox{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.6rem;overflow-x:auto}
-#graph{display:block;min-width:940px;width:100%;height:auto}
-.nd rect{stroke-width:1.6;cursor:pointer;transition:filter .12s ease}
-.nd:hover rect{filter:brightness(1.06)}
-.nd text{pointer-events:none;font-family:var(--mono)}
-.nd .code{font-size:10px;font-weight:700;letter-spacing:.1em}
-.nd .nm{font-size:11.5px;font-weight:700}
-.nd .pr{font-size:9px;letter-spacing:.04em}
-.nd.sel rect{stroke-width:3.5}
-.nd:focus-visible rect{stroke:var(--ink);stroke-width:3}
-.edge{fill:none;stroke:var(--rule);stroke-width:1.5;opacity:.75}
-.edge.hard{stroke:var(--hard);stroke-width:2;opacity:.6}
-.edge.soft{stroke-dasharray:4 4;opacity:.5}
-.edge.lit{stroke:var(--here);stroke-width:2.6;opacity:1}
-.gl{font-family:var(--mono);fill:var(--ink-3);font-size:9px;letter-spacing:.12em}
+  .toolrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 22px;border-bottom:1px solid var(--line-soft)}
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{border:1px solid var(--line);background:var(--panel);color:var(--ink-soft);cursor:pointer;border-radius:999px;
+    padding:6px 13px;font:600 12.5px/1 ui-sans-serif,system-ui;transition:.15s}
+  .chip:hover{color:var(--ink);border-color:var(--accent-soft)}
+  .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  .legend{display:flex;gap:13px;flex-wrap:wrap;margin-left:auto;align-items:center}
+  .lg{display:flex;align-items:center;gap:6px;font:600 11.5px/1 ui-monospace,monospace;color:var(--ink-soft)}
+  .lg i{width:12px;height:12px;border-radius:50%;display:inline-block;border:2px solid var(--panel);box-shadow:0 0 0 1px var(--line)}
 
-/* ── panel ── */
-.panel{border:1px solid var(--ed,var(--rule));border-left:5px solid var(--fg,var(--hard));background:var(--card);
-  border-radius:2px;padding:1.4rem 1.4rem 1.6rem;display:flex;flex-direction:column;gap:1.1rem}
-.panel.banked{--fg:var(--banked);--bg:var(--banked-bg);--ed:var(--banked-ed)}
-.panel.here{--fg:var(--here);--bg:var(--here-bg);--ed:var(--here-ed)}
-.panel.covered{--fg:var(--covered);--bg:var(--covered-bg);--ed:var(--covered-ed)}
-.panel.debt{--fg:var(--debt);--bg:var(--debt-bg);--ed:var(--debt-ed)}
-.panel.locked{--fg:var(--locked);--bg:var(--locked-bg);--ed:var(--locked-ed)}
-.p-head{display:flex;align-items:baseline;gap:.65rem;flex-wrap:wrap}
-.p-code{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--fg);
-  border:1px solid var(--fg);padding:.1rem .35rem;border-radius:2px}
-.p-name{font-family:var(--mono);font-size:1.3rem;font-weight:700}
-.p-st{margin-left:auto;font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--fg);background:var(--bg);border:1px solid var(--ed);padding:.2rem .5rem;border-radius:2px}
-.chain{display:flex;flex-direction:column;gap:.65rem}
-.ch{border:1px solid var(--rule);border-left:4px solid var(--c,var(--hard));background:var(--ground-2);
-  padding:.75rem .95rem;border-radius:2px;display:flex;flex-direction:column;gap:.3rem}
-.ch .tag{font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c,var(--ink-3))}
-.ch p{font-size:.94rem;color:var(--ink-2)}
-.ch p strong{color:var(--ink)}
-.ch.broke{--c:var(--err)} .ch.buys{--c:var(--banked)} .ch.costs{--c:var(--covered)} .ch.unlocks{--c:var(--here)}
-.unl{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.15rem}
-.unl button{font-family:var(--mono);font-size:.68rem;font-weight:700;background:var(--card);color:var(--ink-2);
-  border:1px solid var(--rule);border-radius:2px;padding:.22rem .45rem;cursor:pointer}
-.unl button:hover{color:var(--ink);border-color:var(--hard)}
+  /* ============ CANVAS ============ */
+  #stage{flex:1;overflow:auto;position:relative}
+  svg#map{display:block;width:100%;min-width:1080px;height:auto}
 
-.scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:640px}
-th,td{text-align:left;padding:.5rem .6rem;border:1px solid var(--rule);vertical-align:top}
-th{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);
-  background:var(--ground-2);font-weight:700;white-space:nowrap}
-td.a-id{font-family:var(--mono);font-weight:700;white-space:nowrap;color:var(--ink)}
-td.a-ref{font-size:.82rem;color:var(--ink-2)}
-.pill{display:inline-block;font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.07em;
-  text-transform:uppercase;padding:.14rem .4rem;border-radius:2px;white-space:nowrap;
-  color:var(--f);background:var(--b);border:1px solid var(--e)}
-.pill.banked{--f:var(--banked);--b:var(--banked-bg);--e:var(--banked-ed)}
-.pill.here{--f:var(--here);--b:var(--here-bg);--e:var(--here-ed)}
-.pill.covered{--f:var(--covered);--b:var(--covered-bg);--e:var(--covered-ed)}
-.pill.termslost{--f:var(--debt);--b:var(--debt-bg);--e:var(--debt-ed)}
-.pill.locked{--f:var(--locked);--b:var(--locked-bg);--e:var(--locked-ed)}
-.trapline{display:block;margin-top:.3rem;font-size:.78rem;color:var(--err);font-weight:600}
-.trapline::before{content:"⚠ TRAP — ";font-family:var(--mono);font-size:.66rem;letter-spacing:.06em}
+  .zone rect{fill:color-mix(in srgb,var(--panel) 60%,transparent);stroke:var(--line-soft);stroke-width:1}
+  .ztab{fill:var(--ink);font:700 12.5px ui-sans-serif,system-ui}
+  .zidx{fill:var(--accent);font:800 10.5px ui-monospace,monospace;letter-spacing:.14em}
+  .zq{fill:var(--ink-soft);font:400 10.5px ui-sans-serif,system-ui}
 
-.note{border:1px solid var(--err);border-left:4px solid var(--err);background:var(--err-bg);
-  padding:.85rem 1rem;border-radius:2px;display:flex;flex-direction:column;gap:.4rem}
-.note .tag{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--err)}
-.note p{font-size:.92rem}
-.btn{font-family:var(--mono);font-size:.71rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
-  background:var(--card);color:var(--ink-2);border:1px solid var(--rule);border-radius:2px;padding:.4rem .7rem;cursor:pointer}
-.btn:hover{color:var(--ink);border-color:var(--hard)}
-.ctl{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+  .trunk-glow{fill:none;stroke:var(--accent);stroke-width:13;opacity:.14;stroke-linecap:round;stroke-linejoin:round}
+  .trunk{fill:none;stroke:var(--accent);stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+  .link{fill:none;stroke:var(--line);stroke-width:2;opacity:.22;stroke-dasharray:1 6;stroke-linecap:round}
+  .link.hl{stroke:var(--accent);opacity:.95;stroke-dasharray:none;stroke-width:2.5}
+  .link.dim{opacity:.05}
+
+  .st{cursor:pointer}
+  .st .halo{fill:none;stroke:var(--n);stroke-width:2;opacity:0;transition:opacity .2s}
+  .st .ring{fill:var(--panel);stroke:var(--n);stroke-width:4}
+  .st.locked .ring{stroke:var(--st-locked);stroke-dasharray:3 3}
+  .st.debt .ring{stroke:var(--st-debt);stroke-dasharray:5 3}
+  .st .code{font:800 13px ui-monospace,monospace;fill:var(--n);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+  .st.locked .code{fill:var(--ink-soft)}
+  .st.debt .code{fill:var(--st-debt)}
+  .st .name{font:600 12.5px ui-sans-serif,system-ui;fill:var(--ink);text-anchor:middle;pointer-events:none}
+  .st .lvtag{font:700 9.5px ui-monospace,monospace;fill:var(--ink-soft);text-anchor:middle;pointer-events:none;letter-spacing:.05em}
+  .st.debt .lvtag{fill:var(--st-debt)}
+  .st:hover .halo{opacity:.55}
+  .st:hover .ring{filter:brightness(1.06)}
+  .st.dim{opacity:.24}
+  .st.current .halo{opacity:.9;animation:ring 2.2s ease-in-out infinite}
+  .st.current .ring{stroke:var(--st-here);stroke-width:5}
+  .youare{fill:var(--st-here);font:800 10px ui-monospace,monospace;text-anchor:middle;letter-spacing:.12em}
+  .debttag{fill:var(--st-debt);font:800 10px ui-monospace,monospace;text-anchor:middle;letter-spacing:.1em}
+  @keyframes ring{0%,100%{stroke-width:2;opacity:.5}50%{stroke-width:5;opacity:1}}
+
+  body.anim .st{opacity:0;animation:pop .45s cubic-bezier(.2,1.3,.4,1) forwards;animation-delay:calc(var(--i)*46ms + .55s)}
+  body.anim .st.dim{opacity:.24}
+  body.anim .trunk,body.anim .trunk-glow{stroke-dasharray:var(--tlen);stroke-dashoffset:var(--tlen);animation:draw 1.5s ease forwards}
+  body.anim .link{opacity:0;animation:fade .6s ease forwards;animation-delay:1.5s}
+  @keyframes pop{from{opacity:0;transform:scale(.3);transform-box:fill-box;transform-origin:center}to{opacity:1;transform:scale(1)}}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes fade{to{opacity:.22}}
+
+  /* ============ MODAL ============ */
+  #scrim{position:fixed;inset:0;background:rgba(6,10,20,.55);backdrop-filter:blur(3px);display:none;place-content:center;z-index:40;padding:22px}
+  #scrim.show{display:grid}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+    width:min(780px,100%);max-height:88vh;overflow:auto;animation:rise .28s ease;position:relative}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .closeb{position:absolute;top:14px;right:14px;z-index:3;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:15px}
+  .closeb:hover{border-color:var(--accent)}
+  .top{padding:20px 22px 0;border-bottom:1px solid var(--line-soft);
+    background:linear-gradient(180deg,color-mix(in srgb,var(--m) 15%,var(--panel)),var(--panel))}
+  .eyerow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-right:42px}
+  .mcode{font:800 13px ui-monospace,monospace;color:var(--m)}
+  .mphase{font:600 11px ui-monospace,monospace;color:var(--ink-soft);letter-spacing:.1em;text-transform:uppercase}
+  .lvchip{margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:color-mix(in srgb,var(--m) 16%,var(--panel2));
+    border:1px solid color-mix(in srgb,var(--m) 40%,var(--line));border-radius:999px;padding:5px 11px;font:700 12px ui-monospace,monospace;color:var(--ink)}
+  .lvchip i{width:9px;height:9px;border-radius:50%;background:var(--m)}
+  .card h2{margin:11px 0 0;font-size:21px;letter-spacing:-.01em;text-wrap:balance}
+  .card .obj{margin:7px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.5}
+
+  /* tabs — WHY IT'S HERE | ATOMS */
+  .tabs{display:flex;gap:4px;margin-top:16px}
+  .tab{border:1px solid var(--line);border-bottom:none;background:var(--panel2);color:var(--ink-soft);cursor:pointer;
+    border-radius:10px 10px 0 0;padding:9px 16px;font:700 12px/1 ui-monospace,monospace;letter-spacing:.07em;text-transform:uppercase}
+  .tab[aria-selected="true"]{background:var(--panel);color:var(--m);border-color:var(--m);border-bottom:1px solid var(--panel);margin-bottom:-1px}
+  .tab:hover{color:var(--ink)}
+  .tab .n{opacity:.6;font-weight:600}
+
+  .body-in{padding:18px 22px 22px;display:flex;flex-direction:column;gap:16px}
+  .sect .h{font:700 11px ui-monospace,monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px}
+  .chain{background:var(--panel2);border:1px solid var(--line-soft);border-left:3px solid var(--c);border-radius:9px;
+    padding:11px 13px;font-size:13.5px;line-height:1.55}
+  .chain b{color:var(--ink)}
+  .c-broke{--c:var(--st-termslost)} .c-buys{--c:var(--st-banked)}
+  .c-costs{--c:var(--st-here)}      .c-unlocks{--c:var(--accent)}
+  .tags{display:flex;gap:7px;flex-wrap:wrap}
+  .tag{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:5px 10px;font-size:12.5px;color:var(--ink);cursor:pointer}
+  .tag:hover{border-color:var(--accent);color:var(--accent)}
+  .tag.plain{cursor:default;color:var(--ink-soft)}
+  .tag.plain:hover{border-color:var(--line);color:var(--ink-soft)}
+
+  /* ============ ATOM VIEW ============ */
+  .agraph{background:var(--panel2);border:1px solid var(--line-soft);border-radius:11px;padding:10px;overflow-x:auto}
+  .agraph svg{display:block;height:auto}
+  .an{cursor:pointer}
+  .an rect{fill:var(--panel);stroke:var(--a);stroke-width:2}
+  .an.locked rect{stroke:var(--st-locked);stroke-dasharray:3 3}
+  .an text{font:700 10.5px ui-monospace,monospace;fill:var(--a);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+  .an.locked text{fill:var(--ink-soft)}
+  .an:hover rect{filter:brightness(1.08);stroke-width:3}
+  .an.dim{opacity:.18}
+  .an.cur rect{stroke-width:3.5}
+  .aedge{fill:none;stroke:var(--line);stroke-width:1.6;opacity:.55;marker-end:url(#ah)}
+  .aedge.hl{stroke:var(--accent);opacity:1;stroke-width:2.4}
+  .aedge.dim{opacity:.06}
+  .alvl{fill:var(--ink-soft);font:700 9px ui-monospace,monospace;letter-spacing:.1em}
+
+  .alist{display:flex;flex-direction:column;gap:6px}
+  .arow{display:grid;grid-template-columns:46px 1fr auto;gap:10px;align-items:start;background:var(--panel2);
+    border:1px solid var(--line-soft);border-left:3px solid var(--a);border-radius:9px;padding:9px 11px;scroll-margin:12px}
+  .arow.flash{animation:flash 1.2s ease}
+  @keyframes flash{0%,100%{background:var(--panel2)}25%{background:color-mix(in srgb,var(--accent) 20%,var(--panel2))}}
+  .arow .aid{font:800 12px ui-monospace,monospace;color:var(--a)}
+  .arow.locked .aid{color:var(--ink-soft)}
+  .arow .at{font-size:13px;line-height:1.45}
+  .arow .ameta{margin-top:5px;font-size:11.5px;color:var(--ink-soft);font-family:ui-monospace,monospace}
+  .arow .adep{margin-top:4px;font-size:11.5px;color:var(--ink-soft);display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+  .arow .adep b{color:var(--ink);font-family:ui-monospace,monospace;font-weight:700}
+  .arow .atrap{margin-top:6px;font-size:11.5px;line-height:1.5;color:var(--st-termslost);
+    background:color-mix(in srgb,var(--st-termslost) 10%,transparent);
+    border:1px solid color-mix(in srgb,var(--st-termslost) 30%,transparent);border-radius:6px;padding:6px 8px}
+  .arow .atrap b{color:var(--st-termslost)}
+  .pill{font:700 9.5px ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;
+    border-radius:999px;padding:4px 8px;color:var(--a);background:color-mix(in srgb,var(--a) 15%,transparent);
+    border:1px solid color-mix(in srgb,var(--a) 40%,transparent)}
+  .xdep{font:700 10.5px ui-monospace,monospace;background:var(--panel);border:1px dashed var(--line);
+    border-radius:6px;padding:2px 6px;color:var(--ink);cursor:pointer}
+  .xdep:hover{border-color:var(--accent);color:var(--accent)}
+  .foot{font-size:11.5px;color:var(--ink-soft);padding:0 22px 18px;line-height:1.55}
+  .foot b{color:var(--ink)}
+  code{font-family:ui-monospace,monospace;font-size:.92em}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    body.anim .st{opacity:1}body.anim .st.dim{opacity:.24}
+    body.anim .trunk,body.anim .trunk-glow{stroke-dashoffset:0}body.anim .link{opacity:.22}
+  }
+  @media (max-width:640px){.stat{min-width:66px;padding:6px 10px}.legend{width:100%;margin:6px 0 0}
+    .arow{grid-template-columns:42px 1fr}.arow .pill{grid-column:2;justify-self:start}}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<header style="display:flex;flex-direction:column;gap:.9rem">
-  <div class="eyebrow">Jimmy × Hema · the whole program, honestly</div>
-  <h1>The Roadmap</h1>
-  <p class="lede">
-    Fifteen modules, and <strong>they are not a list — they are a causal chain.</strong> Each module exists because
-    the previous one <em>hit a wall</em>. Click a node and the first thing you get is not "what it is" but
-    <strong>what broke to make it necessary</strong>. Every colour on this page is computed from the atom data at the
-    top of the file, so <strong>it cannot flatter you</strong>: a node turns green only when a cold gate is logged.
-  </p>
-</header>
+  <section id="hero">
+    <div class="eyebrow">Hema Vardhan · Jimmy · first principles, never cramming</div>
+    <button class="core" id="coreBtn" aria-label="Open the system design mastery map">
+      <span class="disc"></span><span class="ring r1"></span><span class="ring r2"></span>
+      <span class="pulse"></span><span class="label mono">SYSTEM<br>DESIGN</span>
+    </button>
+    <p class="hero-sub">Not a syllabus — a <b>causal chain</b>. Every module is here because the one before it <b>hit a wall</b>. <b id="hAtoms">…</b> atoms across <b>15</b> modules, coloured by a status that <b>cannot flatter you</b>.</p>
+    <div class="enter-hint">▸ click to open the chain</div>
+  </section>
 
-<!-- ════════════════════════════════════════════════════════════════════
-     THE ONE DATA BLOCK. Everything below renders from this.
-     A /gate pass changes a status here, and the graph, the counters and
-     the panels all move together. There is no second place to lie.
-     ════════════════════════════════════════════════════════════════════ -->
+  <div id="app">
+    <header class="bar">
+      <div class="brand"><span class="dot"></span> SYSTEM DESIGN — THE CAUSAL CHAIN</div>
+      <div class="stats" id="stats"></div>
+      <button class="iconbtn" id="themeBtn" title="Toggle light / dark" aria-label="Toggle theme">◐</button>
+      <button class="iconbtn" id="homeBtn" title="Back to the core" aria-label="Back to core">⌂</button>
+    </header>
+    <div class="toolrow">
+      <div class="chips" id="filters" role="group" aria-label="Filter modules">
+        <button class="chip" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" data-f="here" aria-pressed="false">You are here</button>
+        <button class="chip" data-f="banked" aria-pressed="false">Banked cold</button>
+        <button class="chip" data-f="regate" aria-pressed="false">Needs re-gate</button>
+        <button class="chip" data-f="debt" aria-pressed="false">⚠ Debt</button>
+        <button class="chip" data-f="locked" aria-pressed="false">Locked</button>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div id="stage"><svg id="map" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  </div>
+
+  <div id="scrim" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="card" id="card">
+      <button class="closeb" id="closeb" aria-label="Close">✕</button>
+      <div id="cardContent"></div>
+    </div>
+  </div>
+
 <script>
 /*__DATA__*/
 </script>
 
-<!-- ══════════════════ THE ONE BUTTON ══════════════════ -->
-<div class="gate" id="gate">
-  <button class="bigbtn" id="unfold" type="button">System Design</button>
-  <div class="hint">▼ unfold the dependency graph — 15 modules, <span id="atomcount">…</span> atoms</div>
-</div>
-
-<div id="graphzone" hidden style="display:flex;flex-direction:column;gap:1.6rem">
-
-  <div class="counts" id="counts"></div>
-
-  <div style="display:flex;flex-direction:column;gap:.7rem">
-    <div class="ctl">
-      <h4 style="margin-right:auto">The dependency graph — read it left to right</h4>
-      <button class="btn" id="theme" type="button">Theme</button>
-      <button class="btn" id="fold" type="button">Fold</button>
-    </div>
-    <div class="legend" id="legend"></div>
-    <div class="graphbox">
-      <svg id="graph" viewBox="0 0 1400 780" role="img" aria-label="Module dependency graph">
-        <g id="edges"></g>
-        <g id="nodes"></g>
-        <text class="gl" x="20" y="765">SOLID EDGE = REAL PREREQUISITE   ·   DASHED = ORDER OF CONVENIENCE, NOT A DEPENDENCY   ·   CLICK ANY NODE</text>
-      </svg>
-    </div>
-    <p style="font-size:.86rem;color:var(--ink-3)">
-      The graph is drawn from the data block, not by hand. When a <code>/gate</code> passes and an atom's status
-      changes to <code>banked</code>, this node's colour, the counters above, and the module's completion fraction
-      all move together. <b>There is nowhere for it to lie.</b>
-    </p>
-  </div>
-
-  <div id="panel"></div>
-
-  <div class="note">
-    <span class="tag">The honest count</span>
-    <p><b><span id="honest-total">…</span> atoms</b> are enumerated here, straight from <code>SYLLABUS.md</code>. That is fewer
-    than the ~250 you had in your head — and the reason is worth knowing: <b>Modules 2–14 have not been run through
-    <code>/breakdown</code> yet.</b> They are still syllabus <i>bullets</i>, and a bullet reliably splits into two or
-    three real teachable atoms once it is decomposed. Expect the true figure to land somewhere around 200–300.
-    <b>The number will go UP as the map gets more honest, not as you learn more</b> — do not read that as progress.</p>
-  </div>
-
-</div>
-
 <script>
-/* ─────────── render ─────────── */
-const $ = s => document.querySelector(s);
-const S = {
-  banked:   {label:"Banked cold",  cls:"banked"},
-  here:     {label:"You are here", cls:"here"},
-  covered:  {label:"Covered — not gated", cls:"covered"},
-  termslost:{label:"Mechanism ok — TERMS LOST", cls:"termslost"},
-  locked:   {label:"Locked",       cls:"locked"}
+/* ============ everything below is DERIVED — never hand-set, so it cannot lie ============ */
+const NS="http://www.w3.org/2000/svg";
+const ST={
+  banked:   {c:"--st-banked",    l:"Banked cold"},
+  here:     {c:"--st-here",      l:"You are here"},
+  covered:  {c:"--st-covered",   l:"Covered — not gated"},
+  termslost:{c:"--st-termslost", l:"Terms lost"},
+  locked:   {c:"--st-locked",    l:"Locked"}
 };
-const byId = id => MODULES.find(m=>m.id===id);
-const allAtoms = MODULES.flatMap(m=>m.atoms);
-const count = s => allAtoms.filter(a=>a.s===s).length;
+const byId={}; MODULES.forEach(m=>byId[m.id]=m);
+const allAtoms=MODULES.flatMap(m=>m.atoms);
+const atomById={}; allAtoms.forEach(a=>atomById[a.id]=a);
+const atomMod={};  MODULES.forEach(m=>m.atoms.forEach(a=>atomMod[a.id]=m));
+const cnt=s=>allAtoms.filter(a=>a.s===s).length;
+const modBanked=m=>m.atoms.filter(a=>a.s==="banked").length;
+const cssId=s=>s.replace(/\./g,"-");
 
-// module status is DERIVED from its atoms — never hand-set
+/* module status is DERIVED from its atoms. `debt` is a FLAG, not a status. */
 function modStatus(m){
-  if(m.atoms.some(a=>a.s==="here")) return "here";
-  if(m.flag==="debt") return "debt";
-  if(m.atoms.every(a=>a.s==="locked")) return "locked";
-  if(m.atoms.every(a=>a.s==="banked")) return "banked";
-  if(m.atoms.some(a=>a.s==="banked")) return "covered";
+  if(m.atoms.some(a=>a.s==="here"))      return "here";
+  if(m.atoms.some(a=>a.s==="termslost")) return "termslost";
+  if(m.atoms.every(a=>a.s==="locked"))   return "locked";
+  if(m.atoms.every(a=>a.s==="banked"))   return "banked";
+  if(m.atoms.some(a=>a.s==="banked"||a.s==="covered")) return "covered";
   return "locked";
 }
-const modBanked = m => m.atoms.filter(a=>a.s==="banked").length;
+const deps={}; MODULES.forEach(m=>deps[m.id]=[]);
+EDGES.forEach(([a,b])=>deps[b].push(a));
+const unlocksOf=id=>MODULES.filter(m=>deps[m.id].includes(id)).map(m=>m.id);
 
-$("#atomcount").textContent = allAtoms.length;
+document.getElementById("hAtoms").textContent=allAtoms.length;
 
-/* counters */
-$("#counts").innerHTML = [
-  ["b","banked","Banked cold"],
-  ["h","here","You are here"],
-  ["c","covered","Covered, not gated"],
-  ["d","termslost","Terms lost — re-gate"],
-  ["l2","locked","Locked"]
-].map(([c,k,l])=>`<div class="ct ${c}"><div class="n">${count(k)}</div><div class="l">${l}</div></div>`).join("")
- + `<div class="ct"><div class="n">${allAtoms.length}</div><div class="l">Atoms enumerated</div></div>`;
+/* ============ METRO LAYOUT — boustrophedon snake, one zone per phase ============ */
+const W=1400, L=210, R=W-70, TOP=54, ROWH=156, R_ST=21;
+const H=TOP+PHASES.length*ROWH+30;
+const seq=MODULES.map(m=>m.id);                 // the trunk IS the honest teaching order
+const seqIdx={}; seq.forEach((id,i)=>seqIdx[id]=i);
+const rows=PHASES.map(()=>[]); MODULES.forEach(m=>rows[m.ph].push(m));
 
-$("#honest-total").textContent = allAtoms.length;
-
-/* legend */
-$("#legend").innerHTML = ["banked","here","covered","debt","locked"].map(k=>{
-  const lbl = k==="debt" ? "Debt — owed before M2" : S[k]?S[k].label:k;
-  return `<span class="lg ${k}"><span class="sw"></span>${lbl}</span>`;
-}).join("");
-
-/* graph */
-const NW=146, NH=56;
-const gN=$("#nodes"), gE=$("#edges");
-
-EDGES.forEach(([a,b,kind])=>{
-  const A=byId(a), B=byId(b);
-  const x1=A.x+NW, y1=A.y+NH/2, x2=B.x, y2=B.y+NH/2;
-  const mx=(x1+x2)/2;
-  const p=document.createElementNS("http://www.w3.org/2000/svg","path");
-  p.setAttribute("d",`M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`);
-  p.setAttribute("class",`edge ${kind}`);
-  p.dataset.from=a; p.dataset.to=b;
-  gE.appendChild(p);
+const pos={};
+rows.forEach((list,ph)=>{
+  const y=TOP+ph*ROWH+ROWH*0.54;
+  const dir=ph%2===0?1:-1;                      // even rows L→R, odd rows R→L
+  const n=list.length;
+  list.forEach((m,i)=>{
+    const t=n===1?0.5:i/(n-1);
+    pos[m.id]={x: dir===1 ? L+(R-L)*t : R-(R-L)*t, y};
+  });
 });
 
+const svg=document.getElementById("map");
+svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+svg.setAttribute("role","img");
+svg.setAttribute("aria-label","System design module dependency map");
+
+/* zone bands — each phase carries the forcing question that makes it necessary */
+PHASES.forEach((p,ph)=>{
+  const y=TOP+ph*ROWH;
+  const g=document.createElementNS(NS,"g"); g.setAttribute("class","zone");
+  const rect=document.createElementNS(NS,"rect");
+  rect.setAttribute("x",14);rect.setAttribute("y",y+10);rect.setAttribute("width",W-28);
+  rect.setAttribute("height",ROWH-20);rect.setAttribute("rx",16);
+  rect.setAttribute("opacity",ph%2?0.7:0.4);g.appendChild(rect);
+  const idx=document.createElementNS(NS,"text");
+  idx.setAttribute("class","zidx");idx.setAttribute("x",30);idx.setAttribute("y",y+33);
+  idx.textContent="PHASE "+(ph+1);g.appendChild(idx);
+  const lab=document.createElementNS(NS,"text");
+  lab.setAttribute("class","ztab");lab.setAttribute("x",30);lab.setAttribute("y",y+53);
+  lab.textContent=p.n;g.appendChild(lab);
+  const words=p.q.split(" "); const lines=[]; let cur="";
+  for(const w of words){ if((cur+" "+w).trim().length>28){lines.push(cur.trim());cur=w;} else cur+=" "+w; }
+  if(cur.trim())lines.push(cur.trim());
+  lines.slice(0,5).forEach((ln,i)=>{
+    const t=document.createElementNS(NS,"text");
+    t.setAttribute("class","zq");t.setAttribute("x",30);t.setAttribute("y",y+71+i*13);
+    t.textContent=ln;g.appendChild(t);
+  });
+  svg.appendChild(g);
+});
+
+/* the trunk — every module in teaching order, orthogonal U-turns between rows */
+let d=`M ${pos[seq[0]].x} ${pos[seq[0]].y}`;
+for(let i=1;i<seq.length;i++){
+  const a=pos[seq[i-1]], b=pos[seq[i]];
+  if(Math.abs(a.y-b.y)<1) d+=` L ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+  else{ const my=((a.y+b.y)/2).toFixed(1);
+        d+=` L ${a.x.toFixed(1)} ${my} L ${b.x.toFixed(1)} ${my} L ${b.x.toFixed(1)} ${b.y.toFixed(1)}`; }
+}
+const glow=document.createElementNS(NS,"path");glow.setAttribute("class","trunk-glow");glow.setAttribute("d",d);svg.appendChild(glow);
+const trunk=document.createElementNS(NS,"path");trunk.setAttribute("class","trunk");trunk.setAttribute("d",d);svg.appendChild(trunk);
+try{svg.style.setProperty("--tlen",trunk.getTotalLength().toFixed(0));}catch(e){svg.style.setProperty("--tlen","5200");}
+
+/* faint links = REAL prerequisites that aren't simply the previous stop on the line */
+const linkEls=[];
 MODULES.forEach(m=>{
-  const st=modStatus(m);
-  const g=document.createElementNS("http://www.w3.org/2000/svg","g");
-  g.setAttribute("class","nd"); g.setAttribute("tabindex","0");
-  g.setAttribute("role","button");
-  g.setAttribute("aria-label",`${m.code} ${m.name} — ${st}`);
-  g.dataset.id=m.id;
-  g.innerHTML =
-    `<rect x="${m.x}" y="${m.y}" width="${NW}" height="${NH}" rx="2"
-       fill="var(--${st}-bg)" stroke="var(--${st}-ed)"></rect>
-     <text class="code" x="${m.x+10}" y="${m.y+17}" fill="var(--${st})">${m.code}${m.flag==="debt"?" ⚠":""}</text>
-     <text class="nm"   x="${m.x+10}" y="${m.y+34}" fill="var(--ink)">${m.name}</text>
-     <text class="pr"   x="${m.x+10}" y="${m.y+48}" fill="var(--ink-3)">${modBanked(m)}/${m.atoms.length} banked</text>`;
-  g.addEventListener("click",()=>select(m.id));
-  g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();select(m.id);} });
-  gN.appendChild(g);
+  deps[m.id].forEach(dp=>{
+    if(seqIdx[m.id]-1===seqIdx[dp])return;      // already riding the trunk
+    const a=pos[dp], b=pos[m.id]; if(!a||!b)return;
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2, off=(Math.abs(a.y-b.y)<1?-50:64);
+    const path=document.createElementNS(NS,"path");
+    path.setAttribute("class","link");
+    path.setAttribute("d",`M ${a.x} ${a.y} Q ${mx} ${my+off}, ${b.x} ${b.y}`);
+    path.dataset.from=dp;path.dataset.to=m.id;
+    svg.appendChild(path);linkEls.push(path);
+  });
 });
 
-/* panel */
-function select(id){
-  const m=byId(id), st=modStatus(m);
-  document.querySelectorAll(".nd").forEach(n=>n.classList.toggle("sel", +n.dataset.id===id));
-  document.querySelectorAll(".edge").forEach(e=>
-    e.classList.toggle("lit", +e.dataset.from===id || +e.dataset.to===id));
+/* stations */
+const stEls={};
+MODULES.forEach((m,i)=>{
+  const p=pos[m.id], st=modStatus(m), isDebt=m.flag==="debt", isHere=st==="here";
+  const g=document.createElementNS(NS,"g");
+  g.setAttribute("class","st"+(st==="locked"?" locked":"")+(isDebt?" debt":"")+(isHere?" current":""));
+  g.setAttribute("tabindex","0");g.setAttribute("role","button");
+  g.setAttribute("aria-label",`${m.code} ${m.name}. ${ST[st].l}. ${modBanked(m)} of ${m.atoms.length} atoms banked cold.`);
+  g.style.setProperty("--n",`var(${isDebt?"--st-debt":ST[st].c})`);
+  g.style.setProperty("--i",i);
+  g.dataset.id=m.id;
 
-  const unlocks = m.unlocks.length
-    ? m.unlocks.map(u=>`<button type="button" data-go="${u}">${byId(u).code} · ${byId(u).name} →</button>`).join("")
-    : `<span style="font-size:.85rem;color:var(--ink-3)">Nothing. This is the last one.</span>`;
+  const halo=document.createElementNS(NS,"circle");
+  halo.setAttribute("class","halo");halo.setAttribute("cx",p.x);halo.setAttribute("cy",p.y);halo.setAttribute("r",R_ST+9);g.appendChild(halo);
+  const ring=document.createElementNS(NS,"circle");
+  ring.setAttribute("class","ring");ring.setAttribute("cx",p.x);ring.setAttribute("cy",p.y);ring.setAttribute("r",R_ST);g.appendChild(ring);
+  const code=document.createElementNS(NS,"text");
+  code.setAttribute("class","code");code.setAttribute("x",p.x);code.setAttribute("y",p.y);code.textContent=m.code;g.appendChild(code);
+  const name=document.createElementNS(NS,"text");
+  name.setAttribute("class","name");name.setAttribute("x",p.x);name.setAttribute("y",p.y+R_ST+19);name.textContent=m.name;g.appendChild(name);
+  const lvt=document.createElementNS(NS,"text");
+  lvt.setAttribute("class","lvtag");lvt.setAttribute("x",p.x);lvt.setAttribute("y",p.y+R_ST+33);
+  lvt.textContent=`${modBanked(m)}/${m.atoms.length} banked`;g.appendChild(lvt);
+  if(isHere||isDebt){
+    const t=document.createElementNS(NS,"text");
+    t.setAttribute("class",isHere?"youare":"debttag");
+    t.setAttribute("x",p.x);t.setAttribute("y",p.y-R_ST-14);
+    t.textContent=isHere?"◆ YOU ARE HERE":"⚠ DEBT — OWED BEFORE M2";g.appendChild(t);
+  }
 
-  const rows = m.atoms.map(a=>`
-    <tr>
-      <td class="a-id">${a.id}</td>
-      <td>${a.t}${a.trap?`<span class="trapline">${a.trap}</span>`:""}</td>
-      <td><span class="pill ${S[a.s].cls}">${S[a.s].label}</span></td>
-      <td class="a-ref">${a.ref}</td>
-    </tr>`).join("");
+  g.addEventListener("click",()=>openCard(m.id));
+  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openCard(m.id);}});
+  g.addEventListener("mouseenter",()=>hover(m.id));
+  g.addEventListener("mouseleave",()=>hover(null));
+  g.addEventListener("focus",()=>hover(m.id));
+  g.addEventListener("blur",()=>hover(null));
+  svg.appendChild(g);stEls[m.id]=g;
+});
 
-  $("#panel").className=`panel ${st}`;
-  $("#panel").innerHTML = `
-    <div class="p-head">
-      <span class="p-code">${m.code}</span>
-      <span class="p-name">${m.name}</span>
-      <span class="p-st">${st==="debt"?"DEBT — owed before M2":S[st]?S[st].label:st} · ${modBanked(m)}/${m.atoms.length} banked</span>
-    </div>
-    <div class="chain">
-      <div class="ch broke"><span class="tag">Why it's here — what broke</span><p>${m.broke}</p></div>
-      <div class="ch buys"><span class="tag">What it buys you</span><p>${m.buys}</p></div>
-      <div class="ch costs"><span class="tag">What it costs — what breaks next</span><p>${m.costs}</p></div>
-      <div class="ch unlocks"><span class="tag">What it unlocks</span><div class="unl">${unlocks}</div></div>
-    </div>
-    <div>
-      <h4 style="margin-bottom:.55rem">The atoms — ${m.atoms.length}, with status and tagged source</h4>
-      <div class="scroll">
-        <table>
-          <thead><tr><th>#</th><th>Atom</th><th>Status</th><th>Primary source</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-    </div>`;
-  $("#panel").querySelectorAll("[data-go]").forEach(b=>
-    b.addEventListener("click",()=>{select(+b.dataset.go); $("#panel").scrollIntoView({block:"start"});}));
+/* hover a station → light up its ENTIRE prerequisite chain, both directions */
+function chain(id,dir,set){
+  (dir==="up"?deps[id]:unlocksOf(id)).forEach(nb=>{ if(!set.has(nb)){set.add(nb);chain(nb,dir,set);} });
+}
+function hover(id){
+  if(id===null){Object.values(stEls).forEach(n=>n.classList.remove("dim"));
+    linkEls.forEach(e=>e.classList.remove("hl","dim"));return;}
+  const keep=new Set([id]);chain(id,"up",keep);chain(id,"down",keep);
+  Object.values(stEls).forEach(n=>n.classList.toggle("dim",!keep.has(+n.dataset.id)));
+  linkEls.forEach(e=>{const rel=keep.has(+e.dataset.from)&&keep.has(+e.dataset.to);
+    e.classList.toggle("hl",rel);e.classList.toggle("dim",!rel);});
 }
 
-/* the one button */
-$("#unfold").addEventListener("click",()=>{
-  $("#gate").hidden=true; $("#gate").style.display="none";
-  $("#graphzone").hidden=false;
-  select(1);                                     // open where he actually is
-  $("#graphzone").scrollIntoView({block:"start"});
+/* filters */
+function matchFilter(m,f){
+  const st=modStatus(m);
+  if(f==="all")   return true;
+  if(f==="debt")  return m.flag==="debt";
+  if(f==="regate")return m.atoms.some(a=>a.s==="termslost"||a.s==="covered");
+  if(f==="banked")return m.atoms.some(a=>a.s==="banked");
+  return st===f;
+}
+document.getElementById("filters").addEventListener("click",e=>{
+  const b=e.target.closest(".chip");if(!b)return;
+  document.querySelectorAll("#filters .chip").forEach(c=>c.setAttribute("aria-pressed",c===b));
+  const f=b.dataset.f;
+  MODULES.forEach(m=>stEls[m.id].classList.toggle("dim",!matchFilter(m,f)));
+  linkEls.forEach(e=>e.classList.toggle("dim",f!=="all"&&
+    !(matchFilter(byId[+e.dataset.from],f)&&matchFilter(byId[+e.dataset.to],f))));
 });
-$("#fold").addEventListener("click",()=>{
-  $("#graphzone").hidden=true;
-  $("#gate").hidden=false; $("#gate").style.display="flex";
-  window.scrollTo({top:0});
-});
-$("#theme").addEventListener("click",()=>{
-  const r=document.documentElement;
-  const dark = r.dataset.theme ? r.dataset.theme==="dark"
-             : matchMedia("(prefers-color-scheme:dark)").matches;
-  r.dataset.theme = dark ? "light" : "dark";
+
+/* stats + legend */
+(function(){
+  const banked=cnt("banked"), total=allAtoms.length, here=allAtoms.find(a=>a.s==="here");
+  document.getElementById("stats").innerHTML=`
+    <div class="stat"><div class="k">Banked cold</div><div class="v">${banked}<small>/${total}</small></div></div>
+    <div class="stat"><div class="k">Of the map</div><div class="v">${(banked/total*100).toFixed(1)}<small>%</small></div></div>
+    <div class="stat warn"><div class="k">You are here</div><div class="v" style="font-size:16px">${here?here.id:"—"}</div></div>
+    <div class="stat bad"><div class="k">Re-gate due</div><div class="v">${cnt("termslost")+cnt("covered")}</div></div>`;
+  document.getElementById("legend").innerHTML=
+    Object.entries(ST).map(([k,v])=>`<span class="lg"><i style="background:var(${v.c})"></i>${v.l}</span>`).join("")+
+    `<span class="lg"><i style="background:var(--st-debt)"></i>Debt</span>`;
+})();
+
+/* ============ MODAL ============ */
+const scrim=document.getElementById("scrim"), cc=document.getElementById("cardContent"), card=document.getElementById("card");
+let curMod=null, curTab="overview";
+
+function openCard(id,tab,scrollTo){
+  curMod=id; curTab=tab||"overview";
+  const m=byId[id], st=modStatus(m);
+  card.style.setProperty("--m",`var(${m.flag==="debt"?"--st-debt":ST[st].c})`);
+  render();
+  scrim.classList.add("show");
+  card.scrollTop=0;
+  if(scrollTo) flashAtom(scrollTo);
+  document.getElementById("closeb").focus();
+}
+function flashAtom(aid){
+  requestAnimationFrame(()=>{
+    const el=document.getElementById("row-"+cssId(aid));
+    if(!el)return;
+    el.scrollIntoView({block:"center",behavior:"smooth"});
+    el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+  });
+}
+
+function render(){
+  const m=byId[curMod], st=modStatus(m);
+  const need=deps[m.id].map(x=>`<span class="tag" data-go="${x}">${byId[x].code} · ${byId[x].name}</span>`).join("")
+    || `<span class="tag plain">nothing — this is the floor</span>`;
+  const unl=unlocksOf(m.id).map(x=>`<span class="tag" data-go="${x}">${byId[x].code} · ${byId[x].name} →</span>`).join("")
+    || `<span class="tag plain">nothing. this is the last one.</span>`;
+
+  cc.innerHTML=`
+    <div class="top">
+      <div class="eyerow">
+        <span class="mcode">${m.code}${m.flag==="debt"?" · ⚠ DEBT":""}</span>
+        <span class="mphase">Phase ${m.ph+1} · ${PHASES[m.ph].n}</span>
+        <span class="lvchip"><i></i>${ST[st].l} · ${modBanked(m)}/${m.atoms.length}</span>
+      </div>
+      <h2 id="mTitle">${m.name}</h2>
+      <p class="obj">${m.flag==="debt"?"<b>Silently skipped — and owed before Module 2.</b> ":""}${m.atoms.length} atoms · <b>${modBanked(m)} banked cold</b></p>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" data-tab="overview" aria-selected="${curTab==="overview"}">Why it's here</button>
+        <button class="tab" role="tab" data-tab="atoms"    aria-selected="${curTab==="atoms"}">Atoms <span class="n">${m.atoms.length}</span></button>
+      </div>
+    </div>
+    ${curTab==="overview"?overview(m,need,unl):atomsView(m)}
+    <div class="foot">${curTab==="overview"
+      ? `<b>Banked cold</b> = passed a gate from memory, in a <b>later</b> session, <b>terms included</b>. Everything else proves nothing. Colours are computed from <code>trackers/STATUS.json</code>, so a <code>/gate</code> pass moves this map — and it cannot flatter you.`
+      : `<b>Solid arrow</b> = a prerequisite <b>inside this module</b>. <b>Dashed chip</b> = a prerequisite in <b>another module</b> — click it to jump straight to that atom. <b>Hover any node</b> to light up everything it depends on and everything that depends on it.`}</div>`;
+
+  cc.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{curTab=b.dataset.tab;render();card.scrollTop=0;}));
+  cc.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>openCard(+b.dataset.go)));
+  cc.querySelectorAll("[data-goatom]").forEach(b=>b.addEventListener("click",()=>{
+    const t=b.dataset.goatom; openCard(atomMod[t].id,"atoms",t);
+  }));
+  if(curTab==="atoms") wireAtomGraph(m);
+}
+
+function overview(m,need,unl){
+  return `<div class="body-in">
+    <div class="sect"><div class="h">Why it's here — what broke</div><div class="chain c-broke">${m.broke}</div></div>
+    <div class="sect"><div class="h">What it buys you</div><div class="chain c-buys">${m.buys}</div></div>
+    <div class="sect"><div class="h">What it costs — what breaks next</div><div class="chain c-costs">${m.costs}</div></div>
+    <div class="sect"><div class="h">Needs first</div><div class="tags">${need}</div></div>
+    <div class="sect"><div class="h">Unlocks</div><div class="tags">${unl}</div></div>
+  </div>`;
+}
+
+/* ---- THE ATOMS VIEW: a real sub-atom dependency graph, then the list ---- */
+function atomsView(m){
+  const inMod=new Set(m.atoms.map(a=>a.id));
+
+  // longest-path depth over IN-MODULE deps → one band per level
+  const depth={};
+  const calc=id=>{
+    if(depth[id]!==undefined)return depth[id];
+    depth[id]=0;                                              // cycle guard
+    const ds=(atomById[id]?.deps||[]).filter(x=>inMod.has(x));
+    depth[id]=ds.length?1+Math.max(...ds.map(calc)):0;
+    return depth[id];
+  };
+  m.atoms.forEach(a=>calc(a.id));
+
+  const levels=[];
+  m.atoms.forEach(a=>{ const L=depth[a.id]; (levels[L]=levels[L]||[]).push(a); });
+
+  // wrap wide levels so nothing gets crushed
+  const PER=6, NW=76, NH=27, GX=18, GY=48, PAD=12, LX=44;
+  const bands=[];
+  levels.forEach((as,l)=>{ if(!as)return;
+    for(let i=0;i<as.length;i+=PER) bands.push({lvl:l,atoms:as.slice(i,i+PER),first:i===0}); });
+
+  const cols=Math.max(...bands.map(b=>b.atoms.length));
+  const inner=cols*NW+(cols-1)*GX;
+  const GW=LX+PAD*2+inner;
+  const GH=PAD*2+(bands.length-1)*GY+NH;
+
+  const P={};
+  bands.forEach((b,bi)=>{
+    const y=PAD+bi*GY;
+    const rowW=b.atoms.length*NW+(b.atoms.length-1)*GX;
+    const x0=LX+PAD+(inner-rowW)/2;
+    b.atoms.forEach((a,i)=>{P[a.id]={x:x0+i*(NW+GX),y};});
+  });
+
+  let edges="";
+  m.atoms.forEach(a=>(a.deps||[]).forEach(dp=>{
+    if(!inMod.has(dp)||!P[dp]||!P[a.id])return;
+    const A=P[dp],B=P[a.id];
+    const x1=A.x+NW/2,y1=A.y+NH,x2=B.x+NW/2,y2=B.y-5,my=(y1+y2)/2;
+    edges+=`<path class="aedge" data-from="${dp}" data-to="${a.id}" d="M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}"></path>`;
+  }));
+
+  const nodes=m.atoms.map(a=>{
+    const p=P[a.id]; if(!p)return"";
+    return `<g class="an${a.s==="locked"?" locked":""}" data-id="${a.id}" tabindex="0" role="button"
+        style="--a:var(${ST[a.s].c})" aria-label="Atom ${a.id}. ${ST[a.s].l}.">
+      <rect x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="7"></rect>
+      <text x="${p.x+NW/2}" y="${p.y+NH/2+.5}">${a.id}</text></g>`;
+  }).join("");
+
+  const lvl=bands.map((b,bi)=>b.first
+    ? `<text class="alvl" x="8" y="${PAD+bi*GY+NH/2+4}">L${b.lvl}</text>`:"").join("");
+
+  const rows=m.atoms.map(a=>{
+    const ext=(a.deps||[]).filter(x=>!inMod.has(x));
+    const inn=(a.deps||[]).filter(x=>inMod.has(x));
+    const chips=[
+      ...inn.map(x=>`<b>${x}</b>`),
+      ...ext.map(x=>`<span class="xdep" data-goatom="${x}">${x} · ${atomMod[x].code}</span>`)
+    ].join(" ");
+    return `<div class="arow${a.s==="locked"?" locked":""}" id="row-${cssId(a.id)}" style="--a:var(${ST[a.s].c})">
+      <div class="aid">${a.id}</div>
+      <div>
+        <div class="at">${a.t}</div>
+        <div class="ameta">↳ ${a.ref}</div>
+        ${(a.deps&&a.deps.length)?`<div class="adep">needs: ${chips}</div>`:``}
+        ${a.note?`<div class="adep">· ${a.note}</div>`:``}
+        ${a.trap?`<div class="atrap"><b>⚠ TRAP —</b> ${a.trap}</div>`:``}
+      </div>
+      <div class="pill">${ST[a.s].l}</div>
+    </div>`;
+  }).join("");
+
+  return `<div class="body-in">
+    <div class="sect">
+      <div class="h">Sub-atom dependencies — what must be true before what</div>
+      <div class="agraph">
+        <svg viewBox="0 0 ${GW} ${GH}" style="min-width:${Math.max(GW,400)}px;width:100%">
+          <defs><marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 z" fill="var(--line)"></path></marker></defs>
+          ${lvl}${edges}${nodes}
+        </svg>
+      </div>
+    </div>
+    <div class="sect"><div class="h">The atoms — status, tagged source, and its trap</div>
+      <div class="alist">${rows}</div></div>
+  </div>`;
+}
+
+/* hover an atom → light its whole in-module chain, both directions; click → jump to its row */
+function wireAtomGraph(m){
+  const inMod=new Set(m.atoms.map(a=>a.id));
+  const up={},down={};
+  m.atoms.forEach(a=>{
+    up[a.id]=(a.deps||[]).filter(x=>inMod.has(x));
+    down[a.id]=m.atoms.filter(x=>(x.deps||[]).includes(a.id)).map(x=>x.id);
+  });
+  const walk=(id,dir,set)=>(dir==="up"?up[id]:down[id]).forEach(n=>{if(!set.has(n)){set.add(n);walk(n,dir,set);}});
+
+  const ns=[...cc.querySelectorAll(".an")], es=[...cc.querySelectorAll(".aedge")];
+  const clear=()=>{ns.forEach(n=>n.classList.remove("dim","cur"));es.forEach(e=>e.classList.remove("hl","dim"));};
+  const lite=id=>{
+    const keep=new Set([id]); walk(id,"up",keep); walk(id,"down",keep);
+    ns.forEach(n=>{n.classList.toggle("dim",!keep.has(n.dataset.id));n.classList.toggle("cur",n.dataset.id===id);});
+    es.forEach(e=>{const rel=keep.has(e.dataset.from)&&keep.has(e.dataset.to);
+      e.classList.toggle("hl",rel);e.classList.toggle("dim",!rel);});
+  };
+  ns.forEach(n=>{
+    const id=n.dataset.id;
+    n.addEventListener("mouseenter",()=>lite(id));
+    n.addEventListener("focus",()=>lite(id));
+    n.addEventListener("mouseleave",clear);
+    n.addEventListener("blur",clear);
+    n.addEventListener("click",()=>flashAtom(id));
+    n.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flashAtom(id);}});
+  });
+}
+
+function closeCard(){scrim.classList.remove("show");}
+document.getElementById("closeb").addEventListener("click",closeCard);
+scrim.addEventListener("click",e=>{if(e.target===scrim)closeCard();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCard();});
+
+/* hero → app */
+function enter(){document.body.classList.add("open");
+  if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.body.classList.add("anim");}
+document.getElementById("coreBtn").addEventListener("click",enter);
+document.getElementById("homeBtn").addEventListener("click",()=>{document.body.classList.remove("open","anim");closeCard();});
+
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  const root=document.documentElement;
+  const cur=root.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+  root.setAttribute("data-theme",cur==="dark"?"light":"dark");
 });
 </script>
-
-</div>
 </body>
 </html>

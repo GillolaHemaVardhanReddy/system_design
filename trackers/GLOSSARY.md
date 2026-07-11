@@ -1,5 +1,12 @@
 # Glossary — the terms, and WHY each name means what it means
 
+> ⚠️ **DOWNSTREAM FILE (since 2026-07-11, S6).** Term **status** and **drill clocks** are canonical in
+> **`trackers/STATUS.json`** → `terms[]`. This file is the human-readable mirror: the etymologies, the
+> concept each name compresses, and the personalised traps. **If the two disagree, `STATUS.json` wins**
+> — run `node scripts/status.mjs check`. Before S6 this file had statuses and drill dates and **no command
+> that wrote them**, so a term could sit at *"WARM, drill next session"* forever. The fix for the biggest
+> problem in this repo had no write-path. (`TEACHING_LOG.md` Entry 006.)
+
 > **Why this file exists.** On 2026-07-11, after a 29-day gap, Hema could still *derive*
 > head-of-line blocking, fast retransmit, RTO and the CA's role — and could **name none of them**.
 >

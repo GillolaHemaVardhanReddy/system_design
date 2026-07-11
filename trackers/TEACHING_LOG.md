@@ -14,6 +14,9 @@
 | Terms handed as labels, never derived → they rot while concepts survive | 4 sessions (S1–S4, surfaced S5) | 2026-07-11 |
 | Same-session re-gate graded as retention → inflated confidence scores | 2 | 2026-07-11 |
 | Did not read the trackers before teaching | 1 | 2026-07-11 |
+| **Fixed a derivation problem with an EXAM** → aversive drill, learner disengaged | 1 | 2026-07-11 (Entry 004) |
+| **Committed a session with no session log** → its questions are permanently lost | 1 (S5) | 2026-07-11 (Entry 005) |
+| **A tracker was allowed to contradict another tracker** → status drifted, 1.5 read ✅ BANKED for a month it hadn't earned | 1 | 2026-07-11 (Entry 006) |
 
 ---
 
@@ -45,3 +48,33 @@
 - **Root cause (mine):** no forcing function. Nothing in the toolkit made me read the trackers before teaching, so the accumulated knowledge sat unused — the exact failure the trackers exist to prevent.
 - **Fix, adopted:** a **SessionStart hook** that prints days-since-last-session, the overdue revision queue, terms due, and standing orders — **before** any teaching. Plus a hard rule in CLAUDE.md §0.5: **read BEHAVIOR_LEARNING + MISTAKE_JOURNAL before the first lesson of a session.**
 - **Retest:** if a known-logged failure mode is ever re-diagnosed from scratch instead of pre-empted, this entry has failed.
+
+## Entry 004 — I fixed the term problem with an EXAM, for a learner who does not learn from exams ⭐
+- **Surfaced:** 2026-07-11, later the same day, **by Hema pushing back.** His words: *"I am losing interest because of these accurate hundred percent exact terms tests."*
+- **Symptom:** I opened the session with a **standalone 10-question term gauntlet** — scenario in, word out, detached from any teaching. He scored 3/10 clean, and then **disengaged and argued to have the whole method removed.** A drill that makes him want to quit has negative value, however correct its diagnosis.
+- **Root cause (mine):** **the finding was right and the format was its exact opposite.** Entry 001 concluded *"what he derives, survives; what he is handed, rots"* — and then I built the remedy as a **test**, which is neither deriving nor receiving. It is the one mode that teaches him nothing. `BEHAVIOR_LEARNING.md` has said since Session 1 that he learns by **deriving**; I had just written that sentence myself, in this file, and still shipped a quiz. **I fixed a derivation problem with an examination.**
+- **Aggravating factor:** I ran it as the **opening act** of the session — so the first twenty minutes were pure aversive assessment with no teaching in them. Then when he complained about "letter-perfect" grading I was *factually* right (I had accepted "fast retransmission," "middleman," "exponent," "judge") — and being right about the grading is worth nothing if the format has already cost me the learner.
+- **What he was RIGHT about:** grading should be on the **referent, not the spelling.** Any word that lands on the right object is a pass. → now CLAUDE.md §1, the **synonym rule**.
+- **What he was WRONG about, and I held the line:** *"any word that describes it is enough."* No — a word that names the **wrong object** is a **concept error** wearing a term gap as a costume. *"UDP is fast and **accurate**"* (it is not — accuracy is what it sold) and *"**sequence number**"* for an HTTP retry (TCP machinery answering an HTTP question) are **not** wording slips. Both failed *his own* proposed test — "just check if the concept landed."
+- **Correct model:** **the term is welded to the birth of the mechanism, or it is not taught at all.** Never examined in a vacuum. If a term is `LOST`, the repair is to **re-derive the mechanism and re-christen it** — not to quiz it harder.
+- **Memory anchor:** *"You cannot test a term into a derivation learner."*
+- **Fix, adopted:** CLAUDE.md §4 — **NO STANDALONE TERM EXAM.** `/terms` demoted to a ≤60-second warm-up folded inside an atom; never the opening act; never a gauntlet. CLAUDE.md §1 — the **synonym rule**.
+- **Retest:** if a session ever opens with a detached term quiz again, this entry has failed.
+
+## Entry 005 — I committed the most important session in the repo with no session log
+- **Surfaced:** 2026-07-11 (Session 6), while closing out.
+- **Symptom:** `sessions/` contained `001`–`004` and **no `005`.** Session 5 — the session that produced the **term-decay finding**, the single most valuable diagnosis in this repo — was committed as `09cb3a9 "Session 005: term-decay finding + toolkit rebuild"` **with no session file.** The commit message was doing a session log's job.
+- **What was lost, permanently:** the **questions asked and their grades.** `CLAUDE.md` §7 requires exactly that in every session log, for exactly one reason: **a "cold re-gate" that reuses old questions measures recognition, not recall.** Without the S5 question list, I cannot guarantee S7's TLS gate doesn't accidentally re-ask an S5 question. That guarantee is now unrecoverable for S5.
+- **Root cause (mine):** `/session` is a **command Jimmy must remember to run.** The `SessionEnd` hook auto-**commits** — so it faithfully preserved a session whose log did not exist, and made the omission *look* like a completed session in `git log`. **The automation preserved the gap instead of catching it.**
+- **Correct model:** an auto-commit without an auto-*check* is worse than no automation — it manufactures evidence of work that wasn't done.
+- **Fix:** `sessions/005-term-decay-finding.md` reconstructed from the trackers in S6 and **flagged as reconstructed**, with the missing grades named as missing. **Proposed hard fix:** `SessionEnd` refuses to commit — or commits loudly flagged `[NO SESSION LOG]` — if `sessions/NNN-*.md` does not exist for the current session.
+- **Retest:** if any future commit says "Session NNN" and `sessions/NNN-*.md` does not exist, this entry has failed.
+
+## Entry 006 — I let the trackers contradict each other, and the optimistic one won
+- **Surfaced:** 2026-07-11 (Session 6), building `notes/ROADMAP.html`.
+- **Symptom:** atom **1.5 (TCP loss recovery)** read **✅ BANKED (S4)** in `SYLLABUS.md`, **banked** in `COMPLETION.md`'s count — while `GLOSSARY.md` on the same day recorded **fast retransmit: LOST**, **RTO: WARM**, **exponential backoff: WARM**, and `MISTAKE_JOURNAL.md` Entry 004 recorded *"I don't know what the other mechanism is."* **Four files, four truths.** Nothing reconciled them, so the most flattering one stood.
+- **Root cause (mine):** atom status lives in **four places with no consistency protocol** — `SYLLABUS.md`, `COMPLETION.md`, `GLOSSARY.md`, and now `ROADMAP.html`. Replicas without a write-path converge on whichever replica nobody re-reads. **This is a distributed-systems bug in a distributed-systems curriculum**, and I built it.
+- **Why it matters more than it looks:** the honesty rule (`CLAUDE.md` §7) is enforced by *nothing*. It is a sentence in a file, and a sentence cannot detect drift. Entry 002 corrected an inflated **score**; this is the same disease at the **status** level, and it survived a month.
+- **Fix, this session:** 1.5 demoted to ⚠️ **TERMS LOST** in `SYLLABUS.md`, `COMPLETION.md` and the roadmap. Denominator unified at **166 atoms**; banked count unified at **4**.
+- **Proposed hard fix:** **one canonical status record** (the `ROADMAP.html` data block, or a `trackers/STATUS.json`), with every other file rendered or validated against it, plus a `SessionStart` check that fails loudly on drift. **Until that exists, this entry is only patched, not fixed.**
+- **Retest:** if two trackers ever disagree about an atom's status again, this entry has failed.

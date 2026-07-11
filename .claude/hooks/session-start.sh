@@ -5,6 +5,10 @@
 # time on old topics," and NOTHING in the system raised a hand. Every item in the
 # revision sheet was overdue and silent. He then scored 1.5/6 on banked material.
 # A tracker nobody reads is not a tracker. This forces the read.
+#
+# Rebuilt 2026-07-11 (S6): the queue is now generated from trackers/STATUS.json —
+# the ONE canonical record — instead of being scraped from four markdown files
+# that had drifted apart and were quietly disagreeing. See TEACHING_LOG Entry 006.
 
 set -uo pipefail
 cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || exit 0
@@ -26,16 +30,19 @@ if   [ "$DAYS" -ge 14 ]; then
 elif [ "$DAYS" -ge 7 ]; then
   echo "⚠️  >7 days. Run a short cold spot-check on due topics before new material."
 else
-  echo "✅ Recent session. Proceed, but honour the revision queue below."
+  echo "✅ Recent session. Proceed, but honour the due queue below."
 fi
 
 echo ""
-echo "─── ACTIVE RECALL QUEUE (trackers/REVISION_SHEET.md) ───"
-sed -n '/## Active Recall Queue/,/^$/p' trackers/REVISION_SHEET.md 2>/dev/null | sed '1d'
 
-echo "─── TERMS DUE (trackers/GLOSSARY.md) ───"
-echo "Terms decay FASTER than concepts for this learner. Drill them with /terms."
-grep -E '^\|' trackers/GLOSSARY.md 2>/dev/null | grep -vi 'term.*etymology' | grep -v '^|---' | head -20
+# The canonical record: drift detection + the atom/term due queue.
+# Exits non-zero on drift — the output says so loudly; do not teach past it.
+if command -v node >/dev/null 2>&1 && [ -f scripts/status.mjs ]; then
+  node scripts/status.mjs check || true
+else
+  echo "⚠️  node or scripts/status.mjs missing — falling back to raw trackers."
+  sed -n '/## Active Recall Queue/,/^$/p' trackers/REVISION_SHEET.md 2>/dev/null | sed '1d'
+fi
 
 echo ""
 echo "─── STANDING ORDERS ───"
@@ -44,5 +51,12 @@ echo "   (On 2026-07-11 the failure mode was already diagnosed in Session 2 and"
 echo "    Jimmy did not open the file. Do not repeat that.)"
 echo "2. Known blind spots: layer-fusion · discriminator-dodging · TERM DECAY."
 echo "3. A correct explanation WITHOUT the correct term is NOT a pass."
-echo "4. Log YOUR OWN teaching failures to trackers/TEACHING_LOG.md."
+echo "4. NO STANDALONE TERM EXAM. Terms are christened INSIDE the teaching, at the"
+echo "   moment the mechanism is derived (name-at-birth). Repair a LOST term by"
+echo "   RE-DERIVING it — never by quizzing it harder. (TEACHING_LOG Entry 004.)"
+echo "5. Every status change goes in trackers/STATUS.json — the ONE canonical record."
+echo "   Then: node scripts/status.mjs build   (regenerates notes/ROADMAP.html)"
+echo "   NEVER hand-edit notes/ROADMAP.html, and never let a markdown tracker"
+echo "   disagree with STATUS.json. The flattering replica always wins otherwise."
+echo "6. Log YOUR OWN teaching failures to trackers/TEACHING_LOG.md."
 echo "══════════════════════════════════════════════════════════════════"

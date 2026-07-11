@@ -1,0 +1,2086 @@
+{
+  "//": "CANONICAL STATUS RECORD. This file is the single source of truth for atom status, term status, and every decay clock. SYLLABUS.md, COMPLETION.md, GLOSSARY.md and notes/ROADMAP.html are DOWNSTREAM of this file. Run `node scripts/status.mjs check` to detect drift and `node scripts/status.mjs build` to regenerate the roadmap. NEVER hand-edit notes/ROADMAP.html.",
+  "meta": {
+    "updated": "2026-07-11",
+    "session": 6,
+    "learner": "Hema Vardhan"
+  },
+  "policy": {
+    "//": "A date moves ONLY on a RETRIEVAL EVENT. Never because time passed. Never because a document was written. Reading a term does not install it; only retrieving it does.",
+    "atomRegateDays": {
+      "banked": 14,
+      "termslost": 1,
+      "covered": 1,
+      "here": 0,
+      "locked": null
+    },
+    "//2": "Expanding ladder for a repeatedly-passed atom: 14d → 30d → 60d → 120d. A FAILED cold re-check resets to 1 and DEMOTES the atom.",
+    "regateLadderDays": [
+      14,
+      30,
+      60,
+      120
+    ],
+    "termDrillDays": {
+      "COLD": 14,
+      "WARM": 1,
+      "LOST": 0,
+      "MISUSED": 0,
+      "NEVER_TAUGHT": 0
+    },
+    "//3": "LOST/MISUSED = drill EVERY session until produced COLD. Repair a LOST term by RE-DERIVING the mechanism and RE-CHRISTENING it (name-at-birth) — never by quizzing it harder. TEACHING_LOG Entry 004.",
+    "promotion": "A term goes → COLD only when produced cold in a LATER session than the one that taught it. A same-session production proves working memory and promotes NOTHING.",
+    "demotion": "Any atom whose TERMS fail a cold check is demoted to `termslost`, regardless of how well the mechanism was explained. CLAUDE.md §1."
+  },
+  "modules": [
+    {
+      "id": 0,
+      "code": "M0",
+      "name": "Foundations",
+      "x": 20,
+      "y": 330,
+      "flag": "debt",
+      "broke": "Nothing yet — this is the floor. <b>It was silently skipped, and that is a debt, not a choice.</b> Every system you will ever design runs on one machine with a finite CPU, a memory hierarchy spanning six orders of magnitude, and a scheduler that can take the CPU away mid-sentence. You cannot reason about a distributed system until you can reason about <b>one</b>.",
+      "buys": "The ability to say <b>why</b> something is slow instead of that it is slow. Locks, races, deadlock, and the event loop — the machinery under every line of Node you have ever written.",
+      "costs": "Nothing breaks next. This module is the one that stops <i>later</i> modules from breaking. <b>Skipping it is why isolation levels look like arbitrary SQL trivia instead of what they are — a concurrency problem in a SQL costume.</b>",
+      "unlocks": [
+        2,
+        3,
+        12
+      ],
+      "atoms": [
+        {
+          "id": "0.1",
+          "t": "CPU and the memory hierarchy (register → L1/L2/L3 → RAM → SSD → disk → network)",
+          "s": "locked",
+          "ref": "napkin-math · samwho.dev/numbers",
+          "trap": "Jeff Dean's latency numbers are ~2010 — several are now wrong by 10×. Teach them as intuition; ESTIMATE with napkin-math.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.2",
+          "t": "Process vs thread. What a context switch actually costs",
+          "s": "locked",
+          "ref": "OSTEP ch. 4–6, 26",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.3",
+          "t": "Concurrency vs parallelism — they are not the same word",
+          "s": "locked",
+          "ref": "OSTEP ch. 26",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.4",
+          "t": "Scheduling · syscalls · virtual memory & paging",
+          "s": "locked",
+          "ref": "OSTEP cpu-sched.pdf, vm-paging.pdf",
+          "trap": "OSTEP's book.pdf does not exist (404). Chapter PDFs only.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.5",
+          "t": "Locks, mutexes, semaphores, condition variables",
+          "s": "locked",
+          "ref": "OSTEP ch. 28–31",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.6",
+          "t": "Race conditions · deadlock (the four conditions)",
+          "s": "locked",
+          "ref": "OSTEP threads-deadlock.pdf",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.7",
+          "t": "Producer–consumer, readers–writers, dining philosophers — DERIVED, not read",
+          "s": "locked",
+          "ref": "⭐ Little Book of Semaphores (it is a problem book)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.8",
+          "t": "Blocking vs non-blocking I/O. Why thread-per-connection does not scale",
+          "s": "locked",
+          "ref": "C10K",
+          "trap": "C10K is 2014 — no io_uring, benchmarks meaningless. Keep the axes, discard every recommendation.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.9",
+          "t": "Readiness notification: select → poll → epoll. Level- vs edge-triggered",
+          "s": "locked",
+          "ref": "epoll(7) man page",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.10",
+          "t": "The event loop. libuv. Node's six phases — and the asymmetry: network I/O uses epoll, file I/O has no portable async primitive so it runs on a THREAD POOL",
+          "s": "locked",
+          "ref": "libuv design docs · Node official event-loop docs",
+          "trap": "uvbook (~2012) has API drift. Concepts only; official libuv docs for API truth.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "0.11",
+          "t": "Event-loop starvation — why one CPU-bound handler destroys p99 for EVERY connection",
+          "s": "locked",
+          "ref": "Node 'Don't Block the Event Loop'",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "code": "M1",
+      "name": "Networking",
+      "x": 192,
+      "y": 330,
+      "broke": "Two computers. <b>No shared memory.</b> The only way to know anything about another machine is to send a message and wait — and the message may never arrive. <b>Every single thing in distributed systems is a consequence of that one fact.</b>",
+      "buys": "A name resolves to an address (DNS). An address becomes a reliable ordered byte pipe (TCP). The pipe becomes private and authenticated (TLS). The tunnel carries a request and gets a response (HTTP). That is the whole internet, and you can now walk it end to end.",
+      "costs": "Reliability is bought with <b>latency</b> — that is head-of-line blocking, and it is why UDP exists, why HTTP/2 did not fix what it claimed to, and why QUIC was built. And the wire gives you <b>one machine</b>. The moment there are ten of them: <b>where does the truth live?</b> That question <i>is</i> a database.",
+      "unlocks": [
+        2,
+        3,
+        9
+      ],
+      "atoms": [
+        {
+          "id": "1.1",
+          "t": "OSI (7 layers) vs the real TCP/IP model (4 layers)",
+          "s": "locked",
+          "ref": "RFC 1122 (primary source) · Beej's Network Concepts",
+          "trap": "The internet is 4 layers. OSI's 7 are a teaching artifact you must be able to NAME but will rarely use.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.2",
+          "t": "IP · best-effort delivery",
+          "s": "banked",
+          "ref": "Systems Approach ch. 3",
+          "lastCold": "2026-06-12",
+          "gatedIn": "S4",
+          "nextDue": null
+        },
+        {
+          "id": "1.3",
+          "t": "DNS — recursive resolver · root → TLD → authoritative · TTL · stale · trust anchor",
+          "s": "banked",
+          "ref": "⭐ Implement DNS in a Weekend (you build a resolver)",
+          "lastCold": "2026-07-11",
+          "gatedIn": "S3",
+          "nextDue": null,
+          "note": "re-retrieved cold S5 (root→TLD→authoritative repaired)"
+        },
+        {
+          "id": "1.4",
+          "t": "TCP — the 3-way handshake. Purpose: sync sequence numbers BOTH directions; liveness is a side-effect",
+          "s": "banked",
+          "ref": "Systems Approach ch. 5",
+          "lastCold": "2026-06-12",
+          "gatedIn": "S4",
+          "nextDue": null
+        },
+        {
+          "id": "1.5",
+          "t": "TCP loss recovery — flowing → fast retransmit (3 dup-ACKs) · silent → RTO + exponential backoff",
+          "s": "termslost",
+          "ref": "HPBN ch. 2",
+          "trap": "Mechanism re-derived COLD in S5 — but he could name none of it. Under the gate rule (description without the term is not a pass) this is NOT banked. Re-gate due.",
+          "lastCold": "2026-07-11",
+          "gatedIn": null,
+          "nextDue": null,
+          "note": "MECHANISM re-derived cold S5, unaided. TERMS: none produced. Demoted S6."
+        },
+        {
+          "id": "1.6",
+          "t": "TCP congestion control — slow start, AIMD",
+          "s": "locked",
+          "ref": "Systems Approach ch. 6",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.7",
+          "t": "UDP — and head-of-line blocking as its reason to exist. TCP: rather late than wrong. UDP: rather wrong than late",
+          "s": "covered",
+          "ref": "HPBN ch. 3",
+          "trap": "Derived in S4, NEVER GATED. Covered proves nothing.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "note": "derived S4 from TCP's head-of-line cost. Never gated."
+        },
+        {
+          "id": "1.8",
+          "t": "Sockets — the actual API under everything above",
+          "s": "locked",
+          "ref": "⭐ Beej's Guide to Network Programming (v3.3.2, 2026)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.9",
+          "t": "TLS 1.3 + Diffie–Hellman — cert = IDENTITY, DH = SECRECY; the secret is built on both ends and NEVER SENT",
+          "s": "here",
+          "ref": "⭐⭐ tls13.xargs.org (byte-by-byte, names every field) · RFC 8446",
+          "trap": "DO NOT use hpbn.co's TLS chapter — it is from 2013 and predates TLS 1.3. It will teach you a handshake that no longer exists.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null,
+          "note": "OPENED S6 — source announced, forcing question posed, NOT answered."
+        },
+        {
+          "id": "1.10",
+          "t": "HTTP/1.1 — request/response · safe ⊂ idempotent ⊂ all · idempotency key · 4xx vs 5xx",
+          "s": "banked",
+          "ref": "RFC 9110",
+          "lastCold": "2026-06-05",
+          "gatedIn": "S2",
+          "nextDue": null,
+          "note": "idempotent misdefined as 'same response' in S5 — precision to re-firm."
+        },
+        {
+          "id": "1.11",
+          "t": "Browser rendering — completes the google.com walk",
+          "s": "locked",
+          "ref": "HPBN ch. 10",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.12",
+          "t": "HTTP/2 — framing, multiplexing… and why it did NOT fix head-of-line blocking",
+          "s": "locked",
+          "ref": "HPBN ch. 12",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.13",
+          "t": "HTTP/3 / QUIC — the payoff for the term you already own",
+          "s": "locked",
+          "ref": "⭐ http3-explained (why-quic/why-tcphol) · RFC 9000/9114",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.14",
+          "t": "Cookies · sessions · JWT-vs-session",
+          "s": "locked",
+          "ref": "RFC 6265",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.15",
+          "t": "Reverse proxy · virtual hosting (picks a SITE, never a port)",
+          "s": "locked",
+          "ref": "nginx docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.16",
+          "t": "Load balancing — L4 vs L7",
+          "s": "locked",
+          "ref": "AWS Builders' Library",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.17",
+          "t": "WebSockets — the HTTP Upgrade handshake; why it is not 'HTTP but persistent'",
+          "s": "locked",
+          "ref": "RFC 6455",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.18",
+          "t": "gRPC — protobuf, 4 call types. gRPC IS HTTP/2, so it inherits its properties",
+          "s": "locked",
+          "ref": "grpc.io",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "1.19",
+          "t": "API design: REST vs gRPC vs GraphQL · pagination · versioning · retries, timeouts, JITTER",
+          "s": "locked",
+          "ref": "⭐ AWS Builders' Library (timeouts/retries/backoff-with-jitter)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "code": "M2",
+      "name": "Databases",
+      "x": 364,
+      "y": 190,
+      "broke": "You have ten servers now, and they are <b>disposable</b> — any one can die mid-request and be replaced by a fresh one. So <b>where does the truth live?</b> It cannot live in a process's memory, because processes die. <b>That question IS a database.</b>",
+      "buys": "A single place that survives a crash and can be <b>concurrently written by many clients without them corrupting each other.</b> That second half is the entire hard part, and it is why this module is gated on Module 0.",
+      "costs": "The database is now the <b>bottleneck</b> — one box, and every request goes through it. It also gets slow the moment it is popular. The obvious fix is to keep a copy of the hot answers somewhere fast. <b>That is a cache, and it instantly hands you a consistency problem</b> — because now there are two copies of the truth.",
+      "unlocks": [
+        3,
+        5,
+        7
+      ],
+      "atoms": [
+        {
+          "id": "2.1",
+          "t": "Relational vs NoSQL (KV / document / column / graph)",
+          "s": "locked",
+          "ref": "DDIA 2e ch. 3",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.2",
+          "t": "ACID — what each letter actually promises",
+          "s": "locked",
+          "ref": "DDIA 2e · Postgres docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.3",
+          "t": "Transactions",
+          "s": "locked",
+          "ref": "DDIA 2e",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.4",
+          "t": "Isolation levels & serializability — DERIVE them, do not memorise them",
+          "s": "locked",
+          "ref": "⭐⭐ 'A Critique of ANSI SQL Isolation Levels' (Berenson/Gray 1995) · drill with Hermitage",
+          "trap": "REQUIRES M0 atoms 0.5–0.7. This is a concurrency problem wearing a SQL costume. The ANSI phenomena are ill-defined — the paper proves it and defines snapshot isolation.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.5",
+          "t": "MVCC — real tuple visibility, not the cartoon",
+          "s": "locked",
+          "ref": "The Internals of PostgreSQL ch. 5",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.6",
+          "t": "B-tree vs LSM-tree — the READ/WRITE AMPLIFICATION trade",
+          "s": "locked",
+          "ref": "Petrov (Database Internals) · LSM paper · RocksDB",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.7",
+          "t": "WAL — write-ahead log",
+          "s": "locked",
+          "ref": "Internals of PostgreSQL ch. 9 · Petrov",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.8",
+          "t": "Indexing — leading-column order, why a function on an indexed column kills the index",
+          "s": "locked",
+          "ref": "⭐ Use The Index, Luke",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.9",
+          "t": "Query planning & EXPLAIN",
+          "s": "locked",
+          "ref": "Internals of PostgreSQL ch. 3",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.10",
+          "t": "Normalization vs denormalization",
+          "s": "locked",
+          "ref": "DDIA 2e",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.11",
+          "t": "Replication — sync vs async, leader–follower",
+          "s": "locked",
+          "ref": "DDIA 2e ch. 6",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.12",
+          "t": "Partitioning · sharding",
+          "s": "locked",
+          "ref": "DDIA 2e ch. 7",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.13",
+          "t": "Read replicas — and the replication lag you just bought",
+          "s": "locked",
+          "ref": "DDIA 2e",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "2.14",
+          "t": "CAP and its correction, PACELC — Else → Latency vs Consistency",
+          "s": "locked",
+          "ref": "⭐ Abadi's PACELC paper",
+          "trap": "CAP alone is the pop-science version. PACELC is the one that survives contact with a real system.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "code": "M3",
+      "name": "Caching",
+      "x": 536,
+      "y": 70,
+      "broke": "The database is the bottleneck. Every request pays a disk seek for an answer that has not changed in an hour. <b>The same question is being asked ten thousand times a second and answered from scratch every time.</b>",
+      "buys": "Orders of magnitude. A RAM hit is ~100ns; a disk seek is ~100µs–10ms. <b>That is the memory hierarchy from atom 0.1, cashed in.</b>",
+      "costs": "<b>Two copies of the truth.</b> The instant you cache, you own an invalidation problem — and invalidation has no correct answer, only trade-offs. Then the cache itself fails in ways the DB never did: <b>stampede, thundering herd, hot keys.</b> And when you try to fix consistency across many caches on many machines, you find you need the machines to <b>agree</b> — which nobody has taught you how to do yet.",
+      "unlocks": [
+        4
+      ],
+      "atoms": [
+        {
+          "id": "3.1",
+          "t": "Why caches exist · the cache hierarchy",
+          "s": "locked",
+          "ref": "ties to atom 0.1",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "3.2",
+          "t": "Cache-aside / write-through / write-behind / write-around",
+          "s": "locked",
+          "ref": "DDIA 2e · AWS Builders' Library",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "3.3",
+          "t": "Redis internals — single-threaded event loop (the SAME epoll story as atom 0.10)",
+          "s": "locked",
+          "ref": "Redis develop/ docs",
+          "trap": "Redis's own 'internals' doc is a 2010 artifact — the page says so itself. It is history, not truth.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "3.4",
+          "t": "RESP — a wire protocol on TCP (ties straight back to Module 1)",
+          "s": "locked",
+          "ref": "Redis RESP protocol spec",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "3.5",
+          "t": "Persistence — RDB (fork + copy-on-write) vs AOF",
+          "s": "locked",
+          "ref": "Redis persistence docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "3.6",
+          "t": "Eviction — ⭐ why Redis APPROXIMATES LRU by sampling instead of keeping a true LRU list",
+          "s": "locked",
+          "ref": "Redis eviction docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "3.7",
+          "t": "Invalidation & TTL",
+          "s": "locked",
+          "ref": "ties to atom 1.3 (DNS TTL — the same idea)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "3.8",
+          "t": "Cache stampede / thundering herd / hot keys",
+          "s": "locked",
+          "ref": "⭐ Scaling Memcache at Facebook (NSDI'13) — leases, stale sets",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "code": "M4",
+      "name": "Scalability",
+      "x": 536,
+      "y": 260,
+      "broke": "One box cannot take the load. Not the DB, not the app server, not the cache. <b>You must add boxes — and every box you add is a new way for the system to be inconsistent, unbalanced, or on fire.</b>",
+      "buys": "Boxes without chaos. Statelessness (so any box can serve any request), consistent hashing (so adding a box does not re-shuffle every key), rate limiting (so one client cannot take the system down), and <b>the ability to estimate before you build</b>.",
+      "costs": "Now failure is <b>partial</b>. Before, the system was up or down. Now three boxes are fine, one is slow, and — the killer — <b>a slow machine is indistinguishable from a dead one.</b> You cannot even tell what state your own system is in. That is the door into distributed systems, and it is the intellectual core of the whole program.",
+      "unlocks": [
+        5,
+        8,
+        10
+      ],
+      "atoms": [
+        {
+          "id": "4.1",
+          "t": "Vertical vs horizontal scaling",
+          "s": "locked",
+          "ref": "AWS Builders' Library",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "4.2",
+          "t": "Stateless vs stateful — the property that makes horizontal scaling possible at all",
+          "s": "locked",
+          "ref": "12factor.net",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "4.3",
+          "t": "Load balancers",
+          "s": "locked",
+          "ref": "ties forward to atom 1.16 (L4 vs L7)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "4.4",
+          "t": "CDN",
+          "s": "locked",
+          "ref": "HPBN",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "4.5",
+          "t": "Consistent hashing",
+          "s": "locked",
+          "ref": "⭐ Dynamo paper (2007)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "4.6",
+          "t": "Rate limiting — fixed/sliding window, token bucket, leaky bucket",
+          "s": "locked",
+          "ref": "AWS Builders' Library",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "4.7",
+          "t": "⭐ Back-of-envelope estimation, drilled hard",
+          "s": "locked",
+          "ref": "napkin-math (re-measured Mar 2026)",
+          "trap": "Teach Jeff Dean's numbers as INTUITION; estimate with napkin-math. Dean's are ~2010 and several are wrong by 10×.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "4.8",
+          "t": "The USE method — turns 'it is slow' into a bounded search",
+          "s": "locked",
+          "ref": "Brendan Gregg — Utilisation, Saturation, Errors",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "4.9",
+          "t": "Cascading failures — how a healthy system takes itself down",
+          "s": "locked",
+          "ref": "Google SRE Book ch. 21–23 · Metastable Failures (HotOS'21)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "code": "M5",
+      "name": "Distributed Sys",
+      "x": 708,
+      "y": 160,
+      "broke": "The machines must now <b>agree</b> — and there is no global clock, messages are lost, and <b>a slow machine is indistinguishable from a dead one.</b> You cannot ask 'is node B alive?' You can only ask 'has B replied yet?', and 'not yet' is not an answer.",
+      "buys": "<b>The intellectual core of the entire program.</b> Ordering without a clock (Lamport, vector clocks). Agreement despite failure (quorum, Raft). A precise vocabulary for what a system actually promises (the consistency lattice) instead of a marketing page's word for it.",
+      "costs": "Coordination is <b>expensive and it couples</b>. Every consensus round is a round trip; every synchronous call means <b>if B is down, A is down.</b> The escape is to stop calling B and instead write to a <b>log</b> that B reads at its own pace — which is Messaging.",
+      "unlocks": [
+        6,
+        7,
+        8,
+        13
+      ],
+      "atoms": [
+        {
+          "id": "5.1",
+          "t": "The fallacies of distributed computing",
+          "s": "locked",
+          "ref": "Vitillo, Understanding Distributed Systems",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.2",
+          "t": "Failure detectors — why 'is it dead?' is undecidable",
+          "s": "locked",
+          "ref": "van Steen DS4",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.3",
+          "t": "Physical clocks — and why you cannot trust them",
+          "s": "locked",
+          "ref": "⭐ Kleppmann Cambridge notes",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.4",
+          "t": "Logical clocks — Lamport timestamps",
+          "s": "locked",
+          "ref": "⭐ Kleppmann Cambridge notes",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.5",
+          "t": "Vector clocks",
+          "s": "locked",
+          "ref": "Dynamo paper · Kleppmann notes",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.6",
+          "t": "Consistency models — linearizable → sequential → causal → eventual",
+          "s": "locked",
+          "ref": "⭐ Jepsen's consistency lattice",
+          "trap": "Jepsen also documents real databases VIOLATING their own claimed guarantees. Read the analyses, not the marketing page.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.7",
+          "t": "Quorum — R + W > N",
+          "s": "locked",
+          "ref": "Dynamo paper",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.8",
+          "t": "Consensus — the problem, stated precisely",
+          "s": "locked",
+          "ref": "Kleppmann notes",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.9",
+          "t": "Leader election",
+          "s": "locked",
+          "ref": "Raft paper",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.10",
+          "t": "⭐ Raft — and BUILD it",
+          "s": "locked",
+          "ref": "Raft paper + raft.github.io viz + MIT 6.824 Raft lab",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.11",
+          "t": "Paxos (overview only)",
+          "s": "locked",
+          "ref": "Paxos Made Simple — Lamport",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.12",
+          "t": "Distributed locks — and why they are a trap",
+          "s": "locked",
+          "ref": "Kleppmann's 'How to do distributed locking'",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "5.13",
+          "t": "CRDTs",
+          "s": "locked",
+          "ref": "Kleppmann Cambridge notes",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "code": "M6",
+      "name": "Messaging",
+      "x": 880,
+      "y": 70,
+      "broke": "Synchronous calls <b>couple</b> services. If B is down, A is down. If B is slow, A is slow. If B needs to be redeployed, A takes the outage. <b>You have built a distributed monolith with extra network hops.</b>",
+      "buys": "<b>Put a log between them.</b> A writes to the log and leaves; B reads at its own pace; B can be down for an hour and lose nothing. The log is durable, replayable, and ordered — and that ordering is what makes it a <i>truth</i> rather than a buffer.",
+      "costs": "<b>Everything becomes eventually consistent, and 'exactly-once' turns out to be a lie</b> — the network cannot tell a lost message from a lost acknowledgement, so the best you get is at-least-once <i>plus an idempotent consumer</i>. <b>That is atom 1.10 coming back to collect.</b> Also: ordering only holds per-partition, and now you need patterns for multi-service workflows — Saga, outbox, CQRS.",
+      "unlocks": [
+        13
+      ],
+      "atoms": [
+        {
+          "id": "6.1",
+          "t": "Queues vs pub/sub",
+          "s": "locked",
+          "ref": "⭐ Kreps, 'The Log'",
+          "trap": "The LinkedIn URL is DEAD (404). Use the web.archive.org link in REFERENCES.md — every curriculum on the internet still links the dead one.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.2",
+          "t": "Event-driven architecture",
+          "s": "locked",
+          "ref": "Stopford, Designing Event-Driven Systems (free)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.3",
+          "t": "Streaming",
+          "s": "locked",
+          "ref": "DDIA 2e ch. 11",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.4",
+          "t": "Kafka — the append-only SEGMENTED LOG",
+          "s": "locked",
+          "ref": "Kafka docs, Design section",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.5",
+          "t": "⭐ The OS page cache + sendfile/zero-copy — a caught-up Kafka cluster does NO DISK READS",
+          "s": "locked",
+          "ref": "Kafka Design docs (ties to atom 0.4, virtual memory)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.6",
+          "t": "ISR replication",
+          "s": "locked",
+          "ref": "Kafka docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.7",
+          "t": "Consumer groups & offsets",
+          "s": "locked",
+          "ref": "Kafka docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.8",
+          "t": "Delivery semantics — at-most / at-least / exactly-once",
+          "s": "locked",
+          "ref": "DDIA 2e",
+          "trap": "'Exactly-once' is a lie without idempotency. This ties STRAIGHT back to atom 1.10 — idempotency keys.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.9",
+          "t": "Ordering guarantees",
+          "s": "locked",
+          "ref": "Kafka docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.10",
+          "t": "Backpressure",
+          "s": "locked",
+          "ref": "Node streams · Kafka",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "6.11",
+          "t": "Dead-letter queues",
+          "s": "locked",
+          "ref": "AWS docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "code": "M7",
+      "name": "Storage",
+      "x": 708,
+      "y": 530,
+      "broke": "The database holds <b>rows you query</b>. It does not hold a 4GB video, or ten years of clickstream, or a petabyte you want to scan analytically. <b>Different access patterns need different storage, and forcing them all into Postgres is how you get a $40k/month bill.</b>",
+      "buys": "Blob storage for the big opaque things. Erasure coding for durability at a fraction of replication's cost. Columnar layout for the scans (this is your ClickHouse work, explained).",
+      "costs": "Now the truth is scattered across several stores with different guarantees, and keeping them coherent is its own job.",
+      "unlocks": [
+        11
+      ],
+      "atoms": [
+        {
+          "id": "7.1",
+          "t": "Object / blob storage",
+          "s": "locked",
+          "ref": "GFS paper · S3",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "7.2",
+          "t": "Distributed storage — replication",
+          "s": "locked",
+          "ref": "⭐ GFS (2003)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "7.3",
+          "t": "Erasure coding — durability without 3× cost",
+          "s": "locked",
+          "ref": "DDIA 2e",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "7.4",
+          "t": "Data lakes vs warehouses",
+          "s": "locked",
+          "ref": "DDIA 2e ch. 3",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "7.5",
+          "t": "⭐ Columnar storage — ties directly to your ClickHouse work",
+          "s": "locked",
+          "ref": "DDIA 2e · Bigtable paper",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "7.6",
+          "t": "GFS — commodity hardware + replication",
+          "s": "locked",
+          "ref": "GFS paper",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "7.7",
+          "t": "Bigtable — LSM/SSTable, wide-column",
+          "s": "locked",
+          "ref": "Bigtable paper (ties to atom 2.6)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "code": "M8",
+      "name": "Observability",
+      "x": 880,
+      "y": 350,
+      "broke": "<b>You have built something you cannot see.</b> It is 3am. It is down. Something in a graph of forty services is slow and you do not know which. <b>What do you look at?</b>",
+      "buys": "The ability to answer that question in minutes instead of hours. Metrics tell you <i>that</i>. Traces tell you <i>where</i>. Logs tell you <i>why</i>. And SLOs tell you <b>whether you are even allowed to care</b> — an error budget is permission to fail.",
+      "costs": "Observability is not free — cardinality explodes, tracing adds overhead, and an alert that fires too often trains you to ignore it.",
+      "unlocks": [
+        11
+      ],
+      "atoms": [
+        {
+          "id": "8.1",
+          "t": "Logging — structured, and what NOT to log",
+          "s": "locked",
+          "ref": "Google SRE Book",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "8.2",
+          "t": "Metrics — RED (rate, errors, duration) and USE",
+          "s": "locked",
+          "ref": "Brendan Gregg · SRE Book",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "8.3",
+          "t": "Distributed tracing",
+          "s": "locked",
+          "ref": "Google SRE Book · OpenTelemetry",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "8.4",
+          "t": "Alerting — SLI / SLO / SLA and error budgets",
+          "s": "locked",
+          "ref": "⭐ Google SRE Book",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "8.5",
+          "t": "Incident analysis — real postmortems",
+          "s": "locked",
+          "ref": "SRE Workbook · public postmortems",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "code": "M9",
+      "name": "Security",
+      "x": 364,
+      "y": 450,
+      "broke": "TLS gave you a private tunnel to a server whose <b>identity</b> you verified. It told you <b>nothing about who the human on the other end is, or what they are allowed to do.</b> Atom 1.9 solved the wire. It did not solve the user.",
+      "buys": "AuthN (who are you) held apart from AuthZ (what may you do) — <b>the single most-confused pair in the industry</b>. Plus the crypto vocabulary to reason about it instead of copying a Stack Overflow answer.",
+      "costs": "Every mechanism here is a new attack surface. A JWT you cannot revoke. A session store that is now a bottleneck. An OAuth flow with one redirect misconfigured.",
+      "unlocks": [
+        11
+      ],
+      "atoms": [
+        {
+          "id": "9.1",
+          "t": "AuthN vs AuthZ — identity vs permission",
+          "s": "locked",
+          "ref": "OWASP",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "9.2",
+          "t": "Sessions vs JWT — the revocation problem",
+          "s": "locked",
+          "ref": "OWASP (ties to atom 1.14)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "9.3",
+          "t": "OAuth2 / OIDC",
+          "s": "locked",
+          "ref": "RFC 6749 · OWASP",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "9.4",
+          "t": "Symmetric vs asymmetric crypto",
+          "s": "locked",
+          "ref": "revisits atom 1.9 — this is the DH/cert distinction, generalised",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "9.5",
+          "t": "Hashing & salting — why a password is never encrypted",
+          "s": "locked",
+          "ref": "OWASP Password Storage Cheat Sheet",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "9.6",
+          "t": "TLS in depth — revisits atom 1.9 with the full picture",
+          "s": "locked",
+          "ref": "RFC 8446 · tls13.xargs.org",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "9.7",
+          "t": "Secrets management",
+          "s": "locked",
+          "ref": "12factor.net · OWASP",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "9.8",
+          "t": "CSRF / XSS / SQLi / SSRF — at a DESIGN level, not a payload level",
+          "s": "locked",
+          "ref": "OWASP Top 10",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "code": "M10",
+      "name": "Infrastructure",
+      "x": 880,
+      "y": 530,
+      "broke": "You have a design. <b>It runs on your laptop.</b> Now put forty copies of it on machines you have never touched, replace them one at a time without dropping a request, and make it reproducible by someone who has never met you.",
+      "buys": "Reproducibility and safe change. A container is a machine you can diff. Blue-green and canary make a deploy <b>reversible</b> — which is the only thing that makes deploying often <i>safe</i> rather than reckless.",
+      "costs": "An enormous amount of accidental complexity, and an orchestrator that is itself a distributed system with its own consensus (etcd → Raft → <b>atom 5.10</b>).",
+      "unlocks": [
+        11
+      ],
+      "atoms": [
+        {
+          "id": "10.1",
+          "t": "Docker — and what an image actually is",
+          "s": "locked",
+          "ref": "Docker docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "10.2",
+          "t": "Containers vs VMs — the isolation boundary",
+          "s": "locked",
+          "ref": "ties to atom 0.2 (process) and 0.4 (namespaces/cgroups)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "10.3",
+          "t": "Kubernetes",
+          "s": "locked",
+          "ref": "Burns, Designing Distributed Systems (free)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "10.4",
+          "t": "Service discovery",
+          "s": "locked",
+          "ref": "Patterns of Distributed Systems",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "10.5",
+          "t": "CI/CD",
+          "s": "locked",
+          "ref": "Google SRE Book",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "10.6",
+          "t": "Infrastructure as code",
+          "s": "locked",
+          "ref": "Terraform docs",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "10.7",
+          "t": "⭐ Twelve-Factor",
+          "s": "locked",
+          "ref": "12factor.net",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "10.8",
+          "t": "Blue-green & canary deploys",
+          "s": "locked",
+          "ref": "AWS Builders' Library",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "code": "M11",
+      "name": "High Level Design",
+      "x": 1052,
+      "y": 340,
+      "broke": "You now know every mechanism. <b>You still cannot design a system</b> — because designing is not recalling mechanisms, it is <b>choosing between them under constraints you had to extract yourself</b>, and defending the choice when someone pushes.",
+      "buys": "A framework that survives an hour of pressure: requirements → estimation → API → data model → architecture → scale → reliability → tradeoffs. And fifteen real designs, each of which you must <b>defend</b>, not recite.",
+      "costs": "Nothing breaks after this — but it is also the module that will most tempt you to shortcut. <b>Grokking is deliberately NOT on this list.</b> It teaches the shape of an answer instead of the machinery, and it rewards exactly the discriminator-dodging reflex already logged as your blind spot.",
+      "unlocks": [
+        14
+      ],
+      "atoms": [
+        {
+          "id": "11.1",
+          "t": "The framework: requirements → estimation → API → data model → architecture → scale → reliability → tradeoffs",
+          "s": "locked",
+          "ref": "built from Modules 1–10, not from a book",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.2",
+          "t": "URL Shortener",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.3",
+          "t": "Pastebin",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.4",
+          "t": "WhatsApp",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.5",
+          "t": "Twitter",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.6",
+          "t": "Instagram",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.7",
+          "t": "Uber",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.8",
+          "t": "Netflix",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.9",
+          "t": "YouTube",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.10",
+          "t": "Dropbox",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.11",
+          "t": "Swiggy",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.12",
+          "t": "News Feed",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.13",
+          "t": "Notification Service",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.14",
+          "t": "Rate Limiter",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.15",
+          "t": "Web Crawler",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "11.16",
+          "t": "Typeahead",
+          "s": "locked",
+          "ref": "design AND defend",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "code": "M12",
+      "name": "Low Level Design",
+      "x": 364,
+      "y": 650,
+      "broke": "Inside every box on your HLD diagram is <b>code</b> — and a beautiful architecture made of unmaintainable classes is still unmaintainable. <b>The unit of design is COMPLEXITY, not patterns.</b>",
+      "buys": "Deep modules, information hiding, and the ability to name a refactoring move instead of gesturing at it. <b>Refactoring 2e is smell → NAME → mechanics on every page</b> — which is an unusually good fit for a term-decay blind spot.",
+      "costs": "Nothing — but note the traps: <b>Clean Code is NOT on this list</b> (it installs rules to obey rather than a model to reason with), and GoF's patterns half-collapse into plain functions in TypeScript. Applying them as classes in Node is cargo-cult.",
+      "unlocks": [
+        14
+      ],
+      "atoms": [
+        {
+          "id": "12.1",
+          "t": "⭐ APOSD — deep vs shallow modules",
+          "s": "locked",
+          "ref": "Ousterhout ch. 4",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.2",
+          "t": "Information leakage",
+          "s": "locked",
+          "ref": "Ousterhout ch. 5",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.3",
+          "t": "Tactical vs strategic programming",
+          "s": "locked",
+          "ref": "Ousterhout ch. 3",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.4",
+          "t": "Refactoring — design as named, safe, REVERSIBLE moves",
+          "s": "locked",
+          "ref": "Fowler, Refactoring 2e (JavaScript examples)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.5",
+          "t": "SOLID — as heuristics to RE-DERIVE, never as commandments",
+          "s": "locked",
+          "ref": "derive, then check against Refactoring.Guru",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.6",
+          "t": "Patterns in TypeScript",
+          "s": "locked",
+          "ref": "Refactoring.Guru (TS)",
+          "trap": "Half of GoF (Strategy, Command, Factory Method, Template Method, Iterator) collapses into plain functions and closures in TS. Consult GoF only for its Consequences sections — the costs, which every free site amputates.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.7",
+          "t": "Repository",
+          "s": "locked",
+          "ref": "⭐ Cosmic Python (derives it from the pain it solves)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.8",
+          "t": "Service Layer",
+          "s": "locked",
+          "ref": "Cosmic Python",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.9",
+          "t": "Unit of Work",
+          "s": "locked",
+          "ref": "Cosmic Python · Fowler EAA",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.10",
+          "t": "Aggregate",
+          "s": "locked",
+          "ref": "Cosmic Python · Khononov",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.11",
+          "t": "Message Bus",
+          "s": "locked",
+          "ref": "Cosmic Python (ties to Module 6)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.12",
+          "t": "Fowler's EAA catalog — the vocabulary behind every ORM you touch",
+          "s": "locked",
+          "ref": "⭐ martinfowler.com/eaaCatalog (read the catalog, not the 2002 book)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.13",
+          "t": "Parking Lot",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.14",
+          "t": "Elevator",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.15",
+          "t": "Splitwise",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.16",
+          "t": "BookMyShow",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.17",
+          "t": "ATM",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.18",
+          "t": "Chess",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.19",
+          "t": "Vending Machine",
+          "s": "locked",
+          "ref": "solve COLD, then diff",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.20",
+          "t": "In-memory KV store",
+          "s": "locked",
+          "ref": "solve COLD (ties to Module 3)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.21",
+          "t": "Rate limiter",
+          "s": "locked",
+          "ref": "solve COLD (ties to atom 4.6)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.22",
+          "t": "Connection pool",
+          "s": "locked",
+          "ref": "solve COLD (ties to Module 0 — this is a semaphore)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "12.23",
+          "t": "Circuit breaker",
+          "s": "locked",
+          "ref": "solve COLD (ties to atom 1.19)",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "code": "M13",
+      "name": "Advanced",
+      "x": 1052,
+      "y": 120,
+      "broke": "A single business action now spans <b>five services and five databases</b>, and there is no transaction that can span them. <b>2PC exists and everybody avoids it.</b> So how do you book a flight, charge a card, and reserve a seat — atomically — when 'atomically' is not available?",
+      "buys": "The patterns that make multi-service correctness possible without a distributed transaction: Saga, outbox, event sourcing, CQRS. These are what senior engineers actually reach for.",
+      "costs": "Enormous conceptual overhead, and every one of them is <b>eventually consistent by construction</b>. Reach for them when you must, never because they are impressive.",
+      "unlocks": [
+        11
+      ],
+      "atoms": [
+        {
+          "id": "13.1",
+          "t": "CQRS",
+          "s": "locked",
+          "ref": "microservices.io · Fowler",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "13.2",
+          "t": "Event sourcing",
+          "s": "locked",
+          "ref": "Fowler (ties to Kreps' 'The Log')",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "13.3",
+          "t": "Saga — orchestration vs choreography",
+          "s": "locked",
+          "ref": "microservices.io",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "13.4",
+          "t": "⭐ The outbox pattern — the fix for 'write to DB AND publish' not being atomic",
+          "s": "locked",
+          "ref": "microservices.io",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "13.5",
+          "t": "Service mesh",
+          "s": "locked",
+          "ref": "Burns, Designing Distributed Systems",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "13.6",
+          "t": "Multi-region",
+          "s": "locked",
+          "ref": "Spanner paper · PACELC",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "13.7",
+          "t": "2PC — and WHY it is avoided",
+          "s": "locked",
+          "ref": "DDIA 2e ch. 9",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "13.8",
+          "t": "Distributed transactions",
+          "s": "locked",
+          "ref": "DDIA 2e",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "code": "M14",
+      "name": "Interview Mastery",
+      "x": 1224,
+      "y": 440,
+      "broke": "Nothing broke. <b>This module is the byproduct, not the goal.</b> If you can defend a design because you built the thing, this is easy. Chasing it the other way round does not work — and that is the single most common way people spend two years and get nowhere.",
+      "buys": "The performance layer: clarifying requirements out loud, whiteboarding legibly, articulating a tradeoff as a tradeoff rather than a preference, and STAR stories that are true.",
+      "costs": "Nothing. This is the last module for a reason.",
+      "unlocks": [],
+      "atoms": [
+        {
+          "id": "14.1",
+          "t": "Escalating mocks",
+          "s": "locked",
+          "ref": "/mock — the interviewer agent",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "14.2",
+          "t": "Architecture defense",
+          "s": "locked",
+          "ref": "—",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "14.3",
+          "t": "Whiteboarding",
+          "s": "locked",
+          "ref": "C4 model",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "14.4",
+          "t": "Requirement clarification",
+          "s": "locked",
+          "ref": "—",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "14.5",
+          "t": "⭐ Tradeoff articulation — your discriminator-dodging blind spot, in its final boss form",
+          "s": "locked",
+          "ref": "—",
+          "trap": "This module is where 'answering around the question' costs you the offer. It is being attacked NOW, in Module 1, on purpose.",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        },
+        {
+          "id": "14.6",
+          "t": "STAR stories",
+          "s": "locked",
+          "ref": "—",
+          "lastCold": null,
+          "gatedIn": null,
+          "nextDue": null
+        }
+      ]
+    }
+  ],
+  "terms": [
+    {
+      "term": "Head-of-line blocking",
+      "atom": "1.7",
+      "etymology": "the item at the **head** of the **line** (queue) **blocks** everything behind it",
+      "concept": "One lost packet freezes every READY packet behind it. TCP's cost is LATENCY. This is why UDP exists.",
+      "status": "LOST",
+      "lastColdProduction": null,
+      "note": "Derived UDP FROM it in S4 — then could not name it in S5."
+    },
+    {
+      "term": "Fast retransmit",
+      "atom": "1.5",
+      "etymology": "a **retransmit** that is **fast** — it does not wait for a timer",
+      "concept": "Wire FLOWING → receiver re-ACKs the last in-order byte → 3 duplicate ACKs → resend immediately.",
+      "status": "LOST",
+      "lastColdProduction": null,
+      "note": "'I don't know what the other mechanism is' (S5) — then re-derived it from scratch minutes later."
+    },
+    {
+      "term": "RTO (Retransmission Time-Out)",
+      "atom": "1.5",
+      "etymology": "the **time-out** that triggers a **retransmission**",
+      "concept": "Wire SILENT → no signal can exist → a TIMER expires → resend + exponential backoff.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "Described it perfectly; never said the name."
+    },
+    {
+      "term": "Duplicate ACK",
+      "atom": "1.5",
+      "etymology": "the **same ACK**, sent **again**",
+      "concept": "ACKs are cumulative — 'the next byte I expect is N.' Receiving 3,4,5 while 2 is missing re-sends 'expecting 2' each time.",
+      "status": "WARM",
+      "lastColdProduction": null
+    },
+    {
+      "term": "Exponential backoff",
+      "atom": "1.5",
+      "etymology": "the wait grows **exponentially** — double it each failure",
+      "concept": "RTO fires → resend → DOUBLE the timer → resend → double again.",
+      "status": "WARM",
+      "lastColdProduction": null
+    },
+    {
+      "term": "Man-in-the-middle (MITM)",
+      "atom": "1.9",
+      "etymology": "the attacker is **literally standing in the middle**",
+      "concept": "Diffie–Hellman alone shares a secret with WHOEVER IS THERE, not with WHO THEY CLAIM TO BE.",
+      "status": "MISUSED",
+      "lastColdProduction": null,
+      "note": "⚠️ Called the CA 'the middle man'. The middle man is the ATTACKER. The CA is a trusted third party."
+    },
+    {
+      "term": "Certificate Authority (CA)",
+      "atom": "1.9",
+      "etymology": "an **authority** that issues **certificates**",
+      "concept": "The trusted third party whose signature vouches for the server's identity. Pre-installed in your browser. CERT = IDENTITY. DH = SECRECY.",
+      "status": "MISUSED",
+      "lastColdProduction": null
+    },
+    {
+      "term": "Diffie–Hellman",
+      "atom": "1.9",
+      "etymology": "named for its inventors — the ONE term here that really is arbitrary",
+      "concept": "The shared secret is BUILT INDEPENDENTLY ON BOTH ENDS and is NEVER SENT. The attacker sees both public halves and cannot un-mix them.",
+      "status": "NEVER_TAUGHT",
+      "lastColdProduction": null,
+      "note": "The standing debt. Atom 1.9."
+    },
+    {
+      "term": "Trust anchor",
+      "atom": "1.3",
+      "etymology": "the **anchor** on which all **trust** rests — fixed, shipped in advance",
+      "concept": "Hardcoded root DNS IPs ≅ pre-installed root CAs. You must trust SOMETHING in advance to escape the 'who do I trust first?' regress.",
+      "status": "COLD",
+      "lastColdProduction": "2026-06-12"
+    },
+    {
+      "term": "Idempotent",
+      "atom": "1.10",
+      "etymology": "*idem* (same) + *potens* (power) → **the same effect however many times applied**",
+      "concept": "N runs leave the same end STATE as one run. NOT the same response.",
+      "status": "MISUSED",
+      "lastColdProduction": null,
+      "note": "⚠️ Misdefined as 'same response' — twice."
+    },
+    {
+      "term": "Idempotency key",
+      "atom": "1.10",
+      "etymology": "the **key** that makes a call **idempotent**",
+      "concept": "Client attaches a unique id; the SERVER records processed keys and returns the original result on retry. A POST tool — not a GET feature.",
+      "status": "WARM",
+      "lastColdProduction": null
+    },
+    {
+      "term": "Safe (method)",
+      "atom": "1.10",
+      "etymology": "**safe** to call — it cannot hurt anything",
+      "concept": "Changes NO server state at all. A pure read. GET. safe ⊂ idempotent ⊂ all.",
+      "status": "COLD",
+      "lastColdProduction": "2026-06-05"
+    },
+    {
+      "term": "Demultiplexing",
+      "atom": "1.1",
+      "etymology": "**multiplexing** = many streams into one wire · **de**-multiplexing = **splitting them back out**",
+      "concept": "The OS KERNEL reads the destination PORT and hands bytes to the listening process. Routers read the IP; the kernel reads the port.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "Historically fused: 'Nginx chooses the port.' It does not."
+    },
+    {
+      "term": "Recursive resolver",
+      "atom": "1.3",
+      "etymology": "it **resolves** the name, **recursively** walking the chain for you",
+      "concept": "The actor that DOES THE WALKING. Root/TLD/authoritative only POINT.",
+      "status": "COLD",
+      "lastColdProduction": "2026-06-10"
+    },
+    {
+      "term": "Authoritative nameserver",
+      "atom": "1.3",
+      "etymology": "it is the **authority** on this domain — the source of truth",
+      "concept": "The ONLY tier that holds the actual A record. root → TLD → authoritative.",
+      "status": "COLD",
+      "lastColdProduction": "2026-07-11"
+    },
+    {
+      "term": "TTL (Time-To-Live)",
+      "atom": "1.3",
+      "etymology": "how long this record gets to **live** before it must be re-fetched",
+      "concept": "Bounds the cache. Past its TTL a record is STALE — not an error.",
+      "status": "COLD",
+      "lastColdProduction": "2026-06-10"
+    },
+    {
+      "term": "Stale",
+      "atom": "1.3",
+      "etymology": "old, not wrong-shaped — it **confidently points at the old address**",
+      "concept": "Loud failure = old server gone (timeout). QUIET failure = old server alive → you silently hit the wrong box. Quiet is more dangerous.",
+      "status": "COLD",
+      "lastColdProduction": "2026-06-10"
+    },
+    {
+      "term": "Best-effort",
+      "atom": "1.2",
+      "etymology": "it makes an **effort**, the **best** it can — and **promises nothing**",
+      "concept": "IP: packets may be lost, reordered, duplicated, corrupted, unacknowledged.",
+      "status": "COLD",
+      "lastColdProduction": "2026-06-12"
+    },
+    {
+      "term": "Three-way handshake",
+      "atom": "1.4",
+      "etymology": "**three** messages, **shaking hands** before business",
+      "concept": "Purpose: SYNC STARTING SEQUENCE NUMBERS, BOTH DIRECTIONS. Liveness is a side effect. Two messages confirm only one direction.",
+      "status": "COLD",
+      "lastColdProduction": "2026-06-12"
+    }
+  ],
+  "edges": [
+    [
+      0,
+      1,
+      "soft"
+    ],
+    [
+      0,
+      2,
+      "hard"
+    ],
+    [
+      0,
+      3,
+      "hard"
+    ],
+    [
+      0,
+      12,
+      "hard"
+    ],
+    [
+      1,
+      2,
+      "hard"
+    ],
+    [
+      1,
+      3,
+      "hard"
+    ],
+    [
+      1,
+      9,
+      "hard"
+    ],
+    [
+      2,
+      3,
+      "hard"
+    ],
+    [
+      2,
+      4,
+      "hard"
+    ],
+    [
+      2,
+      5,
+      "hard"
+    ],
+    [
+      2,
+      7,
+      "hard"
+    ],
+    [
+      3,
+      4,
+      "hard"
+    ],
+    [
+      4,
+      5,
+      "hard"
+    ],
+    [
+      4,
+      8,
+      "hard"
+    ],
+    [
+      4,
+      10,
+      "hard"
+    ],
+    [
+      5,
+      6,
+      "hard"
+    ],
+    [
+      5,
+      7,
+      "hard"
+    ],
+    [
+      5,
+      8,
+      "hard"
+    ],
+    [
+      5,
+      13,
+      "hard"
+    ],
+    [
+      6,
+      13,
+      "hard"
+    ],
+    [
+      7,
+      11,
+      "soft"
+    ],
+    [
+      8,
+      11,
+      "soft"
+    ],
+    [
+      9,
+      11,
+      "soft"
+    ],
+    [
+      10,
+      11,
+      "soft"
+    ],
+    [
+      13,
+      11,
+      "hard"
+    ],
+    [
+      11,
+      14,
+      "hard"
+    ],
+    [
+      12,
+      14,
+      "hard"
+    ]
+  ]
+}

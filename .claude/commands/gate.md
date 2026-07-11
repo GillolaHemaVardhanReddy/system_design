@@ -38,7 +38,24 @@ When asked for a *specific* decision he retreats to a *general description* — 
 - **Only a cold gate in a LATER session can raise a score above 5.**
 - Mistake Journal Entry 004 was once marked *"PASSED same session, 8/10"* — 29 days later he did not know the mechanism existed. Never write fiction into his file again.
 
-## On pass
-Update `LEARNING_TRACKER.md` (mastered cold) · `COMPLETION.md` (atom banked) · `REVISION_SHEET.md` (review date) · `GLOSSARY.md` (term statuses: COLD only if produced in a **later** session than taught). Then state the next atom.
+## ⇢ THE WRITE-PATH — this is not optional, and it is the step that used to be missing
+
+**`trackers/STATUS.json` is the ONE canonical record.** A gate that does not write to it changes nothing: the clocks never tick, the term never gets promoted, and the atom silently keeps whatever status it had. That is precisely how atom 1.5 read "✅ BANKED" for a month while its terms were LOST (`TEACHING_LOG.md` Entry 006).
+
+**On PASS** — edit `trackers/STATUS.json`:
+- the atom → `"s": "banked"`, `"lastCold": "<today>"`, `"gatedIn": "S<n>"`, and **increment `"passes"`** (this walks the re-gate ladder: 14d → 30d → 60d → 120d).
+- **every term** he produced cold → `"status": "COLD"`, `"lastColdProduction": "<today>"` — **but only if this session is LATER than the one that taught it.** A same-session production promotes **nothing**. It measures working memory.
+
+**On FAIL** — also edit `trackers/STATUS.json`:
+- mechanism weak → `"s": "covered"`, reset `"passes": 0`.
+- **mechanism fine but TERMS missing → `"s": "termslost"`.** Not "banked with a note." **Demoted.** A correct explanation without the term is not a pass, and that rule must bind the *tracker*, not just the conversation.
+- any term he could not produce → `"status": "LOST"`. Any term he attached to the **wrong object** (CA as "the middle man"; "sequence number" for an HTTP retry) → `"status": "MISUSED"` — that is a **concept error**, not a wording slip.
+
+**Then, always:**
+```
+node scripts/status.mjs build    # regenerates notes/ROADMAP.html — never hand-edit it
+node scripts/status.mjs check    # must print "✅ No drift" before you finish
+```
+Then bring the prose trackers into line: `LEARNING_TRACKER.md` · `COMPLETION.md` · `REVISION_SHEET.md` · `GLOSSARY.md`. **If `check` reports drift, you are not done.**
 
 Verdict line: `GATE: PASS` or `GATE: NOT YET — gap: <…>`. Honesty rule (§7): never inflate.

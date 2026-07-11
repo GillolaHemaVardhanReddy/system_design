@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<!-- ⚠️ GENERATED FILE — DO NOT HAND-EDIT.
+     Source of truth: trackers/STATUS.json · Template: notes/_roadmap.template.html
+     Rebuild: node scripts/status.mjs build -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Roadmap — System Design · Jimmy × Hema</title>
+<style>
+:root{
+  --ground:#F1F4F7; --ground-2:#E4EAF0; --card:#FBFCFD;
+  --ink:#131E29; --ink-2:#48596A; --ink-3:#7A8998;
+  --rule:#CAD5DF; --hard:#131E29;
+
+  --banked:#0F7264;   --banked-bg:#DAEFEA;  --banked-ed:#72BFB1;
+  --here:#59409F;     --here-bg:#E8E3F7;    --here-ed:#A392D8;
+  --covered:#9E6B12;  --covered-bg:#FBEFD8; --covered-ed:#DFBA70;
+  --debt:#A93748;     --debt-bg:#FAE0E4;    --debt-ed:#E096A1;
+  --locked:#7A8998;   --locked-bg:#E4EAF0;  --locked-ed:#CAD5DF;
+  --err:#A93748; --err-bg:#FAE0E4;
+
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#0D141B; --ground-2:#161F29; --card:#121B24;
+    --ink:#E3ECF3; --ink-2:#9BAEBF; --ink-3:#6A7E91;
+    --rule:#27343F; --hard:#8CA3B6;
+
+    --banked:#5DC9B6;  --banked-bg:#0E2925;  --banked-ed:#256D61;
+    --here:#A896E7;    --here-bg:#1F1A32;    --here-ed:#51438F;
+    --covered:#EAB65A; --covered-bg:#2B2211; --covered-ed:#785D22;
+    --debt:#E88996;    --debt-bg:#2E161A;    --debt-ed:#7C3843;
+    --locked:#5B6B7C;  --locked-bg:#161F29;  --locked-ed:#27343F;
+    --err:#E88996; --err-bg:#2E161A;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D141B; --ground-2:#161F29; --card:#121B24;
+  --ink:#E3ECF3; --ink-2:#9BAEBF; --ink-3:#6A7E91;
+  --rule:#27343F; --hard:#8CA3B6;
+  --banked:#5DC9B6;  --banked-bg:#0E2925;  --banked-ed:#256D61;
+  --here:#A896E7;    --here-bg:#1F1A32;    --here-ed:#51438F;
+  --covered:#EAB65A; --covered-bg:#2B2211; --covered-ed:#785D22;
+  --debt:#E88996;    --debt-bg:#2E161A;    --debt-ed:#7C3843;
+  --locked:#5B6B7C;  --locked-bg:#161F29;  --locked-ed:#27343F;
+  --err:#E88996; --err-bg:#2E161A;
+}
+:root[data-theme="light"]{
+  --ground:#F1F4F7; --ground-2:#E4EAF0; --card:#FBFCFD;
+  --ink:#131E29; --ink-2:#48596A; --ink-3:#7A8998;
+  --rule:#CAD5DF; --hard:#131E29;
+  --banked:#0F7264;   --banked-bg:#DAEFEA;  --banked-ed:#72BFB1;
+  --here:#59409F;     --here-bg:#E8E3F7;    --here-ed:#A392D8;
+  --covered:#9E6B12;  --covered-bg:#FBEFD8; --covered-ed:#DFBA70;
+  --debt:#A93748;     --debt-bg:#FAE0E4;    --debt-ed:#E096A1;
+  --locked:#7A8998;   --locked-bg:#E4EAF0;  --locked-ed:#CAD5DF;
+  --err:#A93748; --err-bg:#FAE0E4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:1rem}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:3rem 1.25rem 8rem;display:flex;flex-direction:column;gap:2rem}
+
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+h1{font-family:var(--mono);font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+h3{font-size:1rem;font-weight:700}
+h4{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+p,li{max-width:80ch}
+code{font-family:var(--mono);font-size:.86em;background:var(--ground-2);border:1px solid var(--rule);padding:.06rem .3rem;border-radius:2px}
+.lede{border-left:3px solid var(--hard);padding-left:1rem;color:var(--ink-2);font-size:1.02rem}
+.lede strong{color:var(--ink)}
+
+/* ── THE ONE BUTTON ── */
+.gate{display:flex;flex-direction:column;align-items:center;gap:1.1rem;padding:3rem 1rem}
+.bigbtn{font-family:var(--mono);font-size:clamp(1.1rem,3vw,1.6rem);font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;background:var(--card);color:var(--ink);border:2px solid var(--hard);
+  border-radius:3px;padding:1.3rem 2.6rem;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+.bigbtn:hover{transform:translateY(-2px);box-shadow:0 6px 0 -2px var(--hard)}
+.bigbtn:focus-visible{outline:2px solid var(--here);outline-offset:4px}
+.gate .hint{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);letter-spacing:.06em}
+#graphzone[hidden]{display:none}
+
+/* ── legend ── */
+.legend{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
+.lg{display:flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.7rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--ed);background:var(--bg);color:var(--fg);
+  padding:.28rem .55rem;border-radius:2px}
+.lg .sw{width:9px;height:9px;background:var(--fg);border-radius:1px;flex:none}
+.lg.banked{--fg:var(--banked);--bg:var(--banked-bg);--ed:var(--banked-ed)}
+.lg.here{--fg:var(--here);--bg:var(--here-bg);--ed:var(--here-ed)}
+.lg.covered{--fg:var(--covered);--bg:var(--covered-bg);--ed:var(--covered-ed)}
+.lg.debt{--fg:var(--debt);--bg:var(--debt-bg);--ed:var(--debt-ed)}
+.lg.locked{--fg:var(--locked);--bg:var(--locked-bg);--ed:var(--locked-ed)}
+
+/* ── counters ── */
+.counts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.55rem}
+.ct{border:1px solid var(--rule);border-left:4px solid var(--f,var(--hard));background:var(--card);
+  padding:.7rem .85rem;border-radius:2px}
+.ct .n{font-family:var(--mono);font-size:1.55rem;font-weight:700;color:var(--f,var(--ink));line-height:1.1}
+.ct .l{font-family:var(--mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.ct.b{--f:var(--banked)} .ct.h{--f:var(--here)} .ct.c{--f:var(--covered)}
+.ct.d{--f:var(--debt)} .ct.l2{--f:var(--locked)}
+
+/* ── graph ── */
+.graphbox{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.6rem;overflow-x:auto}
+#graph{display:block;min-width:940px;width:100%;height:auto}
+.nd rect{stroke-width:1.6;cursor:pointer;transition:filter .12s ease}
+.nd:hover rect{filter:brightness(1.06)}
+.nd text{pointer-events:none;font-family:var(--mono)}
+.nd .code{font-size:10px;font-weight:700;letter-spacing:.1em}
+.nd .nm{font-size:11.5px;font-weight:700}
+.nd .pr{font-size:9px;letter-spacing:.04em}
+.nd.sel rect{stroke-width:3.5}
+.nd:focus-visible rect{stroke:var(--ink);stroke-width:3}
+.edge{fill:none;stroke:var(--rule);stroke-width:1.5;opacity:.75}
+.edge.hard{stroke:var(--hard);stroke-width:2;opacity:.6}
+.edge.soft{stroke-dasharray:4 4;opacity:.5}
+.edge.lit{stroke:var(--here);stroke-width:2.6;opacity:1}
+.gl{font-family:var(--mono);fill:var(--ink-3);font-size:9px;letter-spacing:.12em}
+
+/* ── panel ── */
+.panel{border:1px solid var(--ed,var(--rule));border-left:5px solid var(--fg,var(--hard));background:var(--card);
+  border-radius:2px;padding:1.4rem 1.4rem 1.6rem;display:flex;flex-direction:column;gap:1.1rem}
+.panel.banked{--fg:var(--banked);--bg:var(--banked-bg);--ed:var(--banked-ed)}
+.panel.here{--fg:var(--here);--bg:var(--here-bg);--ed:var(--here-ed)}
+.panel.covered{--fg:var(--covered);--bg:var(--covered-bg);--ed:var(--covered-ed)}
+.panel.debt{--fg:var(--debt);--bg:var(--debt-bg);--ed:var(--debt-ed)}
+.panel.locked{--fg:var(--locked);--bg:var(--locked-bg);--ed:var(--locked-ed)}
+.p-head{display:flex;align-items:baseline;gap:.65rem;flex-wrap:wrap}
+.p-code{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--fg);
+  border:1px solid var(--fg);padding:.1rem .35rem;border-radius:2px}
+.p-name{font-family:var(--mono);font-size:1.3rem;font-weight:700}
+.p-st{margin-left:auto;font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--fg);background:var(--bg);border:1px solid var(--ed);padding:.2rem .5rem;border-radius:2px}
+.chain{display:flex;flex-direction:column;gap:.65rem}
+.ch{border:1px solid var(--rule);border-left:4px solid var(--c,var(--hard));background:var(--ground-2);
+  padding:.75rem .95rem;border-radius:2px;display:flex;flex-direction:column;gap:.3rem}
+.ch .tag{font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c,var(--ink-3))}
+.ch p{font-size:.94rem;color:var(--ink-2)}
+.ch p strong{color:var(--ink)}
+.ch.broke{--c:var(--err)} .ch.buys{--c:var(--banked)} .ch.costs{--c:var(--covered)} .ch.unlocks{--c:var(--here)}
+.unl{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.15rem}
+.unl button{font-family:var(--mono);font-size:.68rem;font-weight:700;background:var(--card);color:var(--ink-2);
+  border:1px solid var(--rule);border-radius:2px;padding:.22rem .45rem;cursor:pointer}
+.unl button:hover{color:var(--ink);border-color:var(--hard)}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:640px}
+th,td{text-align:left;padding:.5rem .6rem;border:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);
+  background:var(--ground-2);font-weight:700;white-space:nowrap}
+td.a-id{font-family:var(--mono);font-weight:700;white-space:nowrap;color:var(--ink)}
+td.a-ref{font-size:.82rem;color:var(--ink-2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;padding:.14rem .4rem;border-radius:2px;white-space:nowrap;
+  color:var(--f);background:var(--b);border:1px solid var(--e)}
+.pill.banked{--f:var(--banked);--b:var(--banked-bg);--e:var(--banked-ed)}
+.pill.here{--f:var(--here);--b:var(--here-bg);--e:var(--here-ed)}
+.pill.covered{--f:var(--covered);--b:var(--covered-bg);--e:var(--covered-ed)}
+.pill.termslost{--f:var(--debt);--b:var(--debt-bg);--e:var(--debt-ed)}
+.pill.locked{--f:var(--locked);--b:var(--locked-bg);--e:var(--locked-ed)}
+.trapline{display:block;margin-top:.3rem;font-size:.78rem;color:var(--err);font-weight:600}
+.trapline::before{content:"⚠ TRAP — ";font-family:var(--mono);font-size:.66rem;letter-spacing:.06em}
+
+.note{border:1px solid var(--err);border-left:4px solid var(--err);background:var(--err-bg);
+  padding:.85rem 1rem;border-radius:2px;display:flex;flex-direction:column;gap:.4rem}
+.note .tag{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--err)}
+.note p{font-size:.92rem}
+.btn{font-family:var(--mono);font-size:.71rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  background:var(--card);color:var(--ink-2);border:1px solid var(--rule);border-radius:2px;padding:.4rem .7rem;cursor:pointer}
+.btn:hover{color:var(--ink);border-color:var(--hard)}
+.ctl{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:.9rem">
+  <div class="eyebrow">Jimmy × Hema · the whole program, honestly</div>
+  <h1>The Roadmap</h1>
+  <p class="lede">
+    Fifteen modules, and <strong>they are not a list — they are a causal chain.</strong> Each module exists because
+    the previous one <em>hit a wall</em>. Click a node and the first thing you get is not "what it is" but
+    <strong>what broke to make it necessary</strong>. Every colour on this page is computed from the atom data at the
+    top of the file, so <strong>it cannot flatter you</strong>: a node turns green only when a cold gate is logged.
+  </p>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     THE ONE DATA BLOCK. Everything below renders from this.
+     A /gate pass changes a status here, and the graph, the counters and
+     the panels all move together. There is no second place to lie.
+     ════════════════════════════════════════════════════════════════════ -->
+<script>
+/*__DATA__*/
+</script>
+
+<!-- ══════════════════ THE ONE BUTTON ══════════════════ -->
+<div class="gate" id="gate">
+  <button class="bigbtn" id="unfold" type="button">System Design</button>
+  <div class="hint">▼ unfold the dependency graph — 15 modules, <span id="atomcount">…</span> atoms</div>
+</div>
+
+<div id="graphzone" hidden style="display:flex;flex-direction:column;gap:1.6rem">
+
+  <div class="counts" id="counts"></div>
+
+  <div style="display:flex;flex-direction:column;gap:.7rem">
+    <div class="ctl">
+      <h4 style="margin-right:auto">The dependency graph — read it left to right</h4>
+      <button class="btn" id="theme" type="button">Theme</button>
+      <button class="btn" id="fold" type="button">Fold</button>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="graphbox">
+      <svg id="graph" viewBox="0 0 1400 780" role="img" aria-label="Module dependency graph">
+        <g id="edges"></g>
+        <g id="nodes"></g>
+        <text class="gl" x="20" y="765">SOLID EDGE = REAL PREREQUISITE   ·   DASHED = ORDER OF CONVENIENCE, NOT A DEPENDENCY   ·   CLICK ANY NODE</text>
+      </svg>
+    </div>
+    <p style="font-size:.86rem;color:var(--ink-3)">
+      The graph is drawn from the data block, not by hand. When a <code>/gate</code> passes and an atom's status
+      changes to <code>banked</code>, this node's colour, the counters above, and the module's completion fraction
+      all move together. <b>There is nowhere for it to lie.</b>
+    </p>
+  </div>
+
+  <div id="panel"></div>
+
+  <div class="note">
+    <span class="tag">The honest count</span>
+    <p><b><span id="honest-total">…</span> atoms</b> are enumerated here, straight from <code>SYLLABUS.md</code>. That is fewer
+    than the ~250 you had in your head — and the reason is worth knowing: <b>Modules 2–14 have not been run through
+    <code>/breakdown</code> yet.</b> They are still syllabus <i>bullets</i>, and a bullet reliably splits into two or
+    three real teachable atoms once it is decomposed. Expect the true figure to land somewhere around 200–300.
+    <b>The number will go UP as the map gets more honest, not as you learn more</b> — do not read that as progress.</p>
+  </div>
+
+</div>
+
+<script>
+/* ─────────── render ─────────── */
+const $ = s => document.querySelector(s);
+const S = {
+  banked:   {label:"Banked cold",  cls:"banked"},
+  here:     {label:"You are here", cls:"here"},
+  covered:  {label:"Covered — not gated", cls:"covered"},
+  termslost:{label:"Mechanism ok — TERMS LOST", cls:"termslost"},
+  locked:   {label:"Locked",       cls:"locked"}
+};
+const byId = id => MODULES.find(m=>m.id===id);
+const allAtoms = MODULES.flatMap(m=>m.atoms);
+const count = s => allAtoms.filter(a=>a.s===s).length;
+
+// module status is DERIVED from its atoms — never hand-set
+function modStatus(m){
+  if(m.atoms.some(a=>a.s==="here")) return "here";
+  if(m.flag==="debt") return "debt";
+  if(m.atoms.every(a=>a.s==="locked")) return "locked";
+  if(m.atoms.every(a=>a.s==="banked")) return "banked";
+  if(m.atoms.some(a=>a.s==="banked")) return "covered";
+  return "locked";
+}
+const modBanked = m => m.atoms.filter(a=>a.s==="banked").length;
+
+$("#atomcount").textContent = allAtoms.length;
+
+/* counters */
+$("#counts").innerHTML = [
+  ["b","banked","Banked cold"],
+  ["h","here","You are here"],
+  ["c","covered","Covered, not gated"],
+  ["d","termslost","Terms lost — re-gate"],
+  ["l2","locked","Locked"]
+].map(([c,k,l])=>`<div class="ct ${c}"><div class="n">${count(k)}</div><div class="l">${l}</div></div>`).join("")
+ + `<div class="ct"><div class="n">${allAtoms.length}</div><div class="l">Atoms enumerated</div></div>`;
+
+$("#honest-total").textContent = allAtoms.length;
+
+/* legend */
+$("#legend").innerHTML = ["banked","here","covered","debt","locked"].map(k=>{
+  const lbl = k==="debt" ? "Debt — owed before M2" : S[k]?S[k].label:k;
+  return `<span class="lg ${k}"><span class="sw"></span>${lbl}</span>`;
+}).join("");
+
+/* graph */
+const NW=146, NH=56;
+const gN=$("#nodes"), gE=$("#edges");
+
+EDGES.forEach(([a,b,kind])=>{
+  const A=byId(a), B=byId(b);
+  const x1=A.x+NW, y1=A.y+NH/2, x2=B.x, y2=B.y+NH/2;
+  const mx=(x1+x2)/2;
+  const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+  p.setAttribute("d",`M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`);
+  p.setAttribute("class",`edge ${kind}`);
+  p.dataset.from=a; p.dataset.to=b;
+  gE.appendChild(p);
+});
+
+MODULES.forEach(m=>{
+  const st=modStatus(m);
+  const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+  g.setAttribute("class","nd"); g.setAttribute("tabindex","0");
+  g.setAttribute("role","button");
+  g.setAttribute("aria-label",`${m.code} ${m.name} — ${st}`);
+  g.dataset.id=m.id;
+  g.innerHTML =
+    `<rect x="${m.x}" y="${m.y}" width="${NW}" height="${NH}" rx="2"
+       fill="var(--${st}-bg)" stroke="var(--${st}-ed)"></rect>
+     <text class="code" x="${m.x+10}" y="${m.y+17}" fill="var(--${st})">${m.code}${m.flag==="debt"?" ⚠":""}</text>
+     <text class="nm"   x="${m.x+10}" y="${m.y+34}" fill="var(--ink)">${m.name}</text>
+     <text class="pr"   x="${m.x+10}" y="${m.y+48}" fill="var(--ink-3)">${modBanked(m)}/${m.atoms.length} banked</text>`;
+  g.addEventListener("click",()=>select(m.id));
+  g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();select(m.id);} });
+  gN.appendChild(g);
+});
+
+/* panel */
+function select(id){
+  const m=byId(id), st=modStatus(m);
+  document.querySelectorAll(".nd").forEach(n=>n.classList.toggle("sel", +n.dataset.id===id));
+  document.querySelectorAll(".edge").forEach(e=>
+    e.classList.toggle("lit", +e.dataset.from===id || +e.dataset.to===id));
+
+  const unlocks = m.unlocks.length
+    ? m.unlocks.map(u=>`<button type="button" data-go="${u}">${byId(u).code} · ${byId(u).name} →</button>`).join("")
+    : `<span style="font-size:.85rem;color:var(--ink-3)">Nothing. This is the last one.</span>`;
+
+  const rows = m.atoms.map(a=>`
+    <tr>
+      <td class="a-id">${a.id}</td>
+      <td>${a.t}${a.trap?`<span class="trapline">${a.trap}</span>`:""}</td>
+      <td><span class="pill ${S[a.s].cls}">${S[a.s].label}</span></td>
+      <td class="a-ref">${a.ref}</td>
+    </tr>`).join("");
+
+  $("#panel").className=`panel ${st}`;
+  $("#panel").innerHTML = `
+    <div class="p-head">
+      <span class="p-code">${m.code}</span>
+      <span class="p-name">${m.name}</span>
+      <span class="p-st">${st==="debt"?"DEBT — owed before M2":S[st]?S[st].label:st} · ${modBanked(m)}/${m.atoms.length} banked</span>
+    </div>
+    <div class="chain">
+      <div class="ch broke"><span class="tag">Why it's here — what broke</span><p>${m.broke}</p></div>
+      <div class="ch buys"><span class="tag">What it buys you</span><p>${m.buys}</p></div>
+      <div class="ch costs"><span class="tag">What it costs — what breaks next</span><p>${m.costs}</p></div>
+      <div class="ch unlocks"><span class="tag">What it unlocks</span><div class="unl">${unlocks}</div></div>
+    </div>
+    <div>
+      <h4 style="margin-bottom:.55rem">The atoms — ${m.atoms.length}, with status and tagged source</h4>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>#</th><th>Atom</th><th>Status</th><th>Primary source</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  $("#panel").querySelectorAll("[data-go]").forEach(b=>
+    b.addEventListener("click",()=>{select(+b.dataset.go); $("#panel").scrollIntoView({block:"start"});}));
+}
+
+/* the one button */
+$("#unfold").addEventListener("click",()=>{
+  $("#gate").hidden=true; $("#gate").style.display="none";
+  $("#graphzone").hidden=false;
+  select(1);                                     // open where he actually is
+  $("#graphzone").scrollIntoView({block:"start"});
+});
+$("#fold").addEventListener("click",()=>{
+  $("#graphzone").hidden=true;
+  $("#gate").hidden=false; $("#gate").style.display="flex";
+  window.scrollTo({top:0});
+});
+$("#theme").addEventListener("click",()=>{
+  const r=document.documentElement;
+  const dark = r.dataset.theme ? r.dataset.theme==="dark"
+             : matchMedia("(prefers-color-scheme:dark)").matches;
+  r.dataset.theme = dark ? "light" : "dark";
+});
+</script>
+
+</div>
+</body>
+</html>

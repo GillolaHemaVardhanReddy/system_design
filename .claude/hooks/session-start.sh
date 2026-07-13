@@ -44,6 +44,33 @@ else
   sed -n '/## Active Recall Queue/,/^$/p' trackers/REVISION_SHEET.md 2>/dev/null | sed '1d'
 fi
 
+# ─── GIT SYNC CHECK (added 2026-07-13, S7) ───────────────────────────────────
+# Why: the 2026-06-12 session (TLS/DH, 4/5 gate) was committed on one machine and
+# never reached the other. S6 then audited a clone that had never seen it and wrote
+# "1.9 never gated, never taught" into the canonical record. It was FALSE, and the
+# whole rebuild was stacked on it. Two replicas, no replication protocol — the same
+# bug this curriculum teaches, one layer up. An unpushed commit is an unreplicated
+# write. Make divergence LOUD, before a single word is taught.
+if git remote get-url origin >/dev/null 2>&1; then
+  BR="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo main)"
+  git fetch origin "$BR" --quiet 2>/dev/null || true
+  if git rev-parse --verify --quiet "origin/${BR}" >/dev/null 2>&1; then
+    AHEAD=$(git rev-list --count "origin/${BR}..HEAD" 2>/dev/null || echo 0)
+    BEHIND=$(git rev-list --count "HEAD..origin/${BR}" 2>/dev/null || echo 0)
+    if [ "$AHEAD" != "0" ] || [ "$BEHIND" != "0" ]; then
+      echo ""
+      echo "─── ⚠️  GIT OUT OF SYNC — RESOLVE BEFORE TEACHING ───"
+      [ "$BEHIND" != "0" ] && echo "  ⬇️  ${BEHIND} commit(s) on the REMOTE that this clone has NEVER SEEN."
+      [ "$BEHIND" != "0" ] && echo "      They may contain a whole session. PULL FIRST — do not audit or"
+      [ "$BEHIND" != "0" ] && echo "      re-teach anything until you have read them. This exact situation"
+      [ "$BEHIND" != "0" ] && echo "      made S6 record TLS as 'never taught' when it had been gated 4/5."
+      [ "$AHEAD" != "0" ]  && echo "  ⬆️  ${AHEAD} commit(s) sitting LOCAL-ONLY. A commit that is not pushed"
+      [ "$AHEAD" != "0" ]  && echo "      is not a record — it is a rumour on one disk. PUSH."
+      echo "      →  git pull --rebase origin ${BR} && git push origin ${BR}"
+    fi
+  fi
+fi
+
 echo ""
 echo "─── STANDING ORDERS ───"
 echo "1. READ trackers/BEHAVIOR_LEARNING.md + MISTAKE_JOURNAL.md BEFORE teaching."
@@ -59,4 +86,7 @@ echo "   Then: node scripts/status.mjs build   (regenerates notes/ROADMAP.html)"
 echo "   NEVER hand-edit notes/ROADMAP.html, and never let a markdown tracker"
 echo "   disagree with STATUS.json. The flattering replica always wins otherwise."
 echo "6. Log YOUR OWN teaching failures to trackers/TEACHING_LOG.md."
+echo "7. PUSH EVERY COMMIT. Never end a turn or a session with main ahead of"
+echo "   origin/main. An unpushed commit is an unreplicated write — it is how the"
+echo "   2026-06-12 TLS session vanished and the tracker learned a falsehood."
 echo "══════════════════════════════════════════════════════════════════"

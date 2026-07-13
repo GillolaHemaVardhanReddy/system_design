@@ -165,8 +165,8 @@
           "trap": "DO NOT use hpbn.co's TLS chapter — it is from 2013 and predates TLS 1.3. It will teach you a handshake that no longer exists.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": null,
-          "note": "OPENED S6 — source announced, forcing question posed, NOT answered.",
+          "nextDue": "2026-07-13",
+          "note": "⚠️ PART-GATED 2026-06-12 (4/5), THEN ABANDONED 31d. DH math produced that day (g, p, g^a mod p, shared g^(ab); modexp easy / discrete log hard; secret never on the wire) — but SAME-DAY as the S4 rebuild, so it caps at 5/10 and is NOT a cold bank (§1 confidence rule). Beat 5 — the active-MITM mechanism (attacker runs TWO handshakes, never computes g^(ab)) — was held open and NEVER CLOSED. Re-gate cold, all 5 beats. // Provenance: recovered from git 2026-07-13. The 2026-06-12 commit lived only on the remote; this clone never had it, so S6 wrote 'never gated, never taught' — false. TEACHING_LOG Entry 007.",
           "deps": [
             "1.4"
           ],
@@ -2541,9 +2541,9 @@
       "atom": "1.9",
       "etymology": "named for its inventors — the ONE term here that really is arbitrary",
       "concept": "The shared secret is BUILT INDEPENDENTLY ON BOTH ENDS and is NEVER SENT. The attacker sees both public halves and cannot un-mix them.",
-      "status": "NEVER_TAUGHT",
+      "status": "WARM",
       "lastColdProduction": null,
-      "note": "The standing debt. Atom 1.9."
+      "note": "Taught to real depth 2026-06-12 and produced the same day — SAME-SESSION, so it caps at 5/10 and does NOT count as cold (§1). 31 days since, with the gate held open on the MITM beat. Not NEVER_TAUGHT (S6 had that wrong — the record was on the remote only); not COLD either. Re-derive, re-christen, then close the MITM beat."
     },
     {
       "term": "Trust anchor",

@@ -98,6 +98,9 @@ Maintain `trackers/MISTAKE_JOURNAL.md`, `trackers/BEHAVIOR_LEARNING.md`, `tracke
   > *You and the server have never met. No shared password. The only channel is the TCP pipe, and the attacker reads every byte of it from the start. **How do you both end up holding the same secret key, when everything you send, he sees?***
 
   **Resume there, cold. Do not re-explain — ask.** Then: DH → *"a shared secret with whoever is there, not with who they claim to be"* → **MITM** → **certificates** → **cert = IDENTITY, DH = SECRECY** (he owns **trust anchor** COLD already — connect it to DNS root hints). Christen each mechanism **in his own words first** (name-at-birth), then give the real name + etymology.
+
+  **⚠️ CORRECTION (2026-07-13, S7) — 1.9 is NOT virgin ground. It was taught, and part-gated.** On **2026-06-12** he produced the **real DH math cold**: `g`, `p`, `g^a mod p`, the shared `g^(ab)`; **modular exponentiation easy, discrete logarithm hard**; the secret **never goes on the wire**. **4 of 5 gate dimensions passed.** The gate was **held open on exactly one beat — the active-MITM mechanism** (*the attacker runs **two separate handshakes** and **never computes `g^(ab)`***) — and then the atom sat for **31 days**. That session lived **only on the remote**; this clone never had it, so S6 wrote *"never gated, never taught"* into `STATUS.json`. **False.** (Recovered from git 2026-07-13 — see §7 push rule and `TEACHING_LOG.md` Entry 007.)
+  **What this changes for S7:** it is a **cold RE-gate, not a first teach.** Do **not** hand him the math — **it was his once.** Ask, and find out what 31 days left. Assume the **terms** are gone (they always are) and the **mechanism** is recoverable. Then **close the MITM beat**, which has been open for a month. *A gate held open decays exactly as fast as a gate never opened.*
 - **Honest position: 4 / 166 atoms banked cold (2.4%).** `1.2` IP best-effort · `1.3` DNS · `1.4` TCP handshake · `1.10` HTTP/1.1. The map is `notes/ROADMAP.html` — data-driven, so a `/gate` pass moves it and it cannot inflate.
 - **⚠️ 1.5 (TCP loss recovery) was DEMOTED in S6:** BANKED → **TERMS LOST**. He re-derived the whole mechanism cold and unaided in S5 and **named none of it**. *Description without the term is not a pass* — and that rule must bind the **tracker**, not just the gate. **1.7 (UDP): covered, never gated.**
 - **⚠️ Module 0 is a DEBT.** Silently skipped. **Paid before Module 2** — isolation levels are a concurrency problem in a SQL costume.
@@ -114,6 +117,18 @@ Maintain `trackers/MISTAKE_JOURNAL.md`, `trackers/BEHAVIOR_LEARNING.md`, `tracke
 ---
 
 ## 7. File map & update protocol
+
+### ★ PUSH. EVERY COMMIT. NO EXCEPTIONS. (added 2026-07-13, S7 — Hema's instruction, and it cost us a session to learn)
+**Every `git commit` in this repo is followed by `git push`. A commit that sits in a local branch is NOT a record — it is a rumour on one disk.** Never end a turn, and never end a session, with `main` ahead of `origin/main`.
+
+**What it already cost:** on **2026-06-12** a full session was taught and committed — **TLS/Diffie–Hellman, 4/5 gate dimensions produced, gate held open on the active-MITM beat.** It was **pushed from one machine and never pulled to the other.** Twenty-nine days later, S5/S6 ran on the clone that had never seen it, found no record of TLS, and wrote into the canonical tracker: *"1.9 — **never gated, never taught to depth. The standing debt.**"* **That was false**, and the entire S6 rebuild — `STATUS.json`, `COMPLETION.md`, `REVISION_SHEET.md`, `ROADMAP.html` — was constructed on top of the falsehood. Recovered from git on 2026-07-13 only because Hema asked whether anything had been pushed.
+
+The diagnosis is the one this curriculum keeps teaching: **two replicas, no replication protocol, and the divergent replica won.** It is the *same bug* as the four-file drift that forced `STATUS.json` into existence (§7, Entry 006) — one layer up. **An unpushed commit is an unreplicated write. `git push` is the `fsync`.**
+
+- **After every `/commit`, `/session`, `/gate`, or any tracker write: `git push`.** Not "later," not "at session end" — then.
+- **Start of session, before teaching: `git fetch && git status`.** If the remote is ahead, **pull first.** The other machine may hold a session this one has never seen. That check is now in the `SessionStart` hook.
+- **Never force-push.** The remote may hold the only copy of a session. Diverged? **Rebase onto the remote and keep both.**
+- The `SessionEnd` hook now commits **and pushes**, retries once via rebase, and **shouts to stderr if the push fails.** The hook is a backstop, **not** a licence to leave it to the hook.
 
 ### ★ `trackers/STATUS.json` — THE ONE CANONICAL RECORD (added 2026-07-11, S6)
 **Atom status, term status, and every decay clock live here and nowhere else.** `SYLLABUS.md`, `COMPLETION.md`, `GLOSSARY.md` and `notes/ROADMAP.html` are all **downstream** of it.
@@ -173,5 +188,5 @@ node scripts/status.mjs build    # regenerates notes/ROADMAP.html — NEVER hand
 ### ⚠️ Known holes in the toolkit — not yet fixed (S6)
 Named here so they cannot rot invisibly. **These are the things a future Jimmy should fix before adding anything new.**
 1. **No question bank.** `CLAUDE.md` §7 says session logs record the questions asked — but nothing enforces it, and **S5's log did not exist, so its questions are permanently lost.** A "cold re-gate" that re-asks a previous question measures whether he remembers **the question**, not the idea. → build `trackers/QUESTION_BANK.md`; gates draw only from **unused** questions.
-2. **`SessionEnd` auto-commits without checking a session log exists.** That is how S5 was committed as a completed session with no record — **the automation preserved the gap and made it look like work.** → make it refuse, or commit loudly flagged `[NO SESSION LOG]`.
+2. ~~**`SessionEnd` auto-commits without checking a session log exists.**~~ **FIXED 2026-07-13 (S7).** A session with no `sessions/` file now commits under the subject **`[NO SESSION LOG]`**, so the gap is visible in `git log` instead of hiding as "learning progress." The same fix made the hook **push** — see §7. *(That is how S5 was committed as a completed session with no record: the automation preserved the gap and made it look like work.)*
 3. **Modules 2–14 are not `/breakdown`-decomposed.** They are syllabus bullets, so the 166-atom denominator is an undercount (true figure ≈ 200–300). **It will rise as the map gets more honest — that is not progress.**

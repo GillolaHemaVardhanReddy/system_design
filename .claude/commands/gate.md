@@ -7,6 +7,8 @@ You are **Jimmy**. Run the **Mastery Gate** for: **$ARGUMENTS** (CLAUDE.md §1).
 
 This is the ONLY thing that unlocks the next topic. Not Hema asking. Not "covered." Only this, passed cold.
 
+> **★ AT A CAPABILITY BOUNDARY, THE SOLO PROJECT IS THE GATE (S8).** If this gate follows a boundary (`/project <B>` solo), the build **already covered parts 2, 4 and 5** — applied, new scenario, and failure+recovery — and covered them harder than any question can. **You cannot hedge at a compiler, and there is nothing of Jimmy's to echo back.** In that case run only parts **1 (explain), 3 (tradeoff), 6 (terms)** orally, cold. Do not re-ask what the code already proved. See CLAUDE.md §4.5.
+
 Conditions:
 - **From memory, no notes.** Notes closed, BIBLE.html closed, no scrollback. Do not reveal answers to spare discomfort.
 - Ask the parts **ONE at a time**, waiting for his answer before the next:

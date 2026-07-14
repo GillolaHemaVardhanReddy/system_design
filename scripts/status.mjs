@@ -90,6 +90,21 @@ function check() {
     if (t.status === "COLD" && !t.lastColdProduction)
       problems.push(`Term "${t.term}" is COLD with no lastColdProduction date. Only retrieval promotes a term.`);
 
+  /* ── build-tier invariants (added S8) ───────────────────────────────────
+     The build tier obeys the same law as the atoms. You cannot build on an
+     atom you have not banked — you would be pasting, not deriving. And you
+     cannot publish what you have not proven, because that debt compounds in
+     public, under his own name.                                             */
+  for (const b of STATUS.boundaries ?? []) {
+    const missing = b.requires.filter(id => (atoms.find(a => a.id === id) ?? {}).s !== "banked");
+    if (b.guided.status !== "locked" && missing.length)
+      problems.push(`Boundary ${b.id} (${b.name}) is OPEN but atoms [${missing.join(", ")}] are not banked. You cannot build on an atom you have not banked.`);
+    if (b.solo.status === "gated" && b.guided.status !== "shipped")
+      problems.push(`Boundary ${b.id}: the SOLO project is gated but the GUIDED project never shipped. The solo build is the gate — it does not come first.`);
+    if (b.article.status === "published" && b.solo.status !== "gated")
+      problems.push(`Boundary ${b.id}: an ARTICLE is published but the solo project is "${b.solo.status}", not gated. He has published material he has not proven he owns. Retract or gate it.`);
+  }
+
   console.log("─── CANONICAL STATUS (trackers/STATUS.json) ───");
   console.log(`Atoms: ${banked} BANKED COLD / ${total} enumerated (${(banked / total * 100).toFixed(1)}%)`);
   console.log(`  here ${count("here")} · covered-not-gated ${count("covered")} · TERMS-LOST ${count("termslost")} · locked ${count("locked")}`);
@@ -137,6 +152,45 @@ function due() {
   console.log("standalone term exam. Ever. (TEACHING_LOG Entry 004.)");
   for (const t of dt)
     console.log(`   [${t.status.padEnd(12)}] ${t.term}  (atom ${t.atom})${t.note ? "\n         ↳ " + t.note : ""}`);
+
+  buildQueue();
+}
+
+/* ── the build queue ─────────────────────────────────────────────────────
+   Seven sessions in, he had run ZERO commands and written ZERO lines of code,
+   and said: "I'm not even seeing what I am learning." He was right, and it was
+   a teaching failure, not a motivation failure. The governing law of this repo
+   is *what he DERIVES survives* — and RUNNING THE THING IS DERIVING.
+   TEACHING_LOG Entry 008.                                                    */
+function buildQueue() {
+  console.log("");
+  console.log("─── LABS: atoms taught but NEVER SEEN ───");
+  console.log("A lab does not bank an atom — only a cold gate does. But an atom he has never");
+  console.log("watched happen is an atom that lives only in his head, and his head is where");
+  console.log("terms go to rot. Fire the lab at the END of the atom, before the gate.");
+  const unseen = atoms.filter(a => a.lab && !a.lab.done && a.s !== "locked");
+  if (!unseen.length) console.log("   (none — every live atom has been seen)");
+  for (const a of unseen)
+    console.log(`   ${a.id.padEnd(5)} ${a.lab.cmd.slice(0, 68)}${a.lab.cmd.length > 68 ? "…" : ""}`);
+
+  console.log("");
+  console.log("─── BUILD QUEUE: capability boundaries ───");
+  console.log("A project fires where the banked atoms ADD UP to something he could not have");
+  console.log("built before. The project is DECIDED AT THE BOUNDARY, never in advance.");
+  console.log("GUIDED = Jimmy architects & reviews, HEMA TYPES EVERY LINE.  SOLO = the gate.");
+  for (const b of STATUS.boundaries ?? []) {
+    const missing = b.requires.filter(id => (atoms.find(a => a.id === id) ?? {}).s !== "banked");
+    const have = b.requires.length - missing.length;
+    if (!missing.length && b.guided.status === "locked") {
+      console.log(`   🟢 ${b.id} ${b.name.padEnd(18)} READY TO DESIGN — all ${b.requires.length} atoms banked. Run /project ${b.id}`);
+    } else if (missing.length) {
+      console.log(`   🔒 ${b.id} ${b.name.padEnd(18)} ${have}/${b.requires.length} atoms banked — blocked on: ${missing.join(", ")}`);
+    } else {
+      console.log(`   🔨 ${b.id} ${b.name.padEnd(18)} guided:${b.guided.status} · solo:${b.solo.status} · article:${b.article.status}`);
+      if (b.guided.name) console.log(`         ↳ guided: ${b.guided.name}`);
+      if (b.solo.name) console.log(`         ↳ solo:   ${b.solo.name}`);
+    }
+  }
 }
 
 /* ── regenerate the roadmap ──────────────────────────────────────────── */

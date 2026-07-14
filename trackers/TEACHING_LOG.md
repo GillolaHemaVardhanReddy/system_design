@@ -90,3 +90,37 @@
 - **Fixes, this session:** (1) `SessionEnd` hook now **commits AND pushes**, retries once via rebase, never force-pushes, and **shouts to stderr** if the push fails. (2) `SessionStart` hook now runs **`git fetch`** and refuses to be quiet about **ahead/behind** — a remote-ahead clone must **pull before it audits anything**. (3) `CLAUDE.md` §7 — **PUSH EVERY COMMIT**, standing order 7. (4) `STATUS.json`, `COMPLETION.md`, `REVISION_SHEET.md` corrected to the recovered truth, with the provenance written beside it so nobody "re-corrects" it back.
 - **Memory anchor:** *"A commit that is not pushed is not a record — it is a rumour on one disk. `git push` is the `fsync`."*
 - **Retest:** if a session ever begins on a clone that is behind `origin` and teaching starts anyway, this entry has failed.
+
+---
+
+## Entry 008 — Seven sessions of the wire, and he never once saw a packet ⭐
+**Date:** 2026-07-14 (S8) · **Cost:** the thing that actually matters — his motivation
+
+**What he said, unprompted:**
+> *"currently im not getting motivation because i am not even seeing what i am learning."*
+
+**He was right, and it is my failure, not his.**
+
+**The evidence, and it is damning.** Seven sessions on **networking**. He has derived Diffie–Hellman on a whiteboard. He has reconstructed fast retransmit from cumulative ACKs, from scratch, unaided. And in seven sessions he has run **zero commands** and written **zero lines of code**. He has never watched a TCP handshake happen. He has never seen a duplicate ACK. He has never looked at a certificate chain.
+
+`CLAUDE.md` §3 names **eight layers** per topic. Layer **6 is Implementation**. **I have delivered it zero times out of seven.** And `trackers/PROJECT_ROADMAP.md` — a file *I* wrote — contained the line:
+
+> *"First build (URL Shortener) starts after Module 2 fundamentals."*
+
+**I put the practice behind a gate that was months away, and then wondered why the theory would not stick.**
+
+**Root cause — and it is the repo's own governing law, which I failed to apply to myself.**
+> **What he DERIVES survives. What he is HANDED rots.**
+
+**RUNNING THE THING IS DERIVING.** I have been handing him *stories* about mechanisms — Firesheep, NSA MUSCULAR, the S3 outage — and calling that the "real-world anchor" required by §4. It is not. **An anecdote is still something he was handed.** A packet capture on his own screen, where *he* injected the loss and *he* predicted the outcome, is something he **derived**. I satisfied the letter of the rule and missed its entire point.
+
+**And it explains the term decay.** Terms rot because they were never derived (Entry 001). But I "fixed" that with `name-at-birth` in a *conversation* — christening a mechanism that exists only as words in a chat window. **A term christened while watching three duplicate ACKs scroll past in his own `tcpdump` has a referent in the physical world.** `BEHAVIOR_LEARNING.md` has said since Session 1: *"Abstract terms without a concrete referent"* is exactly where he stalls. **I wrote that line and then taught nine atoms with no concrete referent.**
+
+**The fix (S8, built the same day):**
+- **`/lab`** — every atom now ends on his terminal. He **predicts**, then runs, then names the mechanism *at the moment it appears on screen*. 19 labs written into `STATUS.json` for Module 1. `status.mjs check` now lists **atoms taught but never seen**, so this failure cannot go quiet again.
+- **`/project`** — projects fire at **capability boundaries**, decided *at* the boundary, never predefined. **Guided = Jimmy architects and reviews; Hema types every line.** If I write his code I have rebuilt this exact failure in a more expensive form: an artifact on LinkedIn, nothing in his head.
+- **The solo project IS the gate.** His idea, and it is better than my oral exam. You cannot hedge at a compiler and you cannot echo-grade a build.
+- **`/article`** — the Feynman test in public, gated behind the solo project. He asked for daily; he chose per-project once he saw that daily would eat the deriving.
+- Deleted *"builds start after Module 2"* from `PROJECT_ROADMAP.md`. **It was the single worst line in this repo.**
+
+**The lesson, and I should have learned it from my own file:** *he told me the diagnosis himself, in plain language, and my first instinct was to defend the curriculum.* The right instinct — the one `BEHAVIOR_LEARNING.md` §"Motivation notes" already records — is that **he detects shallow coverage accurately and trusts the process more when I own the gap than when I defend it.** He detected this one. It took him seven sessions and a motivation collapse to get me to look.

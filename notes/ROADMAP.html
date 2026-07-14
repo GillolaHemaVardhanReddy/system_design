@@ -351,7 +351,12 @@ const MODULES = [
     "gatedIn": null,
     "nextDue": null,
     "deps": [],
-    "short": "OSI (7) vs TCP/IP (4)"
+    "short": "OSI (7) vs TCP/IP (4)",
+    "lab": {
+     "cmd": "sudo tcpdump -n -e -X -c 1 'tcp port 80'",
+     "see": "ONE packet, four headers wrapped around each other: Ethernet | IP | TCP | HTTP. Peel the onion by hand. That IS the 4-layer model — not a diagram, an actual byte layout.",
+     "done": null
+    }
    },
    {
     "id": "1.2",
@@ -364,7 +369,12 @@ const MODULES = [
     "deps": [
      "1.1"
     ],
-    "short": "IP · best-effort"
+    "short": "IP · best-effort",
+    "lab": {
+     "cmd": "mtr -rwc 100 1.1.1.1",
+     "see": "Per-hop packet loss on a real path. Packets vanish and NOBODY retransmits, nobody apologises, nobody even knows. That is best-effort, and you are looking at it.",
+     "done": null
+    }
    },
    {
     "id": "1.3",
@@ -378,7 +388,12 @@ const MODULES = [
     "deps": [
      "1.2"
     ],
-    "short": "DNS"
+    "short": "DNS",
+    "lab": {
+     "cmd": "dig +trace google.com  ·  then: dig google.com  (twice, 5s apart)",
+     "see": "root → TLD → authoritative, one hop at a time, on your screen. Then watch the TTL COUNT DOWN in the cache on the second dig. Stale is a number, ticking.",
+     "done": null
+    }
    },
    {
     "id": "1.4",
@@ -391,7 +406,12 @@ const MODULES = [
     "deps": [
      "1.2"
     ],
-    "short": "TCP 3-way handshake"
+    "short": "TCP 3-way handshake",
+    "lab": {
+     "cmd": "sudo tcpdump -n -S 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0' & curl example.com",
+     "see": "SYN / SYN-ACK / ACK with the REAL initial sequence numbers — and you'll see there are TWO of them, one per direction. That is what the handshake is FOR.",
+     "done": null
+    }
    },
    {
     "id": "1.5",
@@ -406,7 +426,12 @@ const MODULES = [
     "deps": [
      "1.4"
     ],
-    "short": "TCP loss recovery"
+    "short": "TCP loss recovery",
+    "lab": {
+     "cmd": "sudo tc qdisc add dev lo root netem loss 10%  → transfer a file → capture it. Then: netem loss 100%",
+     "see": "★ THE BIG ONE. At 10% loss: three duplicate ACKs, then the retransmit — FAST RETRANSMIT, live in your capture. At 100%: the RTO, and the gaps DOUBLING — 1s, 2s, 4s, 8s. Exponential backoff, on a stopwatch. Terms you name while watching them fire do not rot.",
+     "done": null
+    }
    },
    {
     "id": "1.6",
@@ -419,7 +444,12 @@ const MODULES = [
     "deps": [
      "1.5"
     ],
-    "short": "TCP congestion control"
+    "short": "TCP congestion control",
+    "lab": {
+     "cmd": "ss -ti  (in a loop, during a large transfer)",
+     "see": "cwnd growing — then HALVING the instant a packet drops. AIMD is not a graph in a book; it is a number on your terminal, sawtoothing.",
+     "done": null
+    }
    },
    {
     "id": "1.7",
@@ -434,7 +464,12 @@ const MODULES = [
     "deps": [
      "1.5"
     ],
-    "short": "UDP + head-of-line blocking"
+    "short": "UDP + head-of-line blocking",
+    "lab": {
+     "cmd": "Same 10% loss. Send a stream over TCP, then over UDP. Time both.",
+     "see": "TCP FREEZES — one lost packet holding ready packets hostage behind it. That freeze IS head-of-line blocking; you are watching the term. UDP keeps flowing, with holes. Rather-late vs rather-wrong, on a stopwatch.",
+     "done": null
+    }
    },
    {
     "id": "1.8",
@@ -448,7 +483,12 @@ const MODULES = [
      "1.4",
      "1.7"
     ],
-    "short": "Sockets"
+    "short": "Sockets",
+    "lab": {
+     "cmd": "Write a TCP echo server in raw sockets. No framework. ~40 lines.",
+     "see": "socket → bind → listen → accept → read → write. Every web framework you have ever used is a wrapper around these six calls. You will never be mystified by one again.",
+     "done": null
+    }
    },
    {
     "id": "1.9",
@@ -463,7 +503,12 @@ const MODULES = [
     "deps": [
      "1.4"
     ],
-    "short": "TLS 1.3 + Diffie–Hellman"
+    "short": "TLS 1.3 + Diffie–Hellman",
+    "lab": {
+     "cmd": "openssl s_client -connect google.com:443 -showcerts  →  then BECOME A CA: genrsa root → self-sign → sign a leaf for hema-bank.local → curl → REJECTED → add root to trust store → ACCEPTED",
+     "see": "★ You build the trust anchor with your hands. The curl fails, you install YOUR root, the same curl succeeds — and nothing about the server changed. Trust is not in the certificate. It is in what your machine already believed.",
+     "done": null
+    }
    },
    {
     "id": "1.10",
@@ -477,7 +522,12 @@ const MODULES = [
     "deps": [
      "1.4"
     ],
-    "short": "HTTP/1.1"
+    "short": "HTTP/1.1",
+    "lab": {
+     "cmd": "printf 'GET / HTTP/1.1\\r\\nHost: example.com\\r\\n\\r\\n' | nc example.com 80  ·  then: POST the same charge twice, with and without an idempotency key",
+     "see": "You type HTTP with your own fingers — it is just text on a socket. Then you double-charge yourself, add the key, and watch the second charge do nothing. Idempotent is not 'same response'. It is 'same EFFECT'.",
+     "done": null
+    }
    },
    {
     "id": "1.11",
@@ -490,7 +540,12 @@ const MODULES = [
     "deps": [
      "1.10"
     ],
-    "short": "Browser rendering"
+    "short": "Browser rendering",
+    "lab": {
+     "cmd": "Chrome DevTools → Performance → record a cold load",
+     "see": "The critical rendering path as a waterfall: parse → CSSOM → layout → paint. Where the time ACTUALLY goes, versus where you assumed.",
+     "done": null
+    }
    },
    {
     "id": "1.12",
@@ -504,7 +559,12 @@ const MODULES = [
      "1.10",
      "1.5"
     ],
-    "short": "HTTP/2 · multiplexing"
+    "short": "HTTP/2 · multiplexing",
+    "lab": {
+     "cmd": "curl --http2 -v  ·  nghttp -nv  ·  then re-run under 10% loss",
+     "see": "Frames, stream IDs, real multiplexing — and then, under loss, HTTP/2 STALLS ANYWAY. You watch it fail to fix the thing it was sold as fixing. TCP's head-of-line blocking was never HTTP's to solve.",
+     "done": null
+    }
    },
    {
     "id": "1.13",
@@ -518,7 +578,12 @@ const MODULES = [
      "1.12",
      "1.7"
     ],
-    "short": "HTTP/3 · QUIC"
+    "short": "HTTP/3 · QUIC",
+    "lab": {
+     "cmd": "The exact same loss test, over QUIC (--http3)",
+     "see": "It does not stall. THAT is the payoff for the term you have owned since Session 4.",
+     "done": null
+    }
    },
    {
     "id": "1.14",
@@ -531,7 +596,12 @@ const MODULES = [
     "deps": [
      "1.10"
     ],
-    "short": "Cookies · sessions · JWT"
+    "short": "Cookies · sessions · JWT",
+    "lab": {
+     "cmd": "Watch Set-Cookie in DevTools → forge one → tamper with the session id",
+     "see": "Statelessness is a lie you maintain with a string. Break the string, become nobody.",
+     "done": null
+    }
    },
    {
     "id": "1.15",
@@ -544,7 +614,12 @@ const MODULES = [
     "deps": [
      "1.10"
     ],
-    "short": "Reverse proxy · vhosting"
+    "short": "Reverse proxy · vhosting",
+    "lab": {
+     "cmd": "nginx, TWO virtual hosts, ONE port (80)",
+     "see": "It picks a SITE from the Host header. It never 'chooses a port'. This kills your oldest layer-fusion error by making you configure the thing yourself.",
+     "done": null
+    }
    },
    {
     "id": "1.16",
@@ -558,7 +633,12 @@ const MODULES = [
      "1.15",
      "1.4"
     ],
-    "short": "Load balancing — L4 vs L7"
+    "short": "Load balancing — L4 vs L7",
+    "lab": {
+     "cmd": "nginx upstream, 3 backends, round-robin → kill one → watch the health check eject it",
+     "see": "L4 vs L7 stops being a definition the moment you have to pick one and live with it.",
+     "done": null
+    }
    },
    {
     "id": "1.17",
@@ -572,7 +652,12 @@ const MODULES = [
      "1.10",
      "1.4"
     ],
-    "short": "WebSockets"
+    "short": "WebSockets",
+    "lab": {
+     "cmd": "Capture the WebSocket Upgrade → HTTP 101",
+     "see": "It BEGINS as HTTP and then stops being HTTP. It is not 'HTTP but persistent' — the connection defects.",
+     "done": null
+    }
    },
    {
     "id": "1.18",
@@ -585,7 +670,12 @@ const MODULES = [
     "deps": [
      "1.12"
     ],
-    "short": "gRPC"
+    "short": "gRPC",
+    "lab": {
+     "cmd": "proto → generated stub → tcpdump it",
+     "see": "gRPC is HTTP/2 frames. Not 'like' HTTP/2 — IS. Every property it has, it inherited.",
+     "done": null
+    }
    },
    {
     "id": "1.19",
@@ -599,7 +689,12 @@ const MODULES = [
      "1.10",
      "1.16"
     ],
-    "short": "API design · retries · jitter"
+    "short": "API design · retries · jitter",
+    "lab": {
+     "cmd": "Hammer a service with retries — no jitter, then with jitter",
+     "see": "Without jitter your retries SYNCHRONISE and you DDoS your own backend. The thundering herd is not a metaphor; it is a graph you will produce.",
+     "done": null
+    }
    }
   ],
   "ph": 0,

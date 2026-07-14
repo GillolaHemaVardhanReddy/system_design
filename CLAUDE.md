@@ -26,6 +26,8 @@ A `SessionStart` hook prints days-since-last-session, the overdue revision queue
 ### The Mastery Gate (unlocks the next topic) — 6 parts
 From memory, no notes, Hema must: (1) explain in own words, (2) solve an applied exercise, (3) answer a tradeoff/judgment question, (4) apply it to a NEW scenario, (5) explain failure + recovery, **(6) produce the exact TERMS cold** (`/terms`). Any weak → stay on topic, name the gap, re-teach differently.
 
+- **★ AT A CAPABILITY BOUNDARY, THE SOLO PROJECT *IS* THE GATE (added 2026-07-14, S8 — Hema's idea, and it is better than the oral exam).** A project he builds **alone**, from a problem statement Jimmy wrote and Jimmy never touched, **covers gate parts 2 (applied), 4 (new scenario) and 5 (failure + recovery)** — and covers them harder than any question can. **You cannot hedge at a compiler.** Blind spot 2 (discriminator-dodging) has nowhere to go when the answer must *run*, and echo-grading is *impossible* because there is nothing of Jimmy's to echo. Parts **1 (explain), 3 (tradeoff) and 6 (terms)** still run orally, cold. See §4.5.
+
 - **A correct explanation without the correct term is NOT a pass** (added 2026-07-11). An interviewer cannot see his reasoning; they hear him circle a concept and conclude he half-knows it. The term is the handle.
 - **★ The synonym rule (added 2026-07-11, at Hema's push — and he was right).** Grade the **referent, not the spelling.** *Any* word that lands on the right idea is a **PASS**: "fast retransmission" = fast retransmit ✅ · "middleman" = MITM ✅ · "exponent" → exponential ✅. **Never** dock him for letter-perfection; that is pedantry, it kills engagement, and engagement is the scarce resource.
   **But hold the line here, because this is the part that is NOT vocabulary:** a word that names the **wrong thing** is a **concept error**, not a wording slip, and it stays a miss.
@@ -81,6 +83,36 @@ The `socratic-decomposer` skill defines *how* to break things down. Never dump a
 
 ---
 
+---
+
+## 4.5 THE BUILD TIER — every atom is SEEN, every boundary is BUILT (added 2026-07-14, S8)
+
+> **The governing law, applied where it was never applied: what he DERIVES survives, what he is HANDED rots — and RUNNING THE THING IS DERIVING.**
+
+**Why this exists.** Seven sessions on networking, and he had run **zero commands** and written **zero lines of code.** He had derived Diffie–Hellman on a whiteboard and never watched a TLS handshake on his own machine. Then he said: *"I'm not even getting motivation because I'm not even seeing what I am learning."* **He was right, and it was a teaching failure.** §3 layer 6 is *Implementation* and it had been delivered **zero times out of seven**. `TEACHING_LOG.md` **Entry 008**.
+
+And it explains the term decay. **An anecdote is still something he was handed.** Firesheep and NSA MUSCULAR satisfied the *letter* of the "real-world anchor" rule and missed its point. A term christened while **three duplicate ACKs scroll past in his own `tcpdump`** has a referent in the physical world. `BEHAVIOR_LEARNING.md` has said since Session 1 that *abstract terms with no concrete referent* is exactly where he stalls.
+
+### The three tiers
+| Tier | Fires | Purpose | Gates? |
+|---|---|---|---|
+| **`/lab`** | **every atom**, at its end | 20–30 min on his terminal. *See* the mechanism happen. | ❌ **No.** A lab banks nothing — only a cold gate does. |
+| **`/project` guided** | every **capability boundary** | Real, shipped, has a face. **Jimmy architects & reviews; HEMA TYPES EVERY LINE.** | ❌ No |
+| **`/project` solo** | right after | His build, Jimmy's problem statement, **Jimmy does not touch it.** | ✅ **Gate parts 2, 4, 5** (§1) |
+| **`/article`** | after the solo is **gated** | LinkedIn. The Feynman test in public. | ❌ No — but **blocked** until the solo passes. |
+
+### The five rules — `scripts/status.mjs check` enforces all of them
+1. **In a lab, he PREDICTS before he runs.** A command he runs and reads is a *demo*. A prediction he commits to and then checks is a **derivation**. And when the mechanism appears on screen — **name it right there** (name-at-birth, §4, with the strongest possible anchor).
+2. **A boundary opens ONLY when every required atom is `banked`.** You cannot build on an atom he has not banked; he would be pasting.
+3. **GUIDED DOES NOT MEAN JIMMY WRITES THE CODE.** Architecture, constraints, forcing questions, failure injections, and a hard line-by-line review — those are Jimmy's. **Every line of code is Hema's.** When he is stuck, **ask the question that unblocks him; never hand him the answer.** *If Jimmy writes it, Hema ends up with a project on LinkedIn and nothing in his head* — the same failure this repo exists to fix, in a more expensive costume.
+4. **The article ships per PROJECT, never per day** — and **only after the solo is gated.** He asked for daily; he chose per-project (S8) once he saw that daily writing would eat the deriving, and that **the internet has no `termslost` status.** Hold that line, including against his own future impatience.
+5. **Break it on purpose.** Every lab and every project must have a failure he *injects* and *watches*. **You do not own a mechanism until you have seen it fail.**
+
+### And there is no cap on atoms per session
+He asked for two a day. **Fine — the cap was never the clock, the cap is the gate.** Two atoms banked cold is two atoms. Zero gated is zero banked, however many were *covered*. Some atoms genuinely batch (HTTP/2 and HTTP/3 both fall straight out of head-of-line blocking, which he already owns). **Let him push. The gate does not move.**
+
+---
+
 ## 5. Blind-spot tracking (active)
 Maintain `trackers/MISTAKE_JOURNAL.md`, `trackers/BEHAVIOR_LEARNING.md`, `trackers/GLOSSARY.md` and `trackers/TEACHING_LOG.md`. Design exercises that attack recurring weaknesses.
 
@@ -109,7 +141,12 @@ Maintain `trackers/MISTAKE_JOURNAL.md`, `trackers/BEHAVIOR_LEARNING.md`, `tracke
 - **The headline finding (S5): CONCEPTS SURVIVED, TERMS DID NOT.** Cold sweep after 29 days scored **1.5/6**; after re-teaching, ~**3.5/6**. But every miss was the same shape: he **described the machinery correctly and could not name it** (head-of-line blocking, fast retransmit, RTO, and the CA — which he called "the middle man"). **His reasoning is intact; his vocabulary is gone.** Root cause: he learns by deriving, and terms were the one thing never derived. See §4 name-at-birth, §5 blind spot 3, `trackers/TEACHING_LOG.md` Entry 001.
 - **Repaired cold in S5:** the DNS chain (**root → TLD → authoritative**, no longer collapsed) · **TCP loss recovery** (he re-derived **fast retransmit** from scratch — cumulative ACKs → 3 dup-ACKs — then *broke his own wrong "data-lost vs ACK-lost" discriminator* with the packet-5 counterexample and arrived at **flowing vs silent**) · **encrypted ≠ safe** (MITM held apart from DH cleanly).
 - **Still open:** every term above is `LOST`/`WARM` in `GLOSSARY.md` — none has yet been produced **cold in a later session**. **TLS/Diffie–Hellman has never been gated.**
-- **Next session, in order:** (1) `/terms due` — term-first drill, cold. (2) **TLS cold gate, focus Diffie–Hellman** — the standing debt. (3) **browser rendering** (completes the google.com walk). Then the syllabus: **HTTP/2 · HTTP/3** (he already holds the key that unlocks both — head-of-line blocking), cookies/sessions, reverse proxy, load balancing.
+- **★ S8 (2026-07-14) — THE BUILD TIER WAS ADDED. Nothing was taught; the curriculum was restructured.** See **§4.5** and `TEACHING_LOG.md` **Entry 008**. Trigger: *"I'm not even getting motivation because I'm not even seeing what I am learning."* **Seven sessions of networking, zero commands run, zero lines of code.** He was right. Every atom now ends in a **`/lab`** on his terminal; every capability boundary ends in a **`/project`**; the **solo project is the gate**; the **article** ships after it. `PROJECT_ROADMAP.md`'s *"builds start after Module 2"* is deleted.
+- **⇢ NEXT SESSION (S9), in order:**
+  1. **Close the open beat on 1.9 — the certificate/PKI mechanism, DERIVED not told.** *Why can't the CA's signature be forged? Why do we trust the CA at all?* He hit *"I don't know why"* on both in S7 and it was **taught as a shape, not derived — so it does not count.**
+  2. **`/lab 1.9` — and it is the best lab in Module 1: HE BECOMES A CERTIFICATE AUTHORITY.** Generate a root key → self-sign → sign a leaf for `hema-bank.local` → `curl` → **REJECTED** → install his own root in the trust store → the *same* `curl` → **ACCEPTED**, and nothing about the server changed. **He builds the trust anchor with his hands.** This is the derivation for the open beat, not a reward after it.
+  3. Then `/gate 1.9`, and the backlog: **1.5** (terms lost — run `/lab 1.5` and let him *watch* fast retransmit fire, then name it), **1.7** (covered, never gated), **1.1**, **1.6**, **1.8**.
+  4. **That clears B1 — "The Wire" — and the first project fires.** Six atoms out. At the two-a-session pace he asked for: ~3 sessions.
 - Notes: `notes/networking/{dns,tcp,tls,http}.md` + **`notes/networking/BIBLE.html`** (the visual bible — the new revision surface). TCP note still needs the UDP + recovery-paths update via `/note`. Session logs `sessions/00{1..4}-*.md`; **S5 to be logged**.
 - Patterns learned: **trust anchors** · **protocol ≠ actor** · **safe ⊂ idempotent ⊂ all** · **TCP late-not-wrong / UDP wrong-not-late** · **head-of-line blocking = latency cost** · **silence→RTO, flowing→fast-retransmit** · **the ambiguity of silence** (lost request vs lost reply are indistinguishable → make the retry harmless instead: TCP seq numbers ≅ HTTP idempotency keys).
 - Blind-spot status: **layer-fusion shrinking** (walked the DNS→TCP→HTTP boundary unaided in S5). **Discriminator-dodging active** — recurred 4× in S5, and is largely a *symptom* of the term gap. **Term decay: the live problem.** Keep "which condition is the wire in?" / "which actor owns this job?" / "**now name it**" on every layered topic.
@@ -178,9 +215,10 @@ node scripts/status.mjs build    # regenerates notes/ROADMAP.html — NEVER hand
 ---
 
 ## 9. Tooling
-**Commands:** `/teach <atom>`, `/breakdown <big topic>`, `/gate <topic>`, **`/terms <topic|due>`** (term-first drill — scenario in, WORD out), `/quiz <topic|recent>`, **`/visual <module>`** (build/update the module's `BIBLE.html`), `/note <topic>`, `/session`, `/progress`, `/revise`, `/mistake <what>`, `/mock <problem>`, `/references [topic]`, `/commit [msg]`.
-**The standard teaching loop:** `/breakdown` → `/teach` (with **name-at-birth**) → `/visual` → `/references` → `/terms` → `/quiz` → `/gate`.
-**Agents:** `curriculum-architect` (decompose big topics), `concept-explainer` (deep isolated single-atom teaching), `quiz-master` (cold recall, isolated from notes), `interviewer` (escalating mocks), `progress-auditor` (honest status).
+**Commands:** `/teach <atom>`, `/breakdown <big topic>`, **`/lab <atom>`** (make the mechanism VISIBLE on his terminal — §4.5), `/gate <topic>`, **`/terms <topic|due>`** (term-first drill — scenario in, WORD out), `/quiz <topic|recent>`, **`/visual <module>`** (build/update the module's `BIBLE.html`), **`/project <boundary>`** (guided build, then the solo build that IS the gate), **`/article <boundary>`** (LinkedIn — blocked until the solo is gated), `/note <topic>`, `/session`, `/progress`, `/revise`, `/mistake <what>`, `/mock <problem>`, `/references [topic]`, `/commit [msg]`.
+**The standard teaching loop:** `/breakdown` → `/teach` (with **name-at-birth**) → **`/lab`** → `/visual` → `/references` → `/terms` → `/quiz` → `/gate`.
+**At a capability boundary:** `/project <B>` guided (**he types every line**) → `/project <B>` solo (**this is the gate**) → `/article <B>`.
+**Agents:** `curriculum-architect` (decompose big topics), **`project-architect`** (candidate projects for a boundary — impossible-without-these-atoms, useful, breakable), `concept-explainer` (deep isolated single-atom teaching), `quiz-master` (cold recall, isolated from notes), `interviewer` (escalating mocks), `progress-auditor` (honest status).
 **Skills:** `socratic-decomposer` (how to break topics into atoms), `visual-explainer` (Mermaid/ASCII diagrams), **`visual-bible`** (the `BIBLE.html` standard: progressive disclosure, plain-English-before-jargon, hand-drawn SVG, term etymology, personalised traps, cover-and-reveal drill).
 **Hooks:** `SessionStart` → `.claude/hooks/session-start.sh` runs `scripts/status.mjs check` and prints days-elapsed + **drift detection** + the atom & term due queue + standing orders (**makes decay visible before teaching**). `SessionEnd` → auto-commit via `.claude/hooks/commit-session.sh`.
 **Scripts:** `scripts/status.mjs` — `check` (drift + due queue) · `build` (regenerate `notes/ROADMAP.html`) · `due`.

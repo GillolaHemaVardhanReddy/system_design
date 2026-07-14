@@ -1,7 +1,7 @@
 # TLS — Making the Connection Private and Trustworthy
 
 > Where this fits: after the TCP handshake completes, but **before** the HTTP request goes out. This is the extra negotiation that makes `https` slower to start than `http`.
-> Status: **TLS BANKED COLD (S6, full 5/5 gate).** DH banked S5; the held-open beat — active-MITM mechanism (§3) — cleared cold S6: MITM does NOT compute `g^(ab)` (no discrete-log break), runs **two separate handshakes**, holds **2** keys, and the real `g^(ab)` **never forms**. Revise with the cold-recall questions at the bottom.
+> Status (canonical: `trackers/STATUS.json`, atom 1.9 = `here`, NOT banked): **S7 2026-07-14 cold re-gate** — secrecy half re-derived cold and the **active-MITM beat is now CLOSED** (two handshakes → two keys → attacker relaying; *DH = secrecy, not identity*; man-in-the-middle named cold, June CA-swap repaired). **New open beat:** the certificate/PKI mechanism — why the CA signature can't be forged, and why we trust the CA (**trust anchor** ≅ DNS root hints). Derive it cold next session; it was taught tonight as a shape only. Revise with the cold-recall questions at the bottom.
 
 ---
 

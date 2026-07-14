@@ -1,8 +1,8 @@
 {
   "//": "CANONICAL STATUS RECORD. This file is the single source of truth for atom status, term status, and every decay clock. SYLLABUS.md, COMPLETION.md, GLOSSARY.md and notes/ROADMAP.html are DOWNSTREAM of this file. Run `node scripts/status.mjs check` to detect drift and `node scripts/status.mjs build` to regenerate the roadmap. NEVER hand-edit notes/ROADMAP.html.",
   "meta": {
-    "updated": "2026-07-11",
-    "session": 6,
+    "updated": "2026-07-14",
+    "session": 7,
     "learner": "Hema Vardhan"
   },
   "policy": {
@@ -165,8 +165,8 @@
           "trap": "DO NOT use hpbn.co's TLS chapter — it is from 2013 and predates TLS 1.3. It will teach you a handshake that no longer exists.",
           "lastCold": null,
           "gatedIn": null,
-          "nextDue": "2026-07-13",
-          "note": "⚠️ PART-GATED 2026-06-12 (4/5), THEN ABANDONED 31d. DH math produced that day (g, p, g^a mod p, shared g^(ab); modexp easy / discrete log hard; secret never on the wire) — but SAME-DAY as the S4 rebuild, so it caps at 5/10 and is NOT a cold bank (§1 confidence rule). Beat 5 — the active-MITM mechanism (attacker runs TWO handshakes, never computes g^(ab)) — was held open and NEVER CLOSED. Re-gate cold, all 5 beats. // Provenance: recovered from git 2026-07-13. The 2026-06-12 commit lived only on the remote; this clone never had it, so S6 wrote 'never gated, never taught' — false. TEACHING_LOG Entry 007.",
+          "nextDue": "2026-07-14",
+          "note": "S7 2026-07-14 COLD RE-GATE (later session, not same-day): SECRECY half re-derived cold — DH named unprompted; caught the 'send the mixture, never the private key' fix himself; one-way wall (modular exponentiation easy / discrete logarithm hopeless); target = secret exponent a. ★ THE 31-DAY-OPEN MITM BEAT IS CLOSED COLD: derived two separate handshakes → two keys → attacker in the middle relaying, and the killer 'DH gives SECRECY, not IDENTITY'. Man-in-the-middle named cold; June CA-vs-middleman swap REPAIRED. // NEW OPEN BEAT (frontier): the certificate/PKI mechanism — HOW the CA signature proves identity (unforgeable without CA private key) and WHY we trust the CA (trust anchor = root certs baked into the browser, ≅ DNS root hints). He hit 'I don't know why' on both — TAUGHT as a shape only, NOT derived, so it does not count. Derive cold next session. Atom NOT banked until this closes.",
           "deps": [
             "1.4"
           ],
@@ -2524,26 +2524,27 @@
       "atom": "1.9",
       "etymology": "the attacker is **literally standing in the middle**",
       "concept": "Diffie–Hellman alone shares a secret with WHOEVER IS THERE, not with WHO THEY CLAIM TO BE.",
-      "status": "MISUSED",
-      "lastColdProduction": null,
-      "note": "⚠️ Called the CA 'the middle man'. The middle man is the ATTACKER. The CA is a trusted third party."
+      "status": "COLD",
+      "lastColdProduction": "2026-07-14",
+      "note": "S7: named 'man in middle' cold and pinned on the ATTACKER (right actor). The June error — calling the CA 'the middle man' — is repaired. CA and MITM now held as opposites."
     },
     {
       "term": "Certificate Authority (CA)",
       "atom": "1.9",
       "etymology": "an **authority** that issues **certificates**",
       "concept": "The trusted third party whose signature vouches for the server's identity. Pre-installed in your browser. CERT = IDENTITY. DH = SECRECY.",
-      "status": "MISUSED",
-      "lastColdProduction": null
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "S7: no longer swapped with the middleman — placed as the trusted referee. But the MECHANISM is unowned: why the signature can't be forged, why the CA is trusted (trust anchor). That is the open beat."
     },
     {
       "term": "Diffie–Hellman",
       "atom": "1.9",
       "etymology": "named for its inventors — the ONE term here that really is arbitrary",
       "concept": "The shared secret is BUILT INDEPENDENTLY ON BOTH ENDS and is NEVER SENT. The attacker sees both public halves and cannot un-mix them.",
-      "status": "WARM",
-      "lastColdProduction": null,
-      "note": "Taught to real depth 2026-06-12 and produced the same day — SAME-SESSION, so it caps at 5/10 and does NOT count as cold (§1). 31 days since, with the gate held open on the MITM beat. Not NEVER_TAUGHT (S6 had that wrong — the record was on the remote only); not COLD either. Re-derive, re-christen, then close the MITM beat."
+      "status": "COLD",
+      "lastColdProduction": "2026-07-14",
+      "note": "Named cold unprompted at S7 open (2026-07-14) — a LATER session, so it counts (confidence rule). The mixing intuition survived 31 days; the terms were what had rotted."
     },
     {
       "term": "Trust anchor",
@@ -2634,6 +2635,24 @@
       "concept": "Purpose: SYNC STARTING SEQUENCE NUMBERS, BOTH DIRECTIONS. Liveness is a side effect. Two messages confirm only one direction.",
       "status": "COLD",
       "lastColdProduction": "2026-06-12"
+    },
+    {
+      "term": "Discrete logarithm",
+      "atom": "1.9",
+      "etymology": "a **logarithm** is just 'the exponent'; **discrete** = the integer, clock-arithmetic (mod p) version, which shatters the smooth order so there is no shortcut",
+      "concept": "Given g, p (public) and g^a mod p, RECOVER the secret exponent a. The hard inverse of modular exponentiation. The wall the eavesdropper cannot climb.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "S7: produced 'logarithmic' cold but dropped 'discrete' (supplied) and first aimed at the wrong object ('find g' — g is PUBLIC) before correcting the target to a. Referent right, needs one more cold pass."
+    },
+    {
+      "term": "Modular exponentiation",
+      "atom": "1.9",
+      "etymology": "exponentiation, taken **modulo** p — raise g to the power then keep the remainder",
+      "concept": "The easy FORWARD 'mixing' direction: cheap to compute g^a mod p. Its inverse (discrete logarithm) is hopeless — that gap IS DH's secrecy.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "S7: held the 'mixing is easy' intuition cold; the term itself was supplied, not produced. Name-at-birth landed; retrieval pending."
     }
   ],
   "edges": [

@@ -124,3 +124,31 @@
 - Deleted *"builds start after Module 2"* from `PROJECT_ROADMAP.md`. **It was the single worst line in this repo.**
 
 **The lesson, and I should have learned it from my own file:** *he told me the diagnosis himself, in plain language, and my first instinct was to defend the curriculum.* The right instinct — the one `BEHAVIOR_LEARNING.md` §"Motivation notes" already records — is that **he detects shallow coverage accurately and trusts the process more when I own the gap than when I defend it.** He detected this one. It took him seven sessions and a motivation collapse to get me to look.
+
+---
+
+## Entry 009 — I buried him. Five messages fired as one. ⭐
+**Date:** 2026-07-14 (S8) · **Cost:** the thread — he got 0% of it, not 20%
+
+**His words:**
+> *"i didnt fucking understand anything we did just now you told me to run the command and paste back and you dumped me tons of text"*
+
+**What I did.** He ran ONE `dig` and pasted the output. In reply I sent, in a single message: a correction of a term error · **four** new terms with etymologies · a table of the six DNS header fields · a philosophical argument about why vocabulary matters · **and** the next coding step with its own Socratic question.
+
+**That is five messages. I sent them as one.** He did not absorb 20% of it. He absorbed **nothing** — because a wall of text is not read, it is *bounced off*.
+
+**Root cause — and `BEHAVIOR_LEARNING.md` already had it, in his own words, from S5:**
+> *"I want all the content… but it's too huge… I want clarity and depth and easy to understand."*
+
+**I read that as a contradiction and quietly ignored it. It is not a contradiction — it is a request for LAYERING.** Spine first, depth on demand. I have the note on disk and I taught against it, which is Entry 003 wearing a new hat: *a tracker nobody applies is not a tracker.*
+
+**What actually fixed it, and it took six lines.** I threw the whole thing away and sent: *"1. You asked the root for google.com. 2. It said I don't know, here are the 13 .com servers. 3. That's it."* Then **one** question. **He answered it correctly and immediately.** The understanding was never the problem. **The volume was.**
+
+**The rule, now the FIRST method rule in §4 at his request (*"engrave it in .claude"*):**
+- **One idea per message.** If you are about to type "and also" — **stop, send, wait.**
+- **React to what he SAW**, not to everything it implies.
+- **Fewest words that move him one step.** No tables, no etymology dumps, no bold-on-everything mid-flow.
+- **When he is lost, do NOT re-explain with more text.** Fewer words. Three lines. One question.
+- **The tell:** more than one bolded heading, or he has to scroll → **already too long.**
+
+**The bitter part:** the four terms I buried him with were *correct*, and one of them (`root hints` vs `referral`) was catching a **real concept error** he had just made. **All of it was right and none of it landed**, because I spent his attention on volume instead of on the one idea that mattered. **Being right is worth nothing if he stops reading.** Engagement is the scarce resource — I have written that in this file twice now and violated it anyway.

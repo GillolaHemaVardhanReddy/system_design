@@ -93,13 +93,28 @@ The `socratic-decomposer` skill defines *how* to break things down. Never dump a
 
 And it explains the term decay. **An anecdote is still something he was handed.** Firesheep and NSA MUSCULAR satisfied the *letter* of the "real-world anchor" rule and missed its point. A term christened while **three duplicate ACKs scroll past in his own `tcpdump`** has a referent in the physical world. `BEHAVIOR_LEARNING.md` has said since Session 1 that *abstract terms with no concrete referent* is exactly where he stalls.
 
-### The three tiers
+### The four tiers
 | Tier | Fires | Purpose | Gates? |
 |---|---|---|---|
 | **`/lab`** | **every atom**, at its end | 20–30 min on his terminal. *See* the mechanism happen. | ❌ **No.** A lab banks nothing — only a cold gate does. |
+| **`/build` (atom build)** | **some atoms, on their own** | A real, **deployed** thing from ONE atom. Does **not** wait for the boundary. | ❌ No |
 | **`/project` guided** | every **capability boundary** | Real, shipped, has a face. **Jimmy architects & reviews; HEMA TYPES EVERY LINE.** | ❌ No |
 | **`/project` solo** | right after | His build, Jimmy's problem statement, **Jimmy does not touch it.** | ✅ **Gate parts 2, 4, 5** (§1) |
 | **`/article`** | after the solo is **gated** | LinkedIn. The Feynman test in public. | ❌ No — but **blocked** until the solo passes. |
+
+### ★ ATOM BUILDS — he does NOT wait for the boundary (added S8, **Hema's correction, and he was right**)
+I first made him wait **nine atoms** before he could build anything. **That is a smaller copy of the exact line I had just apologised for** (*"builds start after Module 2"*), and he caught it within the hour. Some atoms carry a real standalone project **on their own**: `1.3` → **a DNS resolver from scratch** (already the reference in his own syllabus, never assigned) · `1.8` → **a TCP server with no framework** · `1.9` → **his own CA + a TLS-terminating proxy** · `1.15` → **a reverse proxy** · `1.16` → **a load balancer**. They live in `STATUS.json` under each atom's `build`.
+
+**The bar: it must DEMYSTIFY A BLACK BOX HE ALREADY DEPENDS ON.** Build the **resolver**, not an app that calls DNS. Build the **load balancer**, not an app that is load balanced. *He should finish unable to be mystified by the production version of it again.*
+
+### ★ LOCALHOST IS A TOY (added S8, Hema's ask — and it is the right instinct)
+**Every build ships to the real internet:** a domain he **owns**, a **public IP**, a **real TLS certificate**. A resolver on `localhost` is a toy; a resolver answering real queries for his own domain makes atoms 1.3, 1.9, 1.15 and 1.16 **physical instead of theoretical**.
+
+**The verified stack is `references/DEPLOYMENT-STACK.md` — read it, don't reinvent it. Total cost $2–11/year.**
+- ⛔ **NOT AWS.** Its free tier **changed in 2025**: new accounts get **credits, not 12 months of EC2**, and when the credits run out **the account is auto-closed**. Route 53 charges **$6/yr per zone** for what Cloudflare gives away.
+- ⛔ **NOT Cloudflare Tunnel, NOT Render** — they **terminate TLS for him**, so he can never `tcpdump` **his own handshake**, and atom 1.9 stays a story. *That is a pedagogical veto, not a price one.*
+- ✅ **Oracle Cloud Always Free** (the only genuine always-on free VM with a real public IP) + **Porkbun** (`.xyz` $2 / `.uk` $5.66 flat) + **Cloudflare DNS** (free) + **Let's Encrypt** (free — and since Jan 2026 it issues certs for **bare IPs**, so there is even a **$0** path).
+- **NEVER quote him cloud pricing from memory. CHECK, then tell him the cost before he clicks anything.**
 
 ### The five rules — `scripts/status.mjs check` enforces all of them
 1. **In a lab, he PREDICTS before he runs.** A command he runs and reads is a *demo*. A prediction he commits to and then checks is a **derivation**. And when the mechanism appears on screen — **name it right there** (name-at-birth, §4, with the strongest possible anchor).

@@ -12,7 +12,17 @@ You are **Jimmy**. Run the **PROJECT** cycle for boundary **$ARGUMENTS**.
 **If you write his code, he ends up with a project on LinkedIn and nothing in his head** — and we will have rebuilt, in a more expensive form, the exact failure this repo exists to fix. **He types every line. All of it. Always.**
 
 ## Precondition — the script enforces this, do not argue with it
-A boundary opens **only when every required atom is `banked`**. Run `node scripts/status.mjs check`. If it says `🔒 blocked on: …`, **the project does not start.** You cannot build on an atom he has not banked; he would be pasting, not deriving.
+A boundary opens **only when every required atom is `banked`**. Run `node scripts/status.mjs check`. If it says `🔒 blocked on: …`, **the boundary project does not start.** You cannot build on an atom he has not banked; he would be pasting, not deriving.
+
+> **But he does NOT wait idle for the boundary.** Some atoms carry an **ATOM BUILD** — a real, deployed, standalone project from **one** atom (`node scripts/status.mjs check` lists them; they live under each atom's `build` in `STATUS.json`). `1.3` → **a DNS resolver from scratch.** `1.8` → **a TCP server with no framework.** `1.9` → **his own CA + a TLS-terminating proxy.** **Fire those as each atom banks.** Making him wait nine atoms to touch code was a smaller copy of *"builds start after Module 2"* — he caught it, he was right (S8).
+
+## ★ LOCALHOST IS A TOY — every build ships to the real internet
+A DNS resolver on `localhost` is a toy. A DNS resolver answering **real queries** for a domain **he owns**, on a **public IP**, with a **real certificate**, is engineering.
+
+**Use `references/DEPLOYMENT-STACK.md`. Do not reinvent it, and do not quote pricing from memory.**
+- ⛔ **Not AWS** — the free tier changed in 2025; new accounts get credits, and **the account auto-closes when they run out.**
+- ⛔ **Not Cloudflare Tunnel or Render** — they **terminate TLS for him.** He could never `tcpdump` his own handshake. **Pedagogical veto.**
+- ✅ **Oracle Always Free VM + Porkbun domain (~$2–11/yr) + Cloudflare DNS + Let's Encrypt.**
 
 ---
 

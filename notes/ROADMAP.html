@@ -393,6 +393,15 @@ const MODULES = [
      "cmd": "dig +trace google.com  ·  then: dig google.com  (twice, 5s apart)",
      "see": "root → TLD → authoritative, one hop at a time, on your screen. Then watch the TTL COUNT DOWN in the cache on the second dig. Stale is a number, ticking.",
      "done": null
+    },
+    "build": {
+     "name": "A real DNS resolver, from scratch",
+     "what": "Not a wrapper around getaddrinfo — a resolver that speaks the DNS wire format, starts at the ROOT HINTS, and walks root → TLD → authoritative itself. Then caches, and honours TTL.",
+     "why": "This is literally the reference already in his syllabus (*Implement DNS in a Weekend*) and it was never assigned. He walks the chain in code that he wrote.",
+     "real": "Point his OWN domain at it. Serve real queries. `dig @his-server his-domain.dev` from another machine and get an answer back.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    },
    {
@@ -431,6 +440,15 @@ const MODULES = [
      "cmd": "sudo tc qdisc add dev lo root netem loss 10%  → transfer a file → capture it. Then: netem loss 100%",
      "see": "★ THE BIG ONE. At 10% loss: three duplicate ACKs, then the retransmit — FAST RETRANSMIT, live in your capture. At 100%: the RTO, and the gaps DOUBLING — 1s, 2s, 4s, 8s. Exponential backoff, on a stopwatch. Terms you name while watching them fire do not rot.",
      "done": null
+    },
+    "build": {
+     "name": "A lossy-link observatory",
+     "what": "A proxy he routes real traffic through that DROPS, DELAYS and REORDERS packets on command — with a live view of what TCP does in response. Watch cwnd sawtooth. Watch the dup-ACKs stack up. Watch the RTO gaps double.",
+     "why": "★ The term `fast retransmit` is LOST and `RTO`/`exponential backoff` are WARM. He will not name them from a document — he has already proven that. He WILL name them while watching them fire.",
+     "real": "Put it in front of a real site and break the real connection. Screenshot the sawtooth.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    },
    {
@@ -488,6 +506,15 @@ const MODULES = [
      "cmd": "Write a TCP echo server in raw sockets. No framework. ~40 lines.",
      "see": "socket → bind → listen → accept → read → write. Every web framework you have ever used is a wrapper around these six calls. You will never be mystified by one again.",
      "done": null
+    },
+    "build": {
+     "name": "A TCP server with NO framework",
+     "what": "socket → bind → listen → accept → read → write. Six syscalls, no Express, no library. Then make it handle concurrency and find out the hard way why that is difficult.",
+     "why": "Every framework he has ever used is a wrapper around these six calls. He should finish unable to be mystified by any of them again.",
+     "real": "Public IP, port 80, reachable from his phone on cellular data.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    },
    {
@@ -508,6 +535,15 @@ const MODULES = [
      "cmd": "openssl s_client -connect google.com:443 -showcerts  →  then BECOME A CA: genrsa root → self-sign → sign a leaf for hema-bank.local → curl → REJECTED → add root to trust store → ACCEPTED",
      "see": "★ You build the trust anchor with your hands. The curl fails, you install YOUR root, the same curl succeeds — and nothing about the server changed. Trust is not in the certificate. It is in what your machine already believed.",
      "done": null
+    },
+    "build": {
+     "name": "Your own Certificate Authority + a TLS-terminating proxy",
+     "what": "Be the CA. Issue certs. Then build the thing that TERMINATES TLS — the job nginx/ALB does for you and you have never once looked inside.",
+     "why": "★ Closes the open beat: why a signature cannot be forged, and why the CA is trusted (trust anchor). He BUILDS the trust anchor rather than being told about it.",
+     "real": "Then throw the fake CA away and get a REAL Let's Encrypt cert for a REAL domain — and watch the same code accept it with no changes. The bridge from toy to production.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    },
    {
@@ -527,6 +563,15 @@ const MODULES = [
      "cmd": "printf 'GET / HTTP/1.1\\r\\nHost: example.com\\r\\n\\r\\n' | nc example.com 80  ·  then: POST the same charge twice, with and without an idempotency key",
      "see": "You type HTTP with your own fingers — it is just text on a socket. Then you double-charge yourself, add the key, and watch the second charge do nothing. Idempotent is not 'same response'. It is 'same EFFECT'.",
      "done": null
+    },
+    "build": {
+     "name": "An HTTP/1.1 server on raw sockets",
+     "what": "Parse the request line yourself. Byte by byte. Handle keep-alive, chunked encoding, and the status codes he keeps mixing up.",
+     "why": "`idempotent` is MISUSED (twice defined as 'same response'). He will fix that permanently the day he implements a double-submitted POST and watches it charge twice.",
+     "real": "Deployed, behind his own domain, serving something he actually uses.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    },
    {
@@ -619,6 +664,15 @@ const MODULES = [
      "cmd": "nginx, TWO virtual hosts, ONE port (80)",
      "see": "It picks a SITE from the Host header. It never 'chooses a port'. This kills your oldest layer-fusion error by making you configure the thing yourself.",
      "done": null
+    },
+    "build": {
+     "name": "Your own reverse proxy",
+     "what": "Virtual hosting: TWO sites, ONE port. It picks a SITE from the Host header.",
+     "why": "★ Kills his oldest layer-fusion error ('Nginx chooses the port') by making him write the code that does the choosing. It reads a header. That is all it does.",
+     "real": "Two real domains, one box.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    },
    {
@@ -638,6 +692,15 @@ const MODULES = [
      "cmd": "nginx upstream, 3 backends, round-robin → kill one → watch the health check eject it",
      "see": "L4 vs L7 stops being a definition the moment you have to pick one and live with it.",
      "done": null
+    },
+    "build": {
+     "name": "Your own load balancer",
+     "what": "Round-robin, then health checks, then watch it eject a dead backend. L4 and L7 versions — and feel the difference rather than reciting it.",
+     "why": "L4 vs L7 stops being a definition the moment he has to pick one and live with the consequence.",
+     "real": "Kill a backend in production and watch traffic drain off it.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    },
    {
@@ -657,6 +720,15 @@ const MODULES = [
      "cmd": "Capture the WebSocket Upgrade → HTTP 101",
      "see": "It BEGINS as HTTP and then stops being HTTP. It is not 'HTTP but persistent' — the connection defects.",
      "done": null
+    },
+    "build": {
+     "name": "A chat app on a WebSocket server YOU wrote",
+     "what": "Not Socket.IO. His own Upgrade handshake, his own frame parser.",
+     "why": "It BEGINS as HTTP and then stops being HTTP. You only feel that if you write the 101.",
+     "real": "Real users, real domain, wss:// with a real cert.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    },
    {
@@ -694,6 +766,15 @@ const MODULES = [
      "cmd": "Hammer a service with retries — no jitter, then with jitter",
      "see": "Without jitter your retries SYNCHRONISE and you DDoS your own backend. The thundering herd is not a metaphor; it is a graph you will produce.",
      "done": null
+    },
+    "build": {
+     "name": "A retry-storm chaos harness",
+     "what": "Hammer a service with retries — no jitter, then with jitter. Graph both.",
+     "why": "Without jitter his retries SYNCHRONISE and he DDoSes his own backend. The thundering herd is not a metaphor; it is a graph he produces.",
+     "real": "Run it against his own deployed service and take it down. On purpose.",
+     "status": "locked",
+     "repo": null,
+     "shipped": null
     }
    }
   ],

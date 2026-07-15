@@ -212,3 +212,42 @@ The question I *should* have asked — and it is fully derivable from what he ho
 **Memory anchor:** *"'He couldn't derive it' and 'nobody ever taught him' look identical in a file that only records answers. Record what he was GIVEN."*
 
 **Retest:** if Jimmy ever again asks him to derive something not in that atom's `given`, this entry has failed — and `check` should have caught it first.
+
+---
+
+## Entry 011 — S10 — I abbreviated a term he has only ever produced in full, and read the result as a blind spot
+
+**The atom:** 1.9, mid-flow, right after he derived the two-handshake stack (TCP completes → TLS runs inside the pipe) off a single nudge. Clean derivation. His own.
+
+**The next question, mine:** *"Use it: where does DH happen?"*
+
+**His answer:** *"it happens in TCP"* — flatly contradicting what he had derived ninety seconds earlier.
+
+**What I nearly logged:** blind spot 1, layer-fusion, relapsing under no pressure at all, immediately after a correct derivation. That is an alarming signal. It would have gone in his file.
+
+**What it actually was.** I showed him the contradiction — the one move `BEHAVIOR_LEARNING.md` says works every time. He replied:
+
+> *"does DH doesnt mean diffie hellman?"*
+
+**The abbreviation was the fault, not the layering.** Spelled out in full, same question, no other change: *"ok then it will be inside TLS"* — instantly, no hedge.
+
+**Root cause.** He owns Diffie–Hellman **cold** — produced it cold after 31 days, named it unprompted (S7). He has **never once produced it, or seen it, as "DH"**. I introduced the abbreviation silently, mid-question, and treated it as free notation.
+
+It isn't free. ***An abbreviation is a NEW term wearing the old one's meaning.*** It needs christening exactly like any other term — and this repo already knows that, because §3 has said *name-at-birth, names are never arbitrary, he must REGENERATE a term, not store it* since Entry 001. **"DH" is a name. I handed it without deriving it, and it rotted on contact — inside two minutes, which must be a record.**
+
+**Why this one is worth an entry rather than a shrug.** The cost was not the two seconds. The cost is that **a term gap and a concept error produce the SAME wrong answer**, and I was one move away from writing the wrong diagnosis into his file. That is Entry 010's bug wearing a different costume: *two situations needing opposite responses, indistinguishable in the record.* Entry 010 was "couldn't derive" vs "never taught". This is **"wrong layer" vs "didn't recognise the word."**
+
+And it lands directly on blind spot 3 — ***he understands the machinery and cannot name the parts*** — which already says blind spot 2 is *largely a symptom of it*. Add this: **blind spot 1 can be a symptom of it too.** He didn't put DH in the wrong layer. He didn't know which object "DH" pointed at, and answered about the layer he'd been talking about. **A term he cannot resolve makes him look like a man who has fused two layers.**
+
+**What I did right, and it is the only reason this entry is short:** I did not argue, re-explain, or log it. I showed him the contradiction and let *him* name the fault. He did, in six words. **His self-diagnosis is not just reliable on concepts — it is reliable on the DIAGNOSIS ITSELF.** He told me my question was broken. Second session running (S9: *"is it that u dont remember what you taught?"*).
+
+**The rule:**
+> **Never abbreviate a term he has only ever produced in full.** Use the full name until *he* shortens it. If an abbreviation is worth using, it gets christened with its expansion — **DH = Diffie–Hellman**, said once, out loud — like every other name.
+>
+> **And when a fluent answer suddenly contradicts a derivation he just made: suspect the WORD before you suspect the CONCEPT.** Re-ask with every term spelled out in full. If he answers correctly, it was never a blind spot — it was vocabulary, and the vocabulary was mine.
+
+**Also fixed, same session:** he said the CA *"signs the mark onto res"* — a genuine wrong object (the CA signs the **certificate**, once, offline; it never touches a response). I did **not** correct it. I asked what happens if DigiCert must be contacted for each of Google's ~100k responses/sec. He killed it himself: *"no it wont work, so certificate is already signed and given to each site."* **That is the shape that works on him. Cost: one question. Retention: his, not mine.**
+
+**Memory anchor:** *"'It happens in TCP' was not layer-fusion. He didn't know what 'DH' meant. Suspect the WORD before the CONCEPT."*
+
+**Retest:** if a future session logs a blind-spot-1 hit on an answer where an abbreviation, acronym or short form appeared in the question, this entry has failed. Re-ask in full **before** grading.

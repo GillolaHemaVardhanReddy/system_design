@@ -1,7 +1,7 @@
 {
   "//": "CANONICAL STATUS RECORD. This file is the single source of truth for atom status, term status, and every decay clock. SYLLABUS.md, COMPLETION.md, GLOSSARY.md and notes/ROADMAP.html are DOWNSTREAM of this file. Run `node scripts/status.mjs check` to detect drift and `node scripts/status.mjs build` to regenerate the roadmap. NEVER hand-edit notes/ROADMAP.html.",
   "meta": {
-    "updated": "2026-07-14",
+    "updated": "2026-07-15",
     "session": 7,
     "learner": "Hema Vardhan"
   },
@@ -118,9 +118,10 @@
             "what": "Not a wrapper around getaddrinfo — a resolver that speaks the DNS wire format, starts at the ROOT HINTS, and walks root → TLD → authoritative itself. Then caches, and honours TTL.",
             "why": "This is literally the reference already in his syllabus (*Implement DNS in a Weekend*) and it was never assigned. He walks the chain in code that he wrote.",
             "real": "Point his OWN domain at it. Serve real queries. `dig @his-server his-domain.dev` from another machine and get an answer back.",
-            "status": "locked",
-            "repo": null,
-            "shipped": null
+            "status": "building",
+            "repo": "labs/1.3-resolver",
+            "shipped": null,
+            "note": "S8 2026-07-14: encodeName ✓ (length-prefixed labels + zero terminator), buildHeader ✓ (12 bytes, 6 uint16 slots, random ID), buildQuery ✓ (type=A class=IN), UDP send ✓ — GOT A REAL 488-BYTE REFERRAL FROM a.root-servers.net. Decoded the response header cold: NSCOUNT=13, ARCOUNT=11 matched the first dig. STOPPED at the parsing wall: skip header+question, then read records — and DNS NAME COMPRESSION (0xc0 pointer) is the boss fight. Resume: where does the question section end → then parse RRs → then the referral-follow loop."
           }
         },
         {

@@ -17,6 +17,7 @@
 | **Fixed a derivation problem with an EXAM** → aversive drill, learner disengaged | 1 | 2026-07-11 (Entry 004) |
 | **Committed a session with no session log** → its questions are permanently lost | 1 (S5) | 2026-07-11 (Entry 005) |
 | **A tracker was allowed to contradict another tracker** → status drifted, 1.5 read ✅ BANKED for a month it hadn't earned | 1 | 2026-07-11 (Entry 006) |
+| **Asked him to DERIVE a primitive he had never been given** → set him up to fail, then read the failure as his | 1 | 2026-07-15 (Entry 010) |
 
 ---
 
@@ -152,3 +153,62 @@
 - **The tell:** more than one bolded heading, or he has to scroll → **already too long.**
 
 **The bitter part:** the four terms I buried him with were *correct*, and one of them (`root hints` vs `referral`) was catching a **real concept error** he had just made. **All of it was right and none of it landed**, because I spent his attention on volume instead of on the one idea that mattered. **Being right is worth nothing if he stops reading.** Engagement is the scarce resource — I have written that in this file twice now and violated it anyway.
+
+---
+
+## Entry 010 — I asked him to derive RSA. The tracker told me to. ⭐
+**Date:** 2026-07-15 (S9) · **Cost:** the atom stalled, and he had to argue his way out of a failure that was mine
+
+**His words:**
+> *"u never teach me and ask me how and why? i think the model design of .claude is an issue here right?"*
+
+**He was right on both counts, and the second one is the finding.**
+
+**What I did.** Atom 1.9, the open PKI beat. He answered the first question **cold and correctly**: the attacker can't forge the signature because *only the CA's private key can make the mark*. So I asked the follow-up: **"your laptop has to CHECK that mark — what does it use?"**
+
+He answered: *"the CA's private keys come baked into the browser."* Wrong — it is the **public** key, in a root certificate. I held his own two sentences up against each other (*the attacker can't know the private key* / *the private key ships on 3 billion devices*) and he saw the contradiction instantly. Then: *"damn then how should i know."*
+
+**And he was right. He couldn't know.** He has **never been given asymmetric digital signatures.** DH is key **exchange**; nothing in it implies a key that *makes a mark a different key checks*. That is a **separate primitive**, and **I asked him to derive it.** Rivest, Shamir and Adleman took **months** — and they were three MIT cryptographers who already knew what they were hunting. **I asked him to do it between two chat messages, and when he couldn't, the shape on the page was "Hema failed a question."**
+
+**Root cause — and this is the part that matters.** I did not freelance a bad question. **`STATUS.json` told me to ask it.** Written by me, last session, atom 1.9:
+
+> *"He hit 'I don't know why' on both — TAUGHT as a shape only, NOT derived, so it does not count. **Derive cold next session.**"*
+
+So: why did a previous Jimmy write **"derive"** next to a thing nobody can derive?
+
+**Because this record tracked what he ANSWERED and never once tracked what he was GIVEN.** In the file, these two look **identical**:
+- *he was taught the primitive and failed to derive the consequence* → **ask harder**
+- *nobody ever taught him the primitive* → **hand it to him**
+
+**They need opposite responses, and the tracker could not tell them apart.** `"he hit 'I don't know why'"` is ambiguous between them, and I resolved the ambiguity in the direction the repo's culture pushed: *ask, don't tell.*
+
+**And that culture is the deeper cause.** The governing law — ***what he DERIVES survives; what he is HANDED rots*** — is **true**, it is the best thing in this repo, and it created a bias where **handing him anything felt like the failure mode**. So when Jimmy meets a primitive that *must* be given, he interrogates it instead of teaching it. **The method ate its own exception.** Entry 001 taught me not to hand him answers; I over-applied it to a case where handing is the *only* correct move.
+
+**Correct model — three categories, not two:**
+| | |
+|---|---|
+| **`derive: yes`** | Derivable from what he holds. **Ask. Don't tell.** (fast retransmit from cumulative ACKs — he did exactly this, cold, unaided) |
+| **`derive: need-only`** | **Nobody derives this in a session.** Derive the **NEED**, hand the **TOOL**. (signatures, DH, consistent hashing, Paxos, B-trees) |
+| **`derive: no`** | Nothing to derive. **Hand it.** (vocabulary, conventions, port numbers) |
+
+**Handing is not the failure. Handing WITHOUT deriving the need is the failure.**
+
+The question I *should* have asked — and it is fully derivable from what he holds: ***"You need a mark only the CA can make but anyone can check. Does DH give you that?"*** → he says no → *"Correct. So we need a new tool. Here it is."* He derives **why it must exist**; he is handed **what it is**. Same destination, and he owns the reason he needed the thing.
+
+**What he got right that I should not lose:**
+1. **He self-diagnosed from a contradiction in his own two answers, again.** `BEHAVIOR_LEARNING.md` has said this since S2 and it is the single most reliable tool I have.
+2. **He diagnosed the SYSTEM, not just the question** — *"is it that u dont remember what you taught?"* Close. I remember perfectly; **the record is detailed and it records the wrong thing.** He was one inch from the exact bug, with no access to the file.
+3. **He then refused to keep being taught until it was fixed.** Correct call. A hole this size costs every future session.
+
+**Fixes, this session (S9):**
+- **`given` / `lacks` / `derive` per live atom** in `STATUS.json`. **`status.mjs check` now FAILS on a live atom with no `given`** — the machine catches this, not Hema's patience.
+- **The rule, CLAUDE.md §2:** *Jimmy may ONLY ask him to derive from a primitive in `given`. If it is in `lacks`, the question is **ILLEGAL**.*
+- **`qs` per atom** — every question + grade, in the canonical record. `check` fails on a re-asked question. **This also closes known-hole #1**, open since S6: a "cold" re-gate that reuses a question measures recall of *the question*.
+- The void question is **recorded as void** in `1.9.qs` so no future Jimmy re-asks it and reads the same wrong signal.
+- **`NOW.md`** — one generated brief, ~6 KB. **`CLAUDE.md` 40 KB → 19.6 KB.** Session-start load **~22k → ~6.7k tokens**.
+
+**The bitter part, and I want it written down:** the token bloat and the bad question **look** like the same problem and are not. I could have read all 89 KB twice and still asked that question — **the information was not in any of the files.** Volume was never the bug. **The bug was a missing field.** He asked for a smaller file and what he actually needed was a *different* one.
+
+**Memory anchor:** *"'He couldn't derive it' and 'nobody ever taught him' look identical in a file that only records answers. Record what he was GIVEN."*
+
+**Retest:** if Jimmy ever again asks him to derive something not in that atom's `given`, this entry has failed — and `check` should have caught it first.

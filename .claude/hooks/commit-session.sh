@@ -21,6 +21,17 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
 BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 [ -n "$BRANCH" ] && [ "$BRANCH" != "HEAD" ] || exit 0
 
+# ─── Regenerate the derived files BEFORE committing (S9) ─────────────────────
+# NOW.md is the ONE file the next session opens with. If a gate updates
+# STATUS.json and NOW.md is not re-rendered, the next session opens on a stale
+# brief and starts from the wrong beat — the drift bug (Entry 006) reintroduced
+# through the back door, in the one file nobody would think to distrust.
+# Generated files are only safe if generating them is not a thing to remember.
+if command -v node >/dev/null 2>&1 && [ -f scripts/status.mjs ]; then
+  node scripts/status.mjs brief >/dev/null 2>&1 || true
+  node scripts/status.mjs build >/dev/null 2>&1 || true
+fi
+
 # Commit anything outstanding (no-op if the tree is clean).
 if ! git diff --quiet 2>/dev/null \
    || ! git diff --cached --quiet 2>/dev/null \

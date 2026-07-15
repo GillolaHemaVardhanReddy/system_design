@@ -12,7 +12,8 @@
  * trackers/STATUS.json is now the ONLY canonical record. Everything else is
  * downstream of it.
  *
- *   node scripts/status.mjs check   → drift detection + the due queue (SessionStart runs this)
+ *   node scripts/status.mjs brief   → regenerate NOW.md — the ONE file a session opens with
+ *   node scripts/status.mjs check   → drift detection + the due queue
  *   node scripts/status.mjs build   → regenerate notes/ROADMAP.html from STATUS.json
  *   node scripts/status.mjs due     → just the due queue
  *
@@ -20,6 +21,11 @@
  *   A date moves ONLY on a RETRIEVAL EVENT — never because time passed, never
  *   because a document was written. Reading a term does not install it. Only
  *   retrieving it does.
+ *
+ * THE SPLIT (S9). NOW.md = STATE, generated, never hand-edited. CLAUDE.md = RULES,
+ * hand-written, no state in it. They do not overlap, so they CANNOT drift. Every
+ * previous version of this repo kept state in prose in four places and the most
+ * flattering copy won (Entry 006). Prose about status is how the lying starts.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -60,8 +66,12 @@ const termDue = t => {
 };
 const overdueBy = due => (due ? days(due, TODAY) : null);
 
-/* ── drift detection ─────────────────────────────────────────────────── */
-function check() {
+/* ── drift detection ─────────────────────────────────────────────────────
+   QUIET mode (S9): the SessionStart hook prints NOW.md, which already carries
+   the frontier + due queue. Re-printing the full queue underneath it is the
+   duplication this whole refactor exists to kill. Quiet prints ONLY what NOW.md
+   cannot: whether the record contradicts itself.                              */
+function check(quiet = false) {
   const problems = [];
   const banked = count("banked");
   const total = atoms.length;
@@ -103,6 +113,53 @@ function check() {
       problems.push(`Boundary ${b.id}: the SOLO project is gated but the GUIDED project never shipped. The solo build is the gate — it does not come first.`);
     if (b.article.status === "published" && b.solo.status !== "gated")
       problems.push(`Boundary ${b.id}: an ARTICLE is published but the solo project is "${b.solo.status}", not gated. He has published material he has not proven he owns. Retract or gate it.`);
+  }
+
+  /* ── the primitive invariant (added S9, TEACHING_LOG Entry 010) ──────────
+     S9 asked him to derive asymmetric digital signatures — a primitive nobody
+     has ever handed him, and one that took three MIT cryptographers months to
+     invent. He was set up to fail and he called it out.
+
+     Root cause: this record tracked what he ANSWERED and never what he was
+     GIVEN. "He failed to derive it" and "nobody ever taught him the primitive"
+     were INDISTINGUISHABLE in the file, and they need opposite responses.
+
+     A live atom now cannot be taught without declaring what he holds.          */
+  for (const a of atoms) {
+    if (a.s === "locked") continue;
+    const need = ["pri", "derive", "given", "real"].filter(k => a[k] == null || (Array.isArray(a[k]) && !a[k].length));
+    if (need.length)
+      problems.push(`Atom ${a.id} is live ("${a.s}") but has no [${need.join(", ")}]. You are about to teach an atom without declaring what he already HOLDS — which is exactly how S9 asked him to derive a primitive he was never given. Fill it or lock it. (TEACHING_LOG Entry 010.)`);
+    if (a.derive === "yes" && a.lacks?.length)
+      problems.push(`Atom ${a.id} is derive:"yes" but lists ${a.lacks.length} missing primitive(s) in \`lacks\`. Contradiction — if he lacks a primitive it needs, it is "need-only", not "yes".`);
+    if (!["yes", "need-only", "no", undefined].includes(a.derive))
+      problems.push(`Atom ${a.id} has derive:"${a.derive}" — must be yes | need-only | no.`);
+  }
+
+  /* ── the question bank invariant (added S9) ──────────────────────────────
+     Known hole since S6 (CLAUDE.md §9.1), unfixed for three sessions: nothing
+     stopped a "cold re-gate" from re-asking a question he had already seen —
+     which measures whether he remembers THE QUESTION, not the idea. S5's log
+     never existed, so its questions are gone permanently. This is the backstop. */
+  for (const a of atoms) {
+    if (!a.qs?.length) continue;
+    const seen = new Set();
+    for (const q of a.qs) {
+      const k = q.q.trim().toLowerCase();
+      if (seen.has(k)) problems.push(`Atom ${a.id}: question asked twice — "${q.q.slice(0, 60)}…". A re-asked question measures recall of the QUESTION, not the idea.`);
+      seen.add(k);
+      if (q.s == null || !q.g) problems.push(`Atom ${a.id}: a question in \`qs\` has no session or no grade. An ungraded question is not a record.`);
+    }
+  }
+
+  if (quiet) {
+    if (problems.length) {
+      console.log("⛔ DRIFT / INVARIANT VIOLATION — the record contradicts itself. FIX BEFORE TEACHING.");
+      problems.forEach(x => console.log("   ✗ " + x));
+    } else {
+      console.log(`✅ Record consistent — ${banked}/${total} banked, no drift, every live atom declares its primitives.`);
+    }
+    return problems.length;
   }
 
   console.log("─── CANONICAL STATUS (trackers/STATUS.json) ───");
@@ -209,6 +266,102 @@ function buildQueue() {
   }
 }
 
+/* ── NOW.md — the one file ───────────────────────────────────────────────
+   Hema, S9: "there must be single file always claude sees first to know where
+   everything stands ... so it wont load all files which burns tokens."
+
+   He was right about the cost. Before this existed, a session loaded a 40 KB
+   CLAUDE.md plus three trackers (40 KB more) — ~22,000 tokens before a single
+   question was asked. And the first question asked with all that context was
+   ILLEGAL (Entry 010): it required a primitive he had never been given.
+
+   Volume was never the problem. The record tracked what he ANSWERED and never
+   what he was GIVEN, so no amount of reading could have caught it.
+
+   STATE ONLY. No rules live here — rules are CLAUDE.md's job. Two files, two
+   jobs, no overlap, no drift.                                                 */
+function brief() {
+  const L = [];
+  const w = s => L.push(s);
+  const live = atoms.filter(a => a.s !== "locked");
+  const here = live.filter(a => a.s === "here");
+
+  w("# NOW — the only file a session needs to open");
+  w("");
+  w("> **GENERATED. Never hand-edit.** `node scripts/status.mjs brief` · source `trackers/STATUS.json`");
+  w("> **This file is STATE. `CLAUDE.md` is RULES.** They do not overlap, so they cannot drift.");
+  w(`> Written ${STATUS.meta.updated} · after Session ${STATUS.meta.session}`);
+  w("");
+
+  for (const a of here) {
+    w(`## ⇢ START HERE — atom ${a.id}: ${a.short}`);
+    w("");
+    w(`\`${a.t}\``);
+    w("");
+    w(`**priority** \`${a.pri ?? "?"}\` · **derive** \`${a.derive ?? "?"}\` · **source** ${a.ref}`);
+    if (a.trap) w(`\n> ⚠️ **TRAP** — ${a.trap}`);
+    w("");
+    if (a.beat) {
+      w(`### The open beat — this is where you start, cold`);
+      w(a.beat.open);
+      w("");
+      if (a.beat.closed?.length) {
+        w("**Already closed — do NOT re-teach:**");
+        a.beat.closed.forEach(c => w(`- ${c}`));
+        w("");
+      }
+      if (a.beat.next) { w(`**Next moves:** ${a.beat.next}`); w(""); }
+    }
+    if (a.given?.length) {
+      w("### ✅ He HOLDS these — you MAY ask him to derive FROM them");
+      a.given.forEach(g => w(`- ${g}`));
+      w("");
+    }
+    if (a.lacks?.length) {
+      w("### ⛔ He does NOT hold these — HAND them. Asking is ILLEGAL.");
+      a.lacks.forEach(g => w(`- ${g}`));
+      w("");
+    }
+    if (a.real) { w(`### Real-world anchor`); w(a.real); w(""); }
+    if (a.qs?.length) {
+      w("### Questions already asked — a *cold* gate may NOT reuse these");
+      a.qs.forEach(q => w(`- **[S${q.s}]** ${q.q}\n  - ↳ ${q.g}`));
+      w("");
+    }
+    if (a.lab && !a.lab.done) { w(`### Lab — not yet run`); w(`\`${a.lab.cmd}\``); w(`↳ ${a.lab.see}`); w(""); }
+  }
+
+  const da = live.map(a => ({ ...a, due: atomDue(a) }))
+    .filter(a => a.due && Date.parse(a.due) <= Date.parse(TODAY) && a.s !== "here")
+    .sort((x, y) => Date.parse(x.due) - Date.parse(y.due));
+  w("## Queue behind it");
+  const banked = count("banked");
+  w(`**${banked}/${atoms.length} atoms banked cold (${(banked / atoms.length * 100).toFixed(1)}%).** Banked is not permanent — 29 days once took DNS+TCP+HTTP to 1.5/6.`);
+  w("");
+  for (const a of da) {
+    const od = overdueBy(a.due);
+    const tag = { banked: "re-gate", termslost: "⚠ TERMS LOST", covered: "never gated" }[a.s] ?? a.s;
+    w(`- \`${a.id}\` **${a.short}** — ${tag}${od > 0 ? `, overdue ${od}d` : ""}${a.pri ? ` · \`${a.pri}\`` : ""}`);
+  }
+  w("");
+
+  const bad = STATUS.terms.filter(t => ["LOST", "MISUSED"].includes(t.status));
+  w("## Terms in the red");
+  w("*Repair by RE-DERIVING the mechanism and RE-CHRISTENING it. Never by quizzing it harder. No standalone term exam, ever.*");
+  w("");
+  bad.forEach(t => w(`- **${t.term}** \`${t.status}\` (atom ${t.atom}) — ${t.note ?? t.concept}`));
+  w("");
+
+  w("## Everything else — read ON DEMAND, not now");
+  w("`trackers/STATUS.json` full record · `TEACHING_LOG.md` Jimmy's failures · `MISTAKE_JOURNAL.md` Hema's · `BEHAVIOR_LEARNING.md` how he learns · `notes/ROADMAP.html` the map");
+  w("");
+  w("**Open these only when the atom in front of you needs them.** Loading all of it costs ~22k tokens and did not once prevent a mistake.");
+
+  const out = L.join("\n") + "\n";
+  fs.writeFileSync(p("NOW.md"), out);
+  console.log(`✅ NOW.md rebuilt — ${(out.length / 1024).toFixed(1)} KB, ${here.length} live atom(s), ${da.length} queued.`);
+}
+
 /* ── regenerate the roadmap ──────────────────────────────────────────── */
 function build() {
   const tpl = read("notes/_roadmap.template.html");
@@ -222,6 +375,8 @@ function build() {
 }
 
 const cmd = process.argv[2] ?? "check";
+const quiet = process.argv.includes("--quiet");
 if (cmd === "build") build();
 else if (cmd === "due") due();
-else process.exit(check() ? 1 : 0);
+else if (cmd === "brief") brief();
+else process.exit(check(quiet) ? 1 : 0);

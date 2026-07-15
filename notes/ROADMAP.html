@@ -298,7 +298,7 @@
   </div>
 
 <script>
-const UPDATED = "2026-07-15 · Session 7";
+const UPDATED = "2026-07-15 · Session 9";
 const PHASES  = [
  {
   "n": "The Wire",
@@ -374,7 +374,16 @@ const MODULES = [
      "cmd": "mtr -rwc 100 1.1.1.1",
      "see": "Per-hop packet loss on a real path. Packets vanish and NOBODY retransmits, nobody apologises, nobody even knows. That is best-effort, and you are looking at it.",
      "done": null
-    }
+    },
+    "pri": "loadbearing",
+    "derive": "yes",
+    "given": [
+     "packet",
+     "router",
+     "hop-by-hop forwarding"
+    ],
+    "real": "A packet from your laptop to Google crosses ~12 routers, and NOT ONE of them promised to deliver it. Run `mtr -rwc 100 1.1.1.1` and watch loss at an intermediate hop while the destination stays at 0% — that hop is deprioritising ICMP, not dropping your data. Best-effort is not a metaphor.",
+    "qs": []
    },
    {
     "id": "1.3",
@@ -403,7 +412,17 @@ const MODULES = [
      "repo": "labs/1.3-resolver",
      "shipped": null,
      "note": "S8 2026-07-14: encodeName ✓ (length-prefixed labels + zero terminator), buildHeader ✓ (12 bytes, 6 uint16 slots, random ID), buildQuery ✓ (type=A class=IN), UDP send ✓ — GOT A REAL 488-BYTE REFERRAL FROM a.root-servers.net. Decoded the response header cold: NSCOUNT=13, ARCOUNT=11 matched the first dig. STOPPED at the parsing wall: skip header+question, then read records — and DNS NAME COMPRESSION (0xc0 pointer) is the boss fight. Resume: where does the question section end → then parse RRs → then the referral-follow loop."
-    }
+    },
+    "pri": "daily",
+    "derive": "yes",
+    "given": [
+     "hierarchy / delegation",
+     "caching",
+     "TTL",
+     "trust anchor (root hints)"
+    ],
+    "real": "Oct 2016: the Dyn DDoS took out Twitter, Reddit, Netflix and GitHub for most of the US east coast. None of those servers went down. Only the thing that TRANSLATES THEIR NAMES did. He is currently building the resolver that would have been affected.",
+    "qs": []
    },
    {
     "id": "1.4",
@@ -421,7 +440,16 @@ const MODULES = [
      "cmd": "sudo tcpdump -n -S 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0' & curl example.com",
      "see": "SYN / SYN-ACK / ACK with the REAL initial sequence numbers — and you'll see there are TWO of them, one per direction. That is what the handshake is FOR.",
      "done": null
-    }
+    },
+    "pri": "loadbearing",
+    "derive": "yes",
+    "given": [
+     "sequence number",
+     "ACK",
+     "best-effort wire (1.2)"
+    ],
+    "real": "SYN floods: an attacker sends SYN and never completes the handshake, so the server holds half-open state until it runs out. The defence (SYN cookies) exists because the 3-way handshake forces the server to remember something before the client has proven it is real.",
+    "qs": []
    },
    {
     "id": "1.5",
@@ -450,7 +478,17 @@ const MODULES = [
      "status": "locked",
      "repo": null,
      "shipped": null
-    }
+    },
+    "pri": "loadbearing",
+    "derive": "yes",
+    "given": [
+     "sequence number",
+     "cumulative ACK",
+     "3-way handshake (1.4)",
+     "flowing-vs-silent discriminator"
+    ],
+    "real": "Every phone on a train. Loss spikes in a tunnel, and the connection does not die — it goes quiet and backs off. He can reproduce it exactly: `tc qdisc add dev lo root netem loss 10%`, then watch the retransmits.",
+    "qs": []
    },
    {
     "id": "1.6",
@@ -488,7 +526,15 @@ const MODULES = [
      "cmd": "Same 10% loss. Send a stream over TCP, then over UDP. Time both.",
      "see": "TCP FREEZES — one lost packet holding ready packets hostage behind it. That freeze IS head-of-line blocking; you are watching the term. UDP keeps flowing, with holes. Rather-late vs rather-wrong, on a stopwatch.",
      "done": null
-    }
+    },
+    "pri": "daily",
+    "derive": "yes",
+    "given": [
+     "head-of-line blocking (derived UDP FROM it in S4)",
+     "TCP ordering guarantee (1.4, 1.5)"
+    ],
+    "real": "QUIC — which now carries the majority of Google's traffic and all of HTTP/3 — is built ON TOP OF UDP, on purpose, to escape TCP's head-of-line blocking. UDP is not the loser of the TCP/UDP fight. It is the foundation the winner was rebuilt on.",
+    "qs": []
    },
    {
     "id": "1.8",
@@ -527,7 +573,6 @@ const MODULES = [
     "lastCold": null,
     "gatedIn": null,
     "nextDue": "2026-07-14",
-    "note": "S7 2026-07-14 COLD RE-GATE (later session, not same-day): SECRECY half re-derived cold — DH named unprompted; caught the 'send the mixture, never the private key' fix himself; one-way wall (modular exponentiation easy / discrete logarithm hopeless); target = secret exponent a. ★ THE 31-DAY-OPEN MITM BEAT IS CLOSED COLD: derived two separate handshakes → two keys → attacker in the middle relaying, and the killer 'DH gives SECRECY, not IDENTITY'. Man-in-the-middle named cold; June CA-vs-middleman swap REPAIRED. // NEW OPEN BEAT (frontier): the certificate/PKI mechanism — HOW the CA signature proves identity (unforgeable without CA private key) and WHY we trust the CA (trust anchor = root certs baked into the browser, ≅ DNS root hints). He hit 'I don't know why' on both — TAUGHT as a shape only, NOT derived, so it does not count. Derive cold next session. Atom NOT banked until this closes.",
     "deps": [
      "1.4"
     ],
@@ -545,6 +590,48 @@ const MODULES = [
      "status": "locked",
      "repo": null,
      "shipped": null
+    },
+    "pri": "daily",
+    "derive": "need-only",
+    "given": [
+     "Diffie-Hellman key exchange (g, p, g^a mod p, shared g^(ab)) — produced COLD S7",
+     "the one-way wall: modular exponentiation easy / discrete logarithm hopeless — COLD S7",
+     "the secret is built on both ends and NEVER SENT — COLD S7",
+     "man-in-the-middle: two separate handshakes, two keys, attacker relays — COLD S7",
+     "DH gives SECRECY, not IDENTITY — COLD S7",
+     "trust anchor (owns it cold from 1.3, DNS root hints)"
+    ],
+    "lacks": [
+     "★ ASYMMETRIC DIGITAL SIGNATURES — private key MAKES the mark, public key CHECKS it, neither does the other's job. HE HAS NEVER BEEN GIVEN THIS. DH is key EXCHANGE and does not imply it. This is the primitive S9 tried to interrogate out of him. HAND IT.",
+     "cryptographic hashing (sign the digest, not the document)",
+     "chain of trust / intermediate CAs"
+    ],
+    "real": "Firesheep, 2010: a one-click Firefox extension that let anyone on the same cafe wifi steal your logged-in Facebook session, because the site used HTTPS for the password page and plain HTTP for everything after. It was released PUBLICLY, on purpose, to shame the industry into TLS-everywhere. It worked.",
+    "qs": [
+     {
+      "q": "The attacker copies Google's cert, rips out Google's public key, drops in HIS OWN. He now needs a fresh signature at the bottom. What stops him from writing one?",
+      "s": 9,
+      "g": "PASS — reached the right object cold: the mark can only be MADE with the CA's private key, and the attacker does not have it. Used 'mix the certificate with the CA's private key' — borrowed from the DH paint-mixing analogy. Referent correct (§1 synonym rule)."
+     },
+     {
+      "q": "Your laptop has to CHECK that mark. But your laptop does not have DigiCert's private key either. So what does it use to check it?",
+      "s": 9,
+      "g": "★ VOID — DO NOT REUSE. This question is unanswerable from what he holds. He replied 'the CA's private keys come baked into the browser' — which is wrong (it is the PUBLIC key, in a root certificate) but it is the ONLY answer available to someone who has never been given asymmetric signatures. NOT a failure of his. TEACHING_LOG Entry 010."
+     },
+     {
+      "q": "You just said the attacker can't forge because he can't know the CA's private key. Now you say the private key ships in every browser — 3 billion devices. Both can't be true. Which one breaks?",
+      "s": 9,
+      "g": "PASS (partial) — he immediately saw the contradiction ('damn then how'). BEHAVIOR_LEARNING confirmed again: he self-diagnoses reliably when shown the contradiction in HIS OWN answers. He could not resolve it, correctly, because the resolution needs the missing primitive."
+     }
+    ],
+    "beat": {
+     "open": "The certificate/PKI mechanism. TWO halves, and they need OPPOSITE treatment. (a) HOW the signature proves identity — needs the SIGNATURE PRIMITIVE, which he has never been given. DO NOT ASK HIM TO DERIVE IT. Derive the NEED ('you want a mark only the CA can make but anyone can check — does DH give you that?' → he says no → 'correct, so we need a new tool, here it is'), then HAND the tool. (b) WHY we trust the CA at all — this half IS derivable, because he owns trust anchor COLD from DNS root hints. Ask that one.",
+     "closed": [
+      "S7: the SECRECY half — DH re-derived cold after 31 days, named unprompted.",
+      "S7: ★ the 31-day-open MITM beat — two handshakes, two keys, attacker relaying. Plus the killer line, his own: 'DH gives SECRECY, not IDENTITY'. June's CA-vs-middleman swap REPAIRED.",
+      "S9: signature-unforgeability, the MAKE half — 'only the CA's private key can make the mark'. Cold, first ask."
+     ],
+     "next": "Hand the signature primitive (make/check asymmetry) → he applies it to the swapped-cert case → derive WHY the CA is trusted (trust anchor, ≅ DNS root hints — he owns this) → then /lab 1.9: HE BECOMES A CA. curl REJECTED → install his own root → same curl ACCEPTED, server unchanged. Trust was never in the certificate. Then /gate 1.9."
     }
    },
    {
@@ -573,7 +660,17 @@ const MODULES = [
      "status": "locked",
      "repo": null,
      "shipped": null
-    }
+    },
+    "pri": "daily",
+    "derive": "yes",
+    "given": [
+     "request/response",
+     "TCP as the pipe (1.4)",
+     "safe ⊂ idempotent ⊂ all",
+     "the ambiguity of silence"
+    ],
+    "real": "Every 'do not click Pay twice' banner is a POST that was never made idempotent. Stripe solved it with the Idempotency-Key header — the client invents a unique key, and Stripe returns the FIRST result forever. That header is this atom, shipped.",
+    "qs": []
    },
    {
     "id": "1.11",

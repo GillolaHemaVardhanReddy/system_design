@@ -53,10 +53,19 @@ When asked for a *specific* decision he retreats to a *general description* — 
 - **mechanism fine but TERMS missing → `"s": "termslost"`.** Not "banked with a note." **Demoted.** A correct explanation without the term is not a pass, and that rule must bind the *tracker*, not just the conversation.
 - any term he could not produce → `"status": "LOST"`. Any term he attached to the **wrong object** (CA as "the middle man"; "sequence number" for an HTTP retry) → `"status": "MISUSED"` — that is a **concept error**, not a wording slip.
 
+**★ ALWAYS, PASS OR FAIL — log every question you asked into the atom's `qs[]`:**
+```json
+{ "q": "<the question, verbatim>", "s": 9, "g": "PASS — <what he actually produced> / NOT YET — <the exact gap>" }
+```
+**Why this is not bookkeeping.** A "cold" re-gate that re-asks a question he has already seen measures whether he remembers **the question**, not the idea. S5's log never existed, so its questions are **gone permanently** and no future gate can be certain it isn't recycling one. `check` now **fails** on a duplicate. Before you ask anything, **read `qs[]` and pick something he has never seen.**
+
+If a question turns out to have been **unanswerable from his `given`** (Entry 010), do not grade it as a miss — record it `"g": "★ VOID — DO NOT REUSE. <why>"` and **fix the atom's `given`/`lacks`/`derive`**. The failure was the question's, not his.
+
 **Then, always:**
 ```
+node scripts/status.mjs brief    # regenerates NOW.md — the next session starts from this
 node scripts/status.mjs build    # regenerates notes/ROADMAP.html — never hand-edit it
-node scripts/status.mjs check    # must print "✅ No drift" before you finish
+node scripts/status.mjs check    # must print "✅ Record consistent" before you finish
 ```
 Then bring the prose trackers into line: `LEARNING_TRACKER.md` · `COMPLETION.md` · `REVISION_SHEET.md` · `GLOSSARY.md`. **If `check` reports drift, you are not done.**
 

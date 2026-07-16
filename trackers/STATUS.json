@@ -130,7 +130,7 @@
           "lab": {
             "cmd": "dig +trace google.com  ·  then: dig google.com  (twice, 5s apart)",
             "see": "root → TLD → authoritative, one hop at a time, on your screen. Then watch the TTL COUNT DOWN in the cache on the second dig. Stale is a number, ticking.",
-            "done": null
+            "done": "2026-07-16"
           },
           "build": {
             "name": "A real DNS resolver, from scratch",
@@ -329,7 +329,7 @@
             "man-in-the-middle: two separate handshakes, two keys, attacker relays — COLD S7",
             "DH gives SECRECY, not IDENTITY — COLD S7",
             "trust anchor (owns it cold from 1.3, DNS root hints)",
-            "★ ASYMMETRIC DIGITAL SIGNATURES — private key MAKES the mark, public key CHECKS it, neither does the other's job. HANDED S10. He APPLIED it correctly on first ask, same session: 'public key ships in browser, anyone can check but cant embed another message since they dont know private key'. WARM, NOT COLD — a later session must confirm it.",
+            "★ ASYMMETRIC DIGITAL SIGNATURES — private key MAKES the mark, public key CHECKS it, neither does the other's job. HANDED S10, CONFIRMED COLD S11 (2026-07-16): all three objects right on a fresh-session first ask.",
             "the cert is signed ONCE, offline, and shipped to the site — the CA is NOT in the handshake. DERIVED S10 off the scale argument, his own.",
             "TWO HANDSHAKES STACKED: TCP 3-way completes → TLS handshake runs INSIDE that pipe → only then does HTTP exist. Cert + DH both live in the TLS handshake. DERIVED S10."
           ],
@@ -378,19 +378,33 @@
               "q": "Where does DH happen? (immediately after naming the TLS handshake)",
               "s": 10,
               "g": "MISS then self-corrected. Said 'it happens in TCP', contradicting what he had derived two messages earlier. Shown the contradiction he asked 'does DH doesnt mean diffie hellman?' — the ABBREVIATION was the fault, not the layering. Spelled out in full he answered 'ok then it will be inside TLS' immediately. ★ LESSON FOR JIMMY: do not abbreviate a term he has only ever produced in full. An abbreviation is a NEW term wearing the old one's meaning."
+            },
+            {
+              "q": "Which key makes the mark, which checks it, and which one is on your disk right now? (S11 cold re-ask of the handed primitive)",
+              "s": 11,
+              "g": "PASS COLD — all three right objects, first ask, fresh session: private key makes, public key checks, public key on disk. The S10 primitive survived to a later session. Promoted."
+            },
+            {
+              "q": "WHO SIGNED DigiCert public key, to prove IT is genuine? (the S10 open beat, re-asked cold)",
+              "s": 11,
+              "g": "MISS then HANDED — walked the chain one level (CA signs CA) but would not commit to NOBODY; hedged with domain-name-in-cert, then DH, then frustration. Answer handed via his own S8 resolver (hardcoded root IP). He then christened trust anchor and used it in a sentence. HONEST GRADE: the DNS-side anchor he owns; the TLS-side transfer was NOT produced cold. ★ HIS METHOD CATCH: the question WHO SIGNED sends you hunting for a signer when the answer is no-signer — ask WHY DO YOU TRUST THE KEY ALREADY ON YOUR DISK instead. He is right. Logged."
             }
           ],
           "beat": {
-            "open": "WHY do we trust DigiCert AT ALL? This is the DERIVABLE half — he owns trust anchor COLD from DNS root hints (1.3). The question is ASKED and UNANSWERED — he stopped the session on it. Re-ask it verbatim, cold, as the opener: 'Your browser holds DigiCert's public key and uses it to check DigiCert's signature. Fine. But that is just a key sitting on your disk. WHO SIGNED DigiCert's public key, to prove IT is genuine?' Chase him UP the chain until he hits 'nobody — it is just THERE, believed because it shipped with the machine.' THAT is the trust anchor, and it is the same shape as the DNS root hints he already owns. Do NOT hand it. He can walk this one.",
+            "open": "★ TWO BEATS OPEN, IN THIS ORDER (his explicit call: resolver first, 'lets go in line'). (1) RESOLVER at the compression wall: he is parked at byte 28 of the root reply, staring at c0 13. Question ASKED and UNANSWERED: 'c0 = 11000000 — why did the server refuse to just write com again?' The NEED is derivable (488-byte reply, the same names repeat 13 times — let him feel the waste); the POINTER FORMAT (2 top bits set → next 14 bits = jump-to offset; c0 13 = jump to byte 0x13=19… inside his OWN question's google.com) is a convention — HAND it once the need is owned. Then: parse one NS record end-to-end, then the referral-follow loop (root → TLD → auth in HIS code). (2) TLS lab part 1 parked mid-prediction: 'openssl s_client -connect google.com:443 -showcerts — how many certs come back, whose name on each?' ASKED, UNANSWERED. His likely answer is ONE — the real answer (leaf + intermediate) opens chain-of-trust, which is in lacks: HAND it there.",
             "closed": [
               "S7: the SECRECY half — DH re-derived cold after 31 days, named unprompted.",
               "S7: ★ the 31-day-open MITM beat — two handshakes, two keys, attacker relaying. Plus the killer line, his own: 'DH gives SECRECY, not IDENTITY'. June's CA-vs-middleman swap REPAIRED.",
               "S9: signature-unforgeability, the MAKE half — 'only the CA's private key can make the mark'. Cold, first ask.",
               "S10: ★ THE SIGNATURE PRIMITIVE HANDED — private key MAKES, public key CHECKS, neither does the other's job. He applied it same-session on first ask and volunteered the check-is-not-make half himself. The S9 contradiction is RESOLVED. WARM — a cold re-ask next session is what banks it.",
               "S10: the cert is signed ONCE, offline, shipped to the site — DigiCert is not in your handshake. He derived it himself off the ~100k-responses/sec scale argument, killing his own 'signs every res' claim.",
-              "S10: ★ TWO HANDSHAKES STACKED — TCP completes → TLS handshake runs inside the pipe → HTTP's first byte. He DERIVED it off one nudge (messages need a reliable pipe). Christened TLS with its etymology. This repaired a layer-fusion live."
+              "S10: ★ TWO HANDSHAKES STACKED — TCP completes → TLS handshake runs inside the pipe → HTTP's first byte. He DERIVED it off one nudge (messages need a reliable pipe). Christened TLS with its etymology. This repaired a layer-fusion live.",
+              "S11: ★ THE COLD RE-ASK PASSED — private key makes, public key checks, public key on disk. All three objects, first ask, fresh session. The signature primitive is COLD; term promoted on this retrieval event.",
+              "S11: the trust-anchor beat CLOSED WITH A CAVEAT — he walked one level (CA signs CA) but would not commit to NOBODY; hedged (domain-in-cert, then DH-with-site), got frustrated, and the anchor was HANDED via his own S8 hardcoded root IP. He christened trust anchor and used it ('198.41.0.4 is a trust anchor'). HONEST: DNS-side he owns cold; the TLS-side transfer was handed, not produced. ★ HIS METHOD CATCH (logged, he is right): 'WHO SIGNED it' sends the learner hunting for a signer when the answer is NO SIGNER — ask 'why do you trust the key ALREADY ON YOUR DISK' instead.",
+              "S11: DNS lab (1.3) RUN and closed mid-session at his request — 127.0.0.53 loopback seen FAILING, dig +trace walked root→TLD→auth live, six A records → derived failover + load-spread, TTL seen at 28 vs authoritative 300 → derived multi-cache → anycast christened. Referral + glue christened off the header counts.",
+              "S11: RESOLVER RESUMED (1.3 build) — verified ticket-ID matching in HIS code (sent id == received id, live), header counts placed (ANCOUNT/NSCOUNT/ARCOUNT), question-section length computed from his own encodeName, records-start offset 28 DERIVED after one miscount (letters only, forgot length bytes + terminator)."
             ],
-            "next": "COLD RE-ASK FIRST (the S10 primitive is WARM, never cold): 'which key makes the mark, which checks it, and which one is on your disk?' → then the open beat (why trust the CA at all → trust anchor, same shape as DNS root hints, DERIVABLE) → then /lab 1.9: HE BECOMES A CA. curl REJECTED → install his own root → same curl ACCEPTED, server unchanged. Trust was never in the certificate; it is in what his machine already believed. Then /gate 1.9. STILL IN lacks: cryptographic hashing, chain of trust."
+            "next": "Resume order HE chose: (1) resolver c0-wall → need derived, format handed → parse NS records → referral loop → the walk completes in his code. Phase 2 idea HE proposed: an HTML view of the live walk — HIS code, every line (rule 3 was re-stated to him this session and he accepted it). (2) THEN TLS lab: openssl prediction → BECOME A CA → /gate 1.9. STILL IN lacks: cryptographic hashing, chain of trust (the openssl output is the door to hand chain-of-trust). NOTE: article rule re-stated (ships only after a solo gated build) — he pushed, rule held, he accepted."
           }
         },
         {
@@ -2985,9 +2999,9 @@
       "atom": "1.9",
       "etymology": "a **signature** made of digits — a mark only the holder of the private key can WRITE, that anyone holding the public key can READ",
       "concept": "Private key MAKES the mark, public key CHECKS it. Neither key does the other's job. Holding the public key lets you verify a signature and gives you NO power to produce one. This is the primitive DH does not give you — DH is key exchange, it says nothing about identity.",
-      "status": "WARM",
-      "lastColdProduction": null,
-      "note": "HANDED S10, after S9 wrongly tried to interrogate it out of him (TEACHING_LOG 010). Applied correctly on first ask, same session — which promotes nothing. Cold re-ask due next session."
+      "status": "COLD",
+      "lastColdProduction": "2026-07-16",
+      "note": "HANDED S10 (TEACHING_LOG 010). S11 cold re-ask PASSED: produced make/check asymmetry + which key ships, all right objects, fresh session, first ask. Promoted on that retrieval event."
     },
     {
       "term": "Asymmetric (key pair)",
@@ -3006,6 +3020,42 @@
       "status": "WARM",
       "lastColdProduction": null,
       "note": "★ He DERIVED the two-handshake stack off one nudge in S10, repairing a live layer-fusion (he had put the cert inside TCP SYN/SYN-ACK/ACK). Named same-session — WARM, not cold."
+    },
+    {
+      "term": "Loopback",
+      "atom": "1.3",
+      "etymology": "the packet **loops back** into your own machine — 127.* never touches the wire",
+      "concept": "127.0.0.0/8 is hard-wired to mean THIS machine. Ubuntu runs a caching stub resolver at 127.0.0.53 — every app asks it first. He hit it live when it timed out.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "S11: hedged ('hope its in local?') — referent right, handed the term. Saw it FAIL before he saw it work."
+    },
+    {
+      "term": "Referral",
+      "atom": "1.3",
+      "etymology": "the root **refers** you onward — not my department, ask these 13",
+      "concept": "A reply with ANCOUNT=0 but NSCOUNT>0 is not a failure — it is a signpost. The walk IS a chain of referrals.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "S11: described the mechanism himself off the header counts ('servers who handle to ans next question'), then christened."
+    },
+    {
+      "term": "Glue record",
+      "atom": "1.3",
+      "etymology": "**glues** the IP directly onto the referral so the loop never starts",
+      "concept": "The root says ask l.gtld-servers.net — but resolving THAT name would need DNS. Glue = the A/AAAA records for the referred nameservers, shipped in the additionals section, breaking the circular dependency.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "S11: he described 'mapped to ipv4 and v6 ips counted in additional records' before the christening."
+    },
+    {
+      "term": "Anycast",
+      "atom": "1.3",
+      "etymology": "cast to **ANY** of them — one address announced from many places, shortest road wins",
+      "concept": "1.1.1.1 is thousands of machines sharing one IP, each with its OWN cache at its own countdown. TTLs that jump UP between queries = you bounced between caches.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "S11: derived 'more than one server… each may have relative ttl difference' from the jumping TTLs himself; handed only the name."
     }
   ],
   "edges": [

@@ -251,3 +251,24 @@ And it lands directly on blind spot 3 — ***he understands the machinery and ca
 **Memory anchor:** *"'It happens in TCP' was not layer-fusion. He didn't know what 'DH' meant. Suspect the WORD before the CONCEPT."*
 
 **Retest:** if a future session logs a blind-spot-1 hit on an answer where an abbreviation, acronym or short form appeared in the question, this entry has failed. Re-ask in full **before** grading.
+
+---
+
+## Entry 011 — S11 (2026-07-16): "WHO SIGNED it" — a question shaped to hide its own answer
+
+**The setup.** The S10 open beat, re-asked cold as planned: *"WHO SIGNED DigiCert's public key, to prove IT is genuine?"* The plan said: chase him up the chain until he hits "nobody — it is just there." He walked one level ("digi cert is signed by CA"), then hedged (domain-in-cert, then "we do DH with site??"), then hit frustration: *"how should i know u never told me who."* The anchor was handed via his own S8 resolver's hardcoded root IP. He christened and used it after.
+
+**His catch, verbatim:** *"you should have asked why do you trust your public key so that i might have known."*
+
+**He is right, and the flaw is structural.** "WHO signed X?" **presupposes a signer.** It is a wh-question whose interrogative word smuggles in the exact assumption the answer must reject. The learner's honest options are (a) produce a signer — wrong, (b) fight the question's own grammar — which takes confidence he does not yet have at this atom's edge. The question was shaped so the right answer feels like *refusing to answer*. "Nobody signed it" reads as failure to a learner mid-derivation; it is not an available move. Whereas *"why do you trust the key already on your disk?"* contains no presupposition — its honest answer ("…I just do? it came with the machine?") IS the trust anchor, discovered in the act of answering.
+
+**Root cause.** I wrote the question to be *dramatic* (the chain, chased upward, collapsing at the top) rather than *answerable*. The NOW.md beat even said "chase him UP the chain until he hits nobody" — the drama was the design. But a question whose right answer requires rejecting the question is a rhetorical device, not a Socratic one. Rhetoric works in a lecture, where the asker answers himself. It fails in a derivation, where the answerer must land it.
+
+**Related but distinct honesty note:** he later claimed *"you idiot i know that"* — and the record shows he did NOT produce "nobody" before it was handed; he produced two hedges and a frustration. Both things are true: my question was badly shaped AND he did not know it cold. The session log grades it MISS → HANDED, honestly. The gate for 1.9 must re-test the TLS-side anchor cold. His method catch does not convert his miss into a pass — and his miss does not invalidate his method catch.
+
+**The rule:**
+> **Never ask a wh-question whose presupposition is the thing to be rejected.** If the target answer is "nobody / nothing / it doesn't," the question must not open with "who / what / which does." Shape it so the honest naive answer IS the discovery: *"why do you trust what is already on your disk?"* not *"who signed it?"*
+
+**Memory anchor:** *"'WHO signed it?' presupposes a signer. The answer was 'nobody' — the question forbade its own answer."*
+
+**Retest:** any future beat whose target answer is a negation ("nobody", "it never leaves", "there is no step 2") — check the opener's interrogative word before asking. If a learner miss traces to a presupposing wh-question, this entry has failed.

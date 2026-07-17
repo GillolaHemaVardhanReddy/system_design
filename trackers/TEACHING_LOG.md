@@ -295,3 +295,33 @@ And it lands directly on blind spot 3 — ***he understands the machinery and ca
 **Memory anchor:** *"'Which you claim i did already.' The loop existed only in my head — and I graded a wall he never built."*
 
 **Retest:** any future session where Jimmy references "your function/loop/file" — was the file Read this session first? If not and the reference is wrong, this entry has failed.
+
+---
+
+## Entry 013 — S13 (2026-07-17): I Socratised a lookup, and he read it as the build being pointless ⭐
+
+**His catch, and he made me engrave it before he'd take another question.**
+
+S13 opened on the owed *"is this worth it"* conversation. He said out: *"it's not useful anyway writing code line to line for a DNS resolver — I just have to know how that works."* Shown his own S8 words (*"I'm not even getting motivation because I'm not even seeing what I am learning"*) he reversed in one move — *"yeah i have to do labs damnnnnnn"* — then named the real complaint, which was never *build vs no build*: **"can you make it better and easier to understand and a bit faster."**
+
+**He was not asking to skip the work. He was asking me to stop wasting it.**
+
+**The diagnosis.** Trace where S11–S12 actually went:
+- *"how many bytes is 16 bits?"* → a `4 bytes?` miss → a `readUInt16BE(487)` crash he then root-caused himself **in seconds, once handed the fact**
+- records-start offset 28 → miscounted once (forgot length bytes + terminator), **then instant**
+- the 512-byte UDP limit → *"i actually dont know"* (Entry 012, mistake 2)
+
+Every one of these is a **lookup**. Not one has a *why* underneath it — 16 bits is 2 bytes because a byte is 8 bits, and a byte is 8 bits because people agreed on it. **There was nothing in any of them to derive, so nothing was derived — and the time was spent anyway.** The genuine derivations around them (the compression-pointer *need*, decoding `c0 13`, the offset once he had the pieces) were **fast**. The friction was never the thinking. It was the trivia.
+
+**Root cause — the shape of my own Entry 010 scar.** Entry 010 taught me *what he is handed rots*, and I over-generalised it into **handing anything feels like failure**, so I reached for a question by reflex. Entry 010's own correction says the failure is *handing without deriving the need* — but a mechanical fact **has no need to derive**. Nobody needs motivating into wanting to know how many bytes a 16-bit field takes; he wanted it the moment his code crashed. **I applied a rule about mechanisms to facts, and Entry 012 caught exactly this half a session earlier and I still didn't generalise it.** 012 said an unheld fact makes a question *illegal*. It never said **hand it in one line, now** — so the fact still arrived, just slowly, wearing a quiz costume.
+
+**Cost — and this is the expensive part.** The trivia was interleaved with the real work, so from the inside **they were indistinguishable**. He could not see which parts of the build were teaching him something and which were me stalling. So he indicted **the whole tier**: *"writing code line to line isn't useful."* **The friction discredited the method that surrounded it.** Entry 008's build tier — the thing he asked for — nearly died because of the cheapest possible mistake sitting next to it.
+
+**What held:** the S8 contradiction did the work again in one move, no argument (BEHAVIOR_LEARNING, reconfirmed — he self-diagnoses every time he is shown his own words). And the promise made at the S12 park was honoured **before any teaching**, which is the only reason he was willing to reverse rather than dig in.
+
+**The rule** (now §2, *The Mechanical-Fact Rule*):
+> **A mechanical fact belongs to no atom, so it has no `derive` tier. Default it to `no` and hand it INSTANTLY — one line, no question mark. The test: could he get it from a man page in ten seconds? Then there is nothing in it to teach. Never Socratise a lookup.**
+
+**Memory anchor:** *"He didn't hate the build. He hated being quizzed on a man page while the idea waited."*
+
+**Retest:** every future lab/build message — did Jimmy ask a question whose answer is a constant, a width, or a syntax? If yes, this entry has failed. Watch specifically for it returning as *"well, what do you THINK it is?"* — that is the same mistake with a friendlier face.

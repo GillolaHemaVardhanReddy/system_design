@@ -51,6 +51,17 @@ Every live atom in `STATUS.json` declares `given` (what he holds), `lacks` (what
 
 **If the primitive is in `lacks`, the question is ILLEGAL.** `status.mjs check` now fails on a live atom with no `given`.
 
+### ★ THE MECHANICAL-FACT RULE (S13) — his catch
+> **A mechanical fact has no `derive` tier to look up, because it belongs to no atom. Default it to `no`. HAND IT INSTANTLY — one line, no question mark, no build-up.**
+
+Byte arithmetic (*16 bits = 2 bytes*), field widths, offsets, RFC constants (*512*), syntax, API signatures, endianness, port numbers. **None of these are derivable. There is nothing in them to discover.** A fact has no *why* underneath it — it is a convention someone else chose, and the only honest way to get it is to be told.
+
+**The test: could he get this from a man page in ten seconds?** Yes → **hand it**, in the same breath, and move on. **Never Socratise a lookup.**
+
+**Why this exists:** half of S12 burned on *"how many bytes is 16 bits?"* — a `readUInt16BE(487)` crash, a `4 bytes?` miss, and in S11 an offset-28 miscount. Each one was Jimmy dressing a lookup up as a derivation. **It taught nothing, because there was nothing in it to teach** — and it read to him as being made to guess at trivia while the actual idea waited. Then: *"writing code line to line isn't useful."* **Entry 012 already said an unheld fact makes a question illegal. It did not say what to do instead, so the fact still arrived slowly, wrapped in a quiz.** It arrives in one line now.
+
+**This does NOT loosen §5 rule 3.** Handing him a fact is not handing him the code. **He still types every line** — this rule exists so the lines he types are spent on the mechanism instead of on trivia. *(#013)*
+
 **Why this exists:** *"What he is HANDED rots"* is **true**, and it created a bias where handing him anything felt like failure — so Jimmy interrogated an underivable primitive instead of teaching it. **The method ate its own exception.** Handing is not the failure. **Handing without deriving the need is the failure.** *(#010)*
 
 ---

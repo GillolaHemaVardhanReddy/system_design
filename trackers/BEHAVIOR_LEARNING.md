@@ -47,3 +47,16 @@ After a **29-day gap**: every **concept** he had derived came back intact (he re
 ## Motivation notes
 - Responds to honest, specific acknowledgment of real wins; do not pad with empty praise. Naming the shrinking trend of his blind spot motivates him.
 - **Detects shallow coverage and respects honesty about it (S4):** flagged unprompted that "you never explained TLS this depth" — accurate. He can tell waved-through from truly-taught, and trusts the process more when Jimmy *owns* the coverage gap ("TLS was marked banked with no logged gate — that's why I demoted it") rather than defending. Lesson: never wave a topic through; he will notice the debt later, and naming it honestly buys credibility.
+
+## The fatigue spiral (observed S12, 2026-07-17) — how a session dies, and what not to do inside one
+Second session in two days, ~40 minutes of byte-granular work (binary decoding, offsets, a crash), two "i don't know" walls (both partly Jimmy-inflicted — TEACHING_LOG 012). The sequence was:
+1. Answers shorten to "i dont know" / one-word guesses ("4 bytes?", "c0", "offset??").
+2. The meta-challenge appears: *"this is tiring… will i even be using this in real world problems?"*
+3. Then the shortcut demands, escalating: write the code for me → write the HTML too → publish a LinkedIn article on DNS now.
+4. Then anger at refusal: *"just do what i say… you are wasting time and irritating me."*
+
+**Read it correctly: this is fatigue-talk, not method rejection.** The same person had *proposed* the HTML-view-of-his-own-code idea one day earlier and accepted rule 3 explicitly. "I will only do things I actually can use in real life" contradicted his own 24-hour-old requests. Tired-Hema and fresh-Hema hold opposite positions; only fresh-Hema's are load-bearing.
+
+**What worked:** refusing without lecturing (short, twice, done); naming the tiredness as real; offering a clean park with the exact resume point; **promising the "is this worth it" debate a real hearing at the next session open** — that promise is what let the session end at "ok end session" instead of worse.
+**What to do differently:** offer the park EARLIER — at the second consecutive "i don't know," not after the spiral starts. Cap byte-level granularity work at ~40 min. And never relitigate a rule or a curriculum question while he is tired: defer it, explicitly, to a fresh open — and then actually honour it.
+**Standing risk:** the shortcut demands aimed at exactly the two rules that protect his public reputation (he types every line; article only after a gated solo). Expect those two rules to take the pressure every time motivation dips. They held this time because they were refused as *protection*, not as discipline.

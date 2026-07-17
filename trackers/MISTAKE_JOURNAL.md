@@ -5,7 +5,8 @@
 | Mistake | Times Repeated | Last Seen |
 |---|---|---|
 | **TERM DECAY — describes the machinery correctly, cannot NAME it** | **5 terms in one session** | **Session 5 (2026-07-11) — see Entry 005. The biggest live problem.** |
-| Retreat-to-structure / **discriminator-dodging** (answers *around* a specific question with a general description) | **5** | Session 5 (4×: named a mechanism without the condition · described HOL without naming it · hedged "not chosen *or* impossible" · restated the general rule instead of answering the packet-5 case) |
+| Retreat-to-structure / **discriminator-dodging** (answers *around* a specific question with a general description) | **6** | Session 12 (asked to NAME the pointer trick, re-described the mechanism instead; broken by a fill-the-blank) |
+| **Byte-level arithmetic slips** (bits↔bytes, offset counting) | **2** | Session 12 ("16 bits = 4 bytes?"; S11: offset miscount — letters only, forgot length bytes + terminator) |
 | Layer-fusion (wrong layer / pipeline collapsed) | 8 | Session 5 (root NS "holds authoritative IPs" — deleted the TLD tier; and "sender must test if the receiver is ready" — imported the **handshake's** job into **loss recovery**). *But:* walked DNS→TCP→HTTP correctly unaided in the same session. **Trend: shrinking.** |
 | Idempotency mis-definition | 2 | Session 5 ("idempotency means same **response**" — it is same end **STATE**) |
 
@@ -78,3 +79,13 @@
 - **⚠️ CONFIDENCE CORRECTION (2026-07-11):** the S4 "pass" was a **same-session** re-gate, minutes after being drilled on the exact point. That measures **working memory, not retention** — and it was written into this file as if it measured retention, which made the topic *look* safe so it was never re-queued. **29 days later Hema did not know fast retransmit existed** ("I don't know what the other mechanism is"). **Real confidence at S5 open: 2/10.**
 - **Rule change (now in CLAUDE.md §1):** a same-session re-gate **caps at 5/10**. Only a **cold gate in a LATER session** can raise a score. See `trackers/TEACHING_LOG.md` Entry 002 — this was Jimmy's error, not Hema's.
 - **S5 outcome:** **re-derived cold, from scratch, unaided.** Given "packet 2 lost, 3/4/5 arrive," he produced cumulative re-ACKing → **3 duplicate ACKs → fast retransmit**; then, handed the *packet-5-is-the-last-packet* counterexample, he **destroyed his own wrong discriminator** ("data lost vs ACK lost") and arrived at the correct one — **flowing vs silent**. The mechanism is now genuinely his; **the NAME was the thing missing.** Confidence (mechanism) **7/10**; retest cold **next session** before it goes higher.
+
+## Entry 006 — Byte-level arithmetic under pressure (bits↔bytes, offset counting)
+- **Topic:** DNS wire format / resolver build (S11–S12)
+- **Instances:** (1) S11: computed records-start offset counting letters only — forgot the length bytes and the zero terminator (self-corrected after one miscount). (2) S12: asked "how many bytes is 16 bits?" answered **"4 bytes?"** — while debugging his own `readUInt16BE(487)` crash on a 488-byte buffer.
+- **Category:** foundational arithmetic gap, not a mechanism gap — the crash itself he explained correctly the moment "2 bytes" was in hand ("it picks 487 an 488 which is not present so error").
+- **Root cause:** bit/byte conversions were never made automatic; under debugging pressure he guesses instead of computing 16/8. Every wire-format atom from here on (TCP headers, TLS records) sits on this arithmetic.
+- **Correct model:** 1 byte = 8 bits, always. UInt16 = 16 bits = **2 bytes**; a 2-byte read at index i needs i and i+1 to exist.
+- **Memory anchor:** "Divide by 8 before you guess."
+- **Mitigation:** fold one byte-counting moment into every wire-format lab (never a standalone drill); make him SAY the byte count before any readUIntNN call.
+- **Retest:** next resolver session — he computes the pointer's 2-byte consumption and where parsing resumes after it, unaided.

@@ -2,7 +2,7 @@
 
 > **GENERATED. Never hand-edit.** `node scripts/status.mjs brief` · source `trackers/STATUS.json`
 > **This file is STATE. `CLAUDE.md` is RULES.** They do not overlap, so they cannot drift.
-> Written 2026-07-15 · after Session 10
+> Written 2026-07-17 · after Session 12
 
 ## ⇢ START HERE — atom 1.9: TLS 1.3 + Diffie–Hellman
 
@@ -13,7 +13,7 @@
 > ⚠️ **TRAP** — DO NOT use hpbn.co's TLS chapter — it is from 2013 and predates TLS 1.3. It will teach you a handshake that no longer exists.
 
 ### The open beat — this is where you start, cold
-★ TWO BEATS OPEN, IN THIS ORDER (his explicit call: resolver first, 'lets go in line'). (1) RESOLVER at the compression wall: he is parked at byte 28 of the root reply, staring at c0 13. Question ASKED and UNANSWERED: 'c0 = 11000000 — why did the server refuse to just write com again?' The NEED is derivable (488-byte reply, the same names repeat 13 times — let him feel the waste); the POINTER FORMAT (2 top bits set → next 14 bits = jump-to offset; c0 13 = jump to byte 0x13=19… inside his OWN question's google.com) is a convention — HAND it once the need is owned. Then: parse one NS record end-to-end, then the referral-follow loop (root → TLD → auth in HIS code). (2) TLS lab part 1 parked mid-prediction: 'openssl s_client -connect google.com:443 -showcerts — how many certs come back, whose name on each?' ASKED, UNANSWERED. His likely answer is ONE — the real answer (leaf + intermediate) opens chain-of-trust, which is in lacks: HAND it there.
+★ S13 OPENS WITH AN OWED CONVERSATION, BEFORE ANY TEACHING: S12 ended on a fatigue wall — 'will i even be using this in real world problems', then demands that Jimmy write the resolver code + HTML view and publish a LinkedIn DNS article NOW. All refused (rule 3: he types every line — a rule he accepted in S11; article gate: ships only after a solo is gated). He was promised the 'is this worth it' challenge would be taken seriously FRESH. Honour that promise first — if he still wants out fresh, discuss what replaces the build (the boundary still requires one). THEN two beats, his S11 order: (1) RESOLVER parked at the pointer-test rule: 'if the byte is ___ it's a compression pointer' — he answered 'c0' (the literal); the ≥192 test is DERIVABLE (he holds: top two bits 11, offset bits share the byte, c1/c5/ff examples given) — do NOT hand. Then the decode loop (does NOT exist yet — his catch, TEACHING_LOG 012), then names appear from his byte dump → NS records → referral loop. Compression pointer is WARM — a cold re-ask early in the resolver work banks it. (2) TLS lab part 1 still parked mid-prediction: 'openssl s_client -connect google.com:443 -showcerts — how many certs come back, whose name on each?' ASKED, UNANSWERED. His likely answer is ONE — the real answer (leaf + intermediate) opens chain-of-trust, which is in lacks: HAND it there.
 
 **Already closed — do NOT re-teach:**
 - S7: the SECRECY half — DH re-derived cold after 31 days, named unprompted.
@@ -26,8 +26,12 @@
 - S11: the trust-anchor beat CLOSED WITH A CAVEAT — he walked one level (CA signs CA) but would not commit to NOBODY; hedged (domain-in-cert, then DH-with-site), got frustrated, and the anchor was HANDED via his own S8 hardcoded root IP. He christened trust anchor and used it ('198.41.0.4 is a trust anchor'). HONEST: DNS-side he owns cold; the TLS-side transfer was handed, not produced. ★ HIS METHOD CATCH (logged, he is right): 'WHO SIGNED it' sends the learner hunting for a signer when the answer is NO SIGNER — ask 'why do you trust the key ALREADY ON YOUR DISK' instead.
 - S11: DNS lab (1.3) RUN and closed mid-session at his request — 127.0.0.53 loopback seen FAILING, dig +trace walked root→TLD→auth live, six A records → derived failover + load-spread, TTL seen at 28 vs authoritative 300 → derived multi-cache → anycast christened. Referral + glue christened off the header counts.
 - S11: RESOLVER RESUMED (1.3 build) — verified ticket-ID matching in HIS code (sent id == received id, live), header counts placed (ANCOUNT/NSCOUNT/ARCOUNT), question-section length computed from his own encodeName, records-start offset 28 DERIVED after one miscount (letters only, forgot length bytes + terminator).
+- S12: the compression-pointer NEED derived and committed (512-byte UDP limit handed as the missing RFC fact) — 'save space and not blow past 512 bytes, truncation issues'.
+- S12: ★ COMPRESSION POINTER CHRISTENED — c0 13 decoded by him to byte 19 = 'com' inside his OWN echoed question; his word 'points' became the name; working sentence with term + need produced. WARM — same-session, promotes nothing; cold re-ask at S13 banks it.
+- S12: his readUInt16BE(487) crash root-caused by him after one handed fact (16 bits = 2 bytes, after a '4 bytes?' miss — byte-arithmetic gap logged).
+- S12: ★ RULES HELD UNDER PRESSURE — asked twice for Jimmy to write the code, once for an immediate LinkedIn article; refused per rule 3 and the article gate. Parked the session clean instead. The meta-conversation is owed at S13, fresh.
 
-**Next moves:** Resume order HE chose: (1) resolver c0-wall → need derived, format handed → parse NS records → referral loop → the walk completes in his code. Phase 2 idea HE proposed: an HTML view of the live walk — HIS code, every line (rule 3 was re-stated to him this session and he accepted it). (2) THEN TLS lab: openssl prediction → BECOME A CA → /gate 1.9. STILL IN lacks: cryptographic hashing, chain of trust (the openssl output is the door to hand chain-of-trust). NOTE: article rule re-stated (ships only after a solo gated build) — he pushed, rule held, he accepted.
+**Next moves:** S13 order: (0) the owed 'is this worth it' conversation, fresh — before any teaching. (1) resolver: pointer-test rule (≥192, derivable, parked UNANSWERED) → decode loop in HIS code → names out of the dump → NS records → referral loop. Cold re-ask 'compression pointer' early. (2) THEN TLS lab: openssl prediction → BECOME A CA → /gate 1.9. STILL IN lacks: cryptographic hashing, chain of trust (the openssl output is the door to hand chain-of-trust). Phase 2 idea HE proposed stands: HTML view of the live walk — HIS code, every line.
 
 ### ✅ He HOLDS these — you MAY ask him to derive FROM them
 - Diffie-Hellman key exchange (g, p, g^a mod p, shared g^(ab)) — produced COLD S7

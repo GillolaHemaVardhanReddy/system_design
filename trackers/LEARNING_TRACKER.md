@@ -3,9 +3,10 @@
 
 ## Student: Hema Vardhan · 4 months · FAANG-level HLD+LLD+distributed mastery.
 
-## Current Status
-- Module: **1 — Networking** · Atom **1.9 — TLS 1.3 + Diffie–Hellman.** **OPENED in S6, not taught, not answered.** S7 resumes cold on the key-exchange forcing question. Phase: Learning.
-- **Banked cold: 4 / 166 atoms (2.4%)** — `1.2` IP best-effort · `1.3` DNS · `1.4` TCP 3-way handshake · `1.10` HTTP/1.1. See `notes/ROADMAP.html`.
+## Current Status (as of S12, 2026-07-17)
+- Module: **1 — Networking** · Atom **1.9 — TLS 1.3 + DH** open (identity half taught S9–S11; signature primitive COLD S11; TLS lab not yet run) · **1.3 resolver build** mid-flight — S12 crossed the compression wall conceptually: need derived, format handed, **compression pointer christened WARM**; parked at the ≥192 pointer-test question (UNANSWERED, derivable) and the unwritten decode loop. Phase: Learning/Building.
+- **⚠️ S12 ended on a fatigue wall** — demands that Jimmy write the code + publish a LinkedIn article, both refused (rule 3 · article gate). **S13 opens with the owed "is this worth it" conversation, fresh, before any teaching.**
+- **Banked cold: 4 / 166 atoms (2.4%)** — `1.2` IP best-effort · `1.3` DNS · `1.4` TCP 3-way handshake · `1.10` HTTP/1.1. See `notes/ROADMAP.html`. Re-gates overdue: 1.10 (28d), 1.2 (21d), 1.4 (21d).
 - **⚠️ Demoted S6:** `1.5` TCP loss recovery — was BANKED, now **TERMS LOST**. Mechanism re-derived cold and unaided in S5; **named none of it.** Description without the term is not a pass.
 - **Covered, never gated:** `1.7` UDP.
 - **⚠️ DEBT:** Module 0 (Foundations) was skipped. **Owed before Module 2** — isolation levels are a concurrency problem in a SQL costume.

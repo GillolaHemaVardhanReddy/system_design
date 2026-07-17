@@ -1,8 +1,8 @@
 {
   "//": "CANONICAL STATUS RECORD. This file is the single source of truth for atom status, term status, and every decay clock. SYLLABUS.md, COMPLETION.md, GLOSSARY.md and notes/ROADMAP.html are DOWNSTREAM of this file. Run `node scripts/status.mjs check` to detect drift and `node scripts/status.mjs build` to regenerate the roadmap. NEVER hand-edit notes/ROADMAP.html.",
   "meta": {
-    "updated": "2026-07-15",
-    "session": 10,
+    "updated": "2026-07-17",
+    "session": 12,
     "learner": "Hema Vardhan"
   },
   "policy": {
@@ -140,7 +140,7 @@
             "status": "building",
             "repo": "labs/1.3-resolver",
             "shipped": null,
-            "note": "S8 2026-07-14: encodeName ✓ (length-prefixed labels + zero terminator), buildHeader ✓ (12 bytes, 6 uint16 slots, random ID), buildQuery ✓ (type=A class=IN), UDP send ✓ — GOT A REAL 488-BYTE REFERRAL FROM a.root-servers.net. Decoded the response header cold: NSCOUNT=13, ARCOUNT=11 matched the first dig. STOPPED at the parsing wall: skip header+question, then read records — and DNS NAME COMPRESSION (0xc0 pointer) is the boss fight. Resume: where does the question section end → then parse RRs → then the referral-follow loop."
+            "note": "S8 2026-07-14: encodeName ✓, buildHeader ✓, buildQuery ✓, UDP send ✓ — real 488-byte referral from a.root-servers.net. S11: ticket-ID match verified live, header counts placed, records-start=28 derived. S12 2026-07-17: c0-wall CROSSED conceptually — need derived+committed (512-byte UDP limit HANDED as RFC fact, truncation→TCP-retry), pointer format handed per plan, c0 13 decoded to byte 19 = 'com' inside his OWN echoed question, term 'compression pointer' christened WARM. readUInt16BE(487) crash root-caused by him (16 bits = 2 bytes, handed after '4 bytes?' miss). RESUME: (1) the parked question — 'if the byte is ___ it's a compression pointer' — he said 'c0' (the literal); the ≥192 rule is DERIVABLE from what he now holds, DO NOT HAND. (2) decode loop, HIS code — no decodeName loop exists yet (Jimmy wrongly claimed it did, TEACHING_LOG 012). (3) names appear from the dump → parse NS records → referral loop. ⚠️ S12 ended on a fatigue wall: he demanded Jimmy write the code + HTML and a LinkedIn article; refused per rule 3 + article gate. The 'is this worth it' conversation is OWED at S13 open, fresh."
           },
           "pri": "daily",
           "derive": "yes",
@@ -151,7 +151,38 @@
             "trust anchor (root hints)"
           ],
           "real": "Oct 2016: the Dyn DDoS took out Twitter, Reddit, Netflix and GitHub for most of the US east coast. None of those servers went down. Only the thing that TRANSLATES THEIR NAMES did. He is currently building the resolver that would have been affected.",
-          "qs": []
+          "qs": [
+            {
+              "q": "c0 = 11000000 — why did the server refuse to just write com again? (need, carried from S11)",
+              "s": 12,
+              "g": "PARTIAL then PASS — 'maybe waste of space maybe?' (right object, hedged); committed after the arithmetic (234 repeated bytes / 488) and the handed 512-byte rule: 'to save space and not blow past 512 bytes which poses truncation issues'."
+            },
+            {
+              "q": "What's the disaster if a DNS reply gets too big?",
+              "s": 12,
+              "g": "VOID-ish — 'i actually dont know', and correctly so: the 512-byte UDP rule was never given. Handed (RFC fact, derive:no). Jimmy's error to ask before handing — TEACHING_LOG Entry 012."
+            },
+            {
+              "q": "c0 13 — strip the two 1s; what number is left, and what sits at that byte of your own message?",
+              "s": 12,
+              "g": "MISS then PASS — 'its the ip adresses that number' (wrong object); after the byte-map picture: 'its size of com and 20-22 is com'. The aha landed: the pointer targets com inside his OWN echoed question."
+            },
+            {
+              "q": "Christen the trick + working sentence with the term in it",
+              "s": 12,
+              "g": "PASS (WARM) — dodged to description, then 'points' via fill-the-blank → christened COMPRESSION POINTER with etymology. Working sentence on 3rd attempt: 'when my code hits c0 13 … its a compression pointer that points to question … to compress response into less than 512 bytes'. Buffer fixed en route (offset counts from byte 0 of the REPLY he is holding, not his request). Same-session — promotes nothing."
+            },
+            {
+              "q": "Why does readUInt16BE(487) die when index 487 exists? (his own live crash)",
+              "s": 12,
+              "g": "MISS then owned — 'i dont know', then '16 bits = 4 bytes?' (byte-arithmetic slip, MISTAKE_JOURNAL); handed 2 bytes → 'it reads 2 bytes so it picks 487 an 488 which is not present so error'."
+            },
+            {
+              "q": "Finish the rule: 'if the byte is ______, it's a compression pointer'",
+              "s": 12,
+              "g": "★ UNANSWERED — PARKED. He said 'c0' (the literal, not the ≥192 test). Nudged (offset bits share the byte → c1, c5, ff…) then fatigue hit. DERIVABLE from what he holds — do NOT hand. This is the S13 resume question after the owed meta-conversation."
+            }
+          ]
         },
         {
           "id": "1.4",
@@ -391,7 +422,7 @@
             }
           ],
           "beat": {
-            "open": "★ TWO BEATS OPEN, IN THIS ORDER (his explicit call: resolver first, 'lets go in line'). (1) RESOLVER at the compression wall: he is parked at byte 28 of the root reply, staring at c0 13. Question ASKED and UNANSWERED: 'c0 = 11000000 — why did the server refuse to just write com again?' The NEED is derivable (488-byte reply, the same names repeat 13 times — let him feel the waste); the POINTER FORMAT (2 top bits set → next 14 bits = jump-to offset; c0 13 = jump to byte 0x13=19… inside his OWN question's google.com) is a convention — HAND it once the need is owned. Then: parse one NS record end-to-end, then the referral-follow loop (root → TLD → auth in HIS code). (2) TLS lab part 1 parked mid-prediction: 'openssl s_client -connect google.com:443 -showcerts — how many certs come back, whose name on each?' ASKED, UNANSWERED. His likely answer is ONE — the real answer (leaf + intermediate) opens chain-of-trust, which is in lacks: HAND it there.",
+            "open": "★ S13 OPENS WITH AN OWED CONVERSATION, BEFORE ANY TEACHING: S12 ended on a fatigue wall — 'will i even be using this in real world problems', then demands that Jimmy write the resolver code + HTML view and publish a LinkedIn DNS article NOW. All refused (rule 3: he types every line — a rule he accepted in S11; article gate: ships only after a solo is gated). He was promised the 'is this worth it' challenge would be taken seriously FRESH. Honour that promise first — if he still wants out fresh, discuss what replaces the build (the boundary still requires one). THEN two beats, his S11 order: (1) RESOLVER parked at the pointer-test rule: 'if the byte is ___ it's a compression pointer' — he answered 'c0' (the literal); the ≥192 test is DERIVABLE (he holds: top two bits 11, offset bits share the byte, c1/c5/ff examples given) — do NOT hand. Then the decode loop (does NOT exist yet — his catch, TEACHING_LOG 012), then names appear from his byte dump → NS records → referral loop. Compression pointer is WARM — a cold re-ask early in the resolver work banks it. (2) TLS lab part 1 still parked mid-prediction: 'openssl s_client -connect google.com:443 -showcerts — how many certs come back, whose name on each?' ASKED, UNANSWERED. His likely answer is ONE — the real answer (leaf + intermediate) opens chain-of-trust, which is in lacks: HAND it there.",
             "closed": [
               "S7: the SECRECY half — DH re-derived cold after 31 days, named unprompted.",
               "S7: ★ the 31-day-open MITM beat — two handshakes, two keys, attacker relaying. Plus the killer line, his own: 'DH gives SECRECY, not IDENTITY'. June's CA-vs-middleman swap REPAIRED.",
@@ -402,9 +433,13 @@
               "S11: ★ THE COLD RE-ASK PASSED — private key makes, public key checks, public key on disk. All three objects, first ask, fresh session. The signature primitive is COLD; term promoted on this retrieval event.",
               "S11: the trust-anchor beat CLOSED WITH A CAVEAT — he walked one level (CA signs CA) but would not commit to NOBODY; hedged (domain-in-cert, then DH-with-site), got frustrated, and the anchor was HANDED via his own S8 hardcoded root IP. He christened trust anchor and used it ('198.41.0.4 is a trust anchor'). HONEST: DNS-side he owns cold; the TLS-side transfer was handed, not produced. ★ HIS METHOD CATCH (logged, he is right): 'WHO SIGNED it' sends the learner hunting for a signer when the answer is NO SIGNER — ask 'why do you trust the key ALREADY ON YOUR DISK' instead.",
               "S11: DNS lab (1.3) RUN and closed mid-session at his request — 127.0.0.53 loopback seen FAILING, dig +trace walked root→TLD→auth live, six A records → derived failover + load-spread, TTL seen at 28 vs authoritative 300 → derived multi-cache → anycast christened. Referral + glue christened off the header counts.",
-              "S11: RESOLVER RESUMED (1.3 build) — verified ticket-ID matching in HIS code (sent id == received id, live), header counts placed (ANCOUNT/NSCOUNT/ARCOUNT), question-section length computed from his own encodeName, records-start offset 28 DERIVED after one miscount (letters only, forgot length bytes + terminator)."
+              "S11: RESOLVER RESUMED (1.3 build) — verified ticket-ID matching in HIS code (sent id == received id, live), header counts placed (ANCOUNT/NSCOUNT/ARCOUNT), question-section length computed from his own encodeName, records-start offset 28 DERIVED after one miscount (letters only, forgot length bytes + terminator).",
+              "S12: the compression-pointer NEED derived and committed (512-byte UDP limit handed as the missing RFC fact) — 'save space and not blow past 512 bytes, truncation issues'.",
+              "S12: ★ COMPRESSION POINTER CHRISTENED — c0 13 decoded by him to byte 19 = 'com' inside his OWN echoed question; his word 'points' became the name; working sentence with term + need produced. WARM — same-session, promotes nothing; cold re-ask at S13 banks it.",
+              "S12: his readUInt16BE(487) crash root-caused by him after one handed fact (16 bits = 2 bytes, after a '4 bytes?' miss — byte-arithmetic gap logged).",
+              "S12: ★ RULES HELD UNDER PRESSURE — asked twice for Jimmy to write the code, once for an immediate LinkedIn article; refused per rule 3 and the article gate. Parked the session clean instead. The meta-conversation is owed at S13, fresh."
             ],
-            "next": "Resume order HE chose: (1) resolver c0-wall → need derived, format handed → parse NS records → referral loop → the walk completes in his code. Phase 2 idea HE proposed: an HTML view of the live walk — HIS code, every line (rule 3 was re-stated to him this session and he accepted it). (2) THEN TLS lab: openssl prediction → BECOME A CA → /gate 1.9. STILL IN lacks: cryptographic hashing, chain of trust (the openssl output is the door to hand chain-of-trust). NOTE: article rule re-stated (ships only after a solo gated build) — he pushed, rule held, he accepted."
+            "next": "S13 order: (0) the owed 'is this worth it' conversation, fresh — before any teaching. (1) resolver: pointer-test rule (≥192, derivable, parked UNANSWERED) → decode loop in HIS code → names out of the dump → NS records → referral loop. Cold re-ask 'compression pointer' early. (2) THEN TLS lab: openssl prediction → BECOME A CA → /gate 1.9. STILL IN lacks: cryptographic hashing, chain of trust (the openssl output is the door to hand chain-of-trust). Phase 2 idea HE proposed stands: HTML view of the live walk — HIS code, every line."
           }
         },
         {
@@ -3056,6 +3091,15 @@
       "status": "WARM",
       "lastColdProduction": null,
       "note": "S11: derived 'more than one server… each may have relative ttl difference' from the jumping TTLs himself; handed only the name."
+    },
+    {
+      "term": "Compression pointer",
+      "atom": "1.3",
+      "etymology": "**compression** = press the reply together to fit under UDP's 512-byte limit · **pointer** = his own word — instead of repeating a name, the byte **points** at the copy that already exists earlier in the message",
+      "concept": "In a DNS name, a byte with top two bits 11 is not a length — the remaining 14 bits are a byte offset from the start of THE MESSAGE BEING READ; the rest of the name lives there. c0 13 in the root reply = jump to byte 19 = 'com' inside his own echoed question.",
+      "status": "WARM",
+      "lastColdProduction": null,
+      "note": "Christened S12 (2026-07-17) via full name-at-birth loop: need derived with arithmetic, format handed, HIS word ('points'), working sentence with term + need. Same-session — cold re-ask at S13 promotes it."
     }
   ],
   "edges": [

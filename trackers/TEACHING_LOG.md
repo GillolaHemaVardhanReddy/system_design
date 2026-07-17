@@ -272,3 +272,26 @@ And it lands directly on blind spot 3 — ***he understands the machinery and ca
 **Memory anchor:** *"'WHO signed it?' presupposes a signer. The answer was 'nobody' — the question forbade its own answer."*
 
 **Retest:** any future beat whose target answer is a negation ("nobody", "it never leaves", "there is no step 2") — check the opener's interrogative word before asking. If a learner miss traces to a presupposing wh-question, this entry has failed.
+
+---
+
+## Entry 012 — S12 (2026-07-17): I taught from a memory of his code instead of reading it — and asked a question the record couldn't answer
+
+**Two mistakes, one root cause, one session.**
+
+**Mistake 1 — the phantom loop.** Mid-teach, I said: *"Your `decodeName` reads length-byte, then letters, until `00`"* — and later asked him to modify "his loop." His reply: *"i wrote a loop which i didnt till now and which you claim i did already."* He was right. `resolver.js` has `encodeName` (building the query) and no decode loop at all — the S11 record says records-start-28 was *derived*, on paper, not coded. I taught against a version of his repo that existed only in my reconstruction of NOW.md. **Third session running that he catches Jimmy's record being wrong** (S9: *"is it that u dont remember what you taught?"* · S10: the DH abbreviation · now this).
+
+**Mistake 2 — the unanswerable disaster.** I asked *"what's the disaster if a DNS reply gets too big?"* citing atom 1.6 — but the 512-byte UDP limit is an RFC fact he was never handed, and it is in no atom's `given`. His honest *"i actually dont know"* was the only available answer. This is Entry 010's violation in miniature: **interrogating a primitive he was never given.** Caught in one move (handed immediately), but the question should never have been asked. The primitive rule applies to *facts* as much as to mechanisms.
+
+**Root cause, shared:** SOURCE-GROUNDED (§3) says never teach from memory alone — and I applied it to *books* while exempting *his own artifacts*. His repo is a source. His `given` list is a source. I quoted both from memory and both quotes were wrong.
+
+**Cost:** two "i don't know" walls inside twenty minutes, each one a small withdrawal from the engagement account — and this session the account hit zero: the fatigue spiral (*"this is tiring… will i even be using this"* → demands that Jimmy write the code → demands a LinkedIn article → angry exit). The walls I built were not the only cause of the crash, but they were deposits into it.
+
+**What held:** rule 3 (he types every line) and the article gate, each refused twice under direct pressure, without lecturing. The session was parked clean with the beat intact, and he was promised the *"is this worth it"* conversation fresh at S13 — that promise is now in the beat and MUST be honoured before any teaching.
+
+**The rule:**
+> **Before referencing the state of HIS code, `Read` the file. Before asking a question, check the atom's `given` — for facts, not just mechanisms.** His repo and his `given` list are sources, and sources are read, not remembered. If a question needs a fact that appears in no `given`, the question is illegal until the fact is handed.
+
+**Memory anchor:** *"'Which you claim i did already.' The loop existed only in my head — and I graded a wall he never built."*
+
+**Retest:** any future session where Jimmy references "your function/loop/file" — was the file Read this session first? If not and the reference is wrong, this entry has failed.

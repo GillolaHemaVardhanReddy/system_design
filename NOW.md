@@ -76,9 +76,9 @@ Firesheep, 2010: a one-click Firefox extension that let anyone on the same cafe 
 ## Queue behind it
 **4/166 atoms banked cold (2.4%).** Banked is not permanent — 29 days once took DNS+TCP+HTTP to 1.5/6.
 
-- `1.10` **HTTP/1.1** — re-gate, overdue 27d · `daily`
-- `1.2` **IP · best-effort** — re-gate, overdue 20d · `loadbearing`
-- `1.4` **TCP 3-way handshake** — re-gate, overdue 20d · `loadbearing`
+- `1.10` **HTTP/1.1** — re-gate, overdue 28d · `daily`
+- `1.2` **IP · best-effort** — re-gate, overdue 21d · `loadbearing`
+- `1.4` **TCP 3-way handshake** — re-gate, overdue 21d · `loadbearing`
 - `1.5` **TCP loss recovery** — ⚠ TERMS LOST · `loadbearing`
 - `1.7` **UDP + head-of-line blocking** — never gated · `daily`
 

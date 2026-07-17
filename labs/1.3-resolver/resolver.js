@@ -36,12 +36,11 @@ function buildQuery(name) {
 
 const query  = buildQuery('google.com');
 const socket = dgram.createSocket('udp4');
-
+let response;
 socket.on('message', (reply) => {
-  console.log('got', reply.length, 'bytes');
-  console.log('sent id', query.readUInt16BE(0));
-  console.log(reply);
-  console.log('recieved_id', reply.readUInt16BE(0));
+  for (let i = 0; i < reply.length; i++) {
+    console.log(reply.readUint16BE(i));
+}
   socket.close();
 });
 

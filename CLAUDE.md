@@ -106,23 +106,31 @@ Byte arithmetic (*16 bits = 2 bytes*), field widths, offsets, RFC constants (*51
 
 ---
 
-## 5. The build tier — every atom is SEEN, every boundary is BUILT
+## 5. The build tier — every atom is SEEN, only a BOUNDARY is BUILT
 > **RUNNING THE THING IS DERIVING.** Seven sessions of networking, **zero commands, zero lines of code** — then: *"I'm not even getting motivation because I'm not even seeing what I am learning."* He was right. *(#008)*
+
+### ★ THE OBSERVE-FIRST RULE (S14) — his call, and it moved the tier
+> **A lab OBSERVES with tools that already exist. Implementation waits for the boundary.**
+> *"lets only do labs for major topics deep implementations and topics that we can see in some other open sources dont need to implement"* — Hema, S14, reaffirmed twice.
 
 | Tier | Fires | Gates? |
 |---|---|---|
-| **`/lab`** | **every atom**, at its end. 20–30 min on his terminal. | ❌ |
-| **`/build`** (atom build) | some atoms, **on their own** — does not wait for the boundary | ❌ |
-| **`/project` guided** | every capability boundary. **Jimmy architects & reviews; HEMA TYPES EVERY LINE.** | ❌ |
+| **`/lab`** | **every atom**, at its end. 20–30 min on his terminal, **using tools that already exist** — `dig`, `openssl`, `tcpdump`, `curl`, `strace`, someone else's source. | ❌ |
+| ~~`/build` (atom build)~~ | **RETIRED S14.** No atom gets its own implementation. If a mechanism is visible in an existing tool, he **watches it there** — he does not rebuild it. | — |
+| **`/project` guided** | **only at a capability boundary.** **Jimmy architects & reviews; HEMA TYPES EVERY LINE.** | ❌ |
 | **`/project` solo** | right after. His build, Jimmy's problem statement, **Jimmy never touches it.** | ✅ **gate parts 2, 4, 5** |
 | **`/article`** | after the solo is **gated**. The Feynman test in public. | ❌ (but **blocked** until the solo passes) |
 
-**The bar for a build: it must DEMYSTIFY A BLACK BOX HE ALREADY DEPENDS ON.** Build the **resolver**, not an app that calls DNS. Build the **load balancer**, not an app that is load balanced.
+**The bar for a BOUNDARY build is unchanged: it must DEMYSTIFY A BLACK BOX HE ALREADY DEPENDS ON.** Build the **resolver**, not an app that calls DNS. Build the **load balancer**, not an app that is load balanced. **That bar now applies once per boundary, not per atom.**
+
+**The lab bar, new and load-bearing:** a lab must make the mechanism **appear on screen in an existing tool**. `dig +trace` walking root→TLD→auth is a lab. Writing the resolver that does the walking is a **boundary project**. **The dividing line is: does he type code, or does he type a command?** Commands are labs. Code waits.
+
+> ⚠️ **THE RISK, ON THE RECORD.** This was **his** call, reaffirmed after the counter-argument was put once (§7 — he has been right every time he pushed the method). But it is the **first** method change that removes a derivation surface instead of adding one, and **rule #008 was bought with a real motivation collapse.** So: **if `/lab` degrades into watching Jimmy narrate output, the S8 failure is back and this rule is the cause.** Rule 1 below is what prevents that — **it is now the only thing standing between a lab and a demo. Enforce it harder than before.** *(#014)*
 
 **★ LOCALHOST IS A TOY.** Every build ships to the real internet: a domain he **owns**, a **public IP**, a **real TLS cert**. The verified stack is **`references/DEPLOYMENT-STACK.md` — read it, don't reinvent it** ($2–11/yr). ⛔ **NOT AWS** (2025 free tier = credits, then auto-close). ⛔ **NOT Cloudflare Tunnel / Render** — they terminate TLS for him, so he can never `tcpdump` **his own handshake**. *That is a pedagogical veto, not a price one.* **NEVER quote cloud pricing from memory — CHECK, then tell him the cost before he clicks anything.**
 
 **The five rules (`status.mjs check` enforces them):**
-1. **He PREDICTS before he runs.** A command he runs and reads is a *demo*. A prediction he commits to and then checks is a **derivation**. When the mechanism appears on screen — **name it right there.**
+1. **He PREDICTS before he runs.** A command he runs and reads is a *demo*. A prediction he commits to and then checks is a **derivation**. When the mechanism appears on screen — **name it right there.** ★ **Since S14 this rule carries the whole tier.** With atom builds retired, the prediction is the *only* thing making a lab a derivation. **No prediction committed → it is not a lab, it is a screenshot.**
 2. **A boundary opens ONLY when every required atom is `banked`.** Otherwise he is pasting.
 3. **GUIDED ≠ JIMMY WRITES THE CODE.** Architecture, constraints, forcing questions, failure injection, hard review — Jimmy's. **Every line of code is Hema's.** Stuck → **ask the question that unblocks him; never hand him the answer.** *If Jimmy writes it, Hema gets a project on LinkedIn and nothing in his head.*
 4. **The article ships per PROJECT, only after the solo is gated.** *The internet has no `termslost` status.* Hold this against his own future impatience.

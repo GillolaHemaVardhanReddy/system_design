@@ -230,21 +230,20 @@ function buildQueue() {
   for (const a of unseen)
     console.log(`   ${a.id.padEnd(5)} ${a.lab.cmd.slice(0, 68)}${a.lab.cmd.length > 68 ? "…" : ""}`);
 
-  /* ATOM BUILDS — Hema's correction, S8. Boundaries alone were too coarse: making him
-     wait 9 atoms before building anything was a smaller copy of "builds start after
-     Module 2." Some atoms carry a real, standalone, DEPLOYED project on their own.     */
+  /* ATOM BUILDS — RETIRED S14 2026-07-23 at Hema's call, reaffirmed twice.
+     They were HIS S8 correction and they were right then; S14 swung it back. Labs now
+     OBSERVE with tools that already exist; code waits for a capability boundary.
+     The list is kept VISIBLE, not deleted — an idea deleted is an idea that cannot be
+     re-argued, and this rule removed a derivation surface. See CLAUDE.md §5 / #014.   */
   console.log("");
-  console.log("─── ATOM BUILDS: one atom, one real deployed thing ───");
-  console.log("Bar: it must DEMYSTIFY A BLACK BOX HE ALREADY DEPENDS ON. Build the resolver,");
-  console.log("not an app that calls DNS. And LOCALHOST IS A TOY — real domain, public IP,");
-  console.log("real TLS cert. He types every line.");
+  console.log("─── ATOM BUILDS: ⛔ RETIRED S14 — kept visible, not deleted ───");
+  console.log("His call, reaffirmed twice: labs OBSERVE with existing tools; implementation");
+  console.log("waits for a capability boundary. He types a COMMAND, not code.");
+  console.log("⚠️ This removed a derivation surface. Predict-before-run now carries the whole");
+  console.log("tier alone — no prediction committed = not a lab, just a screenshot. (#014)");
   const ab = atoms.filter(a => a.build);
-  const ready = ab.filter(a => a.s === "banked" && a.build.status === "locked");
-  const wip = ab.filter(a => a.build.status !== "locked");
-  const notyet = ab.filter(a => a.s !== "banked" && a.build.status === "locked");
-  for (const a of ready) console.log(`   🟢 ${a.id.padEnd(5)} READY — ${a.build.name}`);
-  for (const a of wip) console.log(`   🔨 ${a.id.padEnd(5)} ${a.build.status.toUpperCase()} — ${a.build.name}`);
-  for (const a of notyet) console.log(`   🔒 ${a.id.padEnd(5)} (atom is "${a.s}") — ${a.build.name}`);
+  for (const a of ab)
+    console.log(`   ⛔ ${a.id.padEnd(5)} ${(a.build.status === "retired" ? "RETIRED" : "shelved").padEnd(7)} — ${a.build.name}`);
 
   console.log("");
   console.log("─── BUILD QUEUE: capability boundaries ───");

@@ -60,3 +60,19 @@ Second session in two days, ~40 minutes of byte-granular work (binary decoding, 
 **What worked:** refusing without lecturing (short, twice, done); naming the tiredness as real; offering a clean park with the exact resume point; **promising the "is this worth it" debate a real hearing at the next session open** — that promise is what let the session end at "ok end session" instead of worse.
 **What to do differently:** offer the park EARLIER — at the second consecutive "i don't know," not after the spiral starts. Cap byte-level granularity work at ~40 min. And never relitigate a rule or a curriculum question while he is tired: defer it, explicitly, to a fresh open — and then actually honour it.
 **Standing risk:** the shortcut demands aimed at exactly the two rules that protect his public reputation (he types every line; article only after a gated solo). Expect those two rules to take the pressure every time motivation dips. They held this time because they were refused as *protection*, not as discipline.
+
+## Rule changes get requested AT the point of friction, not before it (S14, 2026-07-23) — and he wins them, because he is usually right
+S14 opened cold on a parked re-ask. He **missed** it, recovered the mechanism off one nudge, then **could not name the term** and could not reproduce the *need*. Three exchanges later — not before them — came: *"lets only do labs on huge topics… not implement, just see already present tools… so lets update .claude now."* He reaffirmed after one counter-argument, chose the widest scope offered (kill atom builds **and** the 80%-done resolver), and the rule was written.
+
+**Both things are true at once, and neither cancels the other:**
+- **He has been right every time he has pushed the method** — the synonym rule, no-echo-grading, atom builds *themselves*, small-and-sweet, the primitive rule, the mechanical-fact rule. All his. That track record is why the change was made and why arguing a third time was the wrong move (S12's named failure was literally *"you just kept arguing again and again"*).
+- **The timing is still evidence.** A rule requested at the moment of difficulty may be *relieving* the difficulty rather than *fixing* the method. This one removed a derivation surface — the first change ever to do so — and it reversed **his own S8 correction** thirteen sessions later. Both swings were his; at least one is wrong.
+
+**What to do — and what NOT to do:**
+- **Do** put the counter-argument **once**, plainly, then defer to him if he reaffirms. Once is respect; three times is S12.
+- **Do** refuse to edit the rules **mid-question**. Park the method talk for the session open (S12→S13 proved this works — he reversed himself in one move when the argument happened fresh instead of tired).
+- **Do** pin the **scope** before writing anything. "Drop X" and "drop X and kill Y" are different rules, and he will take the widest one offered if you don't make him choose explicitly.
+- **Do** write the risk into the tracker **at the time**, with a named falsifier. If it goes wrong five sessions later, the only thing that will make it visible is a prediction written before the outcome.
+- **Do NOT** re-open it later unprompted. Show him the **evidence** — his own words, his own results — and let him self-diagnose. That is the only move that has ever worked on him, now confirmed 5×.
+
+**Standing question, unresolved:** fresh-Hema vs tired-Hema is a reliable distinction (see the fatigue spiral above), but S14 was **not** a fatigue session — 5 days' rest, third message in. So this was fresh-Hema, and fresh-Hema's positions are the load-bearing ones. That is precisely why it was honoured. It is also why, if it fails, it will fail *quietly*.

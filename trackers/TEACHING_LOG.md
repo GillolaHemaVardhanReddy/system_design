@@ -325,3 +325,32 @@ Every one of these is a **lookup**. Not one has a *why* underneath it — 16 bit
 **Memory anchor:** *"He didn't hate the build. He hated being quizzed on a man page while the idea waited."*
 
 **Retest:** every future lab/build message — did Jimmy ask a question whose answer is a constant, a width, or a syntax? If yes, this entry has failed. Watch specifically for it returning as *"well, what do you THINK it is?"* — that is the same mistake with a friendlier face.
+
+---
+
+## Entry 014 — S14 (2026-07-23): the tier changed at his request, and I let it — the honest record of a rule I am not sure about ⭐
+
+**This entry is not a mistake of mine. It is a bet I took on his instruction, written down now so that if it goes wrong it is impossible to pretend it wasn't foreseen.**
+
+**What happened.** S14 opened cold on the compression pointer — the re-ask that had been parked since S13. He missed it (answered with the six A records from the S11 `dig` lab — wrong object entirely), then produced the **mechanism** cold and correct off one nudge back to the `c0 13` he had decoded himself. Then the term was gone (*"forgot the name, maybe reference bits?"*), and the *need* — why compress at all — he never reached; he kept guessing at labels instead.
+
+Three exchanges into that, he stopped the lesson: *"damnn doing labs on small topics is worst… lets only do labs on huge topics that too not implement just see already present tools how the topics work thats it… so lets update .claude now… knowing that the bytes are and called in depth doesnt help anywhere."*
+
+**What I did.** Put the counter-argument **once** — that "why would a protocol compress a name at all" is a size constraint forcing a design decision, not byte trivia, same shape as HTTP/2 header compression — refused to edit `.claude` mid-question, and offered to do the method talk at the end of the session, exactly as S12→S13 did. He reaffirmed. Then I asked him to pin the scope (drop atom builds only, or kill the resolver too) and he chose **both**.
+
+So: atom builds retired, the DNS resolver killed at ~80%, CLAUDE.md §5 rewritten around the **Observe-First Rule** — *he types a command, not code; code waits for a capability boundary*.
+
+**Why I did not fight it harder.** §7 says he is a collaborator on the method, and he has been right **every single time** he has pushed back — the synonym rule, no-echo-grading, atom builds themselves, small-and-sweet, the primitive rule, the mechanical-fact rule. All his. And S12's named failure was literally *"you just kept arguing again and again."* **Arguing a third time would have cost more than the rule does.**
+
+**Why I am uneasy anyway, and this is the part that matters:**
+
+1. **This is the first method change that REMOVES a derivation surface.** Every previous one added structure or removed friction. This one deletes a place where he was proving things.
+2. **Atom builds were HIS OWN S8 correction** — and the thing they fixed was a real motivation collapse: *"I'm not even getting motivation because I'm not even seeing what I am learning."* The tier has now swung twice, both times at his request, in opposite directions, **thirteen sessions apart**. At least one of those two positions is wrong.
+3. **The timing was diagnostic, not neutral.** He asked for the rule change three messages after a miss, not before it. Entry 013's cost was that friction discredited the method around it — but the honest converse is also live: **a rule requested at the exact moment of difficulty may be relieving the difficulty, not fixing the method.** I noted this to him once, on the record, and did not press it.
+4. **DNS is now banked on oral evidence plus `dig` observation alone.** The referral loop in his own code — root→TLD→authoritative — was the one artifact that would have made DNS undeniable. It is unbuilt and will stay unbuilt.
+
+**The mitigation, and it is thin.** With atom builds gone, **predict-before-run is the only thing left separating a lab from a demo.** §5 rule 1 now carries the entire tier by itself: *no prediction committed = not a lab, just a screenshot.* That is the single point of failure of the new design, and I have written it into §5 in those words.
+
+**Memory anchor:** *"He has been right every time — which is exactly why the one time he isn't will be hard to see."*
+
+**Retest — the falsifier, name it now so it cannot be explained away later:** if within the next ~5 sessions (a) motivation drops again with the S8 complaint in any form, or (b) an atom banks on oral evidence and then fails a cold re-gate on mechanism (not just terms), **this rule is the first suspect and Entry 014 was the warning.** Do not re-open the argument with him unprompted — show him the evidence and let him self-diagnose, which is the only move that has ever worked.
